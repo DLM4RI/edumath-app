@@ -3,3 +3,7 @@ frontend/dist/
 *.exe
 database.db
 .DS_Store
+videos/
+*.mp4
+*.mov
+*.avi
