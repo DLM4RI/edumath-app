@@ -11,7 +11,7 @@
             ¡Hola, <span class="text-gradient" :style="{ background: `linear-gradient(135deg, ${currentTheme.primary} 0%, ${currentTheme.secondary} 100%)`, webkitBackgroundClip: 'text', webkitTextFillColor: 'transparent' }">{{ firstName }}</span>!
           </h1>
           <p class="text-body-1 text-md-h6 text-medium-emphasis max-width-600 font-weight-regular">
-            Bienvenido a tu aventura matemática. Explora los DBA para el grado {{ selectedGrade }}°.
+            Bienvenido a tu aventura matemática. Prepárate para completar las misiones del grado {{ selectedGrade }}°.
           </p>
         </v-col>
         <v-col cols="12" md="4" class="d-none d-md-flex justify-end">
@@ -24,137 +24,91 @@
       </v-row>
     </div>
 
-    <!-- Components Tabs -->
-    <v-container class="px-8 pb-12">
-      <v-card flat class="rounded-xl mb-8 glass-tabs overflow-hidden" elevation="0">
-        <v-tabs
-          v-model="activeTab"
-          bg-color="transparent"
-          :color="currentTheme.primary"
-          grow
-          height="80"
-          class="custom-tabs"
-          show-arrows
-        >
-          <v-tab v-for="tab in thinkingTypes" :key="tab.value" :value="tab.value" class="text-none">
-            <v-icon size="28" class="mr-3">{{ tab.icon }}</v-icon>
-            <div class="d-flex flex-column align-start">
-              <span class="text-caption text-uppercase font-weight-bold opacity-60">Pensamiento</span>
-              <span class="text-subtitle-1 font-weight-black">{{ tab.label }}</span>
-            </div>
-          </v-tab>
-        </v-tabs>
-      </v-card>
-
-      <!-- DBA Grid -->
-      <v-window v-model="activeTab">
-        <v-window-item v-for="tab in thinkingTypes" :key="tab.value" :value="tab.value">
-          <v-row v-if="filteredDbas.length > 0">
-            <v-col
-              v-for="dba in filteredDbas"
-              :key="dba.id"
-              cols="12"
-              md="6"
-              lg="4"
-              class="d-flex"
-            >
-              <v-card
-                class="dba-card rounded-xl overflow-hidden"
-                elevation="4"
-                :class="{ 'dba-card-large': currentTheme.density === 'playful' }"
+    <!-- Videos Introductorios -->
+    <v-container class="px-8 pb-4">
+      <v-card class="rounded-xl overflow-hidden glass-tabs" elevation="2">
+        <div class="pa-6 pa-md-8 pb-0">
+          <v-chip :color="currentTheme.primary" variant="tonal" size="small" class="mb-4 font-weight-bold">
+            <v-icon start size="small">mdi-movie-open-play</v-icon>
+            VIDEOS DE EXPLORACIÓN
+          </v-chip>
+          <h2 class="text-h5 font-weight-black mb-3">
+            Conoce más sobre el Grado {{ selectedGrade }}°
+          </h2>
+          <p class="text-body-1 text-medium-emphasis mb-4">
+            Observa estos videos introductorios antes de comenzar con tus misiones y descubre de qué trata nuestra aventura.
+          </p>
+        </div>
+        
+        <v-row no-gutters class="px-4 px-md-6 pb-6 pt-2">
+          <!-- Video 1 -->
+          <v-col cols="12" md="6" class="pa-2">
+            <v-card elevation="6" class="rounded-xl overflow-hidden bg-black d-flex align-center justify-center" style="aspect-ratio: 16/9; border: 2px solid rgba(255,255,255,0.1);">
+              <video 
+                controls 
+                style="width: 100%; height: 100%; object-fit: cover;"
               >
-                <div class="card-gradient" :style="{ background: `linear-gradient(135deg, ${dba.color}11 0%, ${dba.color}33 100%)` }"></div>
-                
-                <v-card-item class="pt-6">
-                  <div class="d-flex justify-space-between align-center mb-4">
-                    <v-avatar :color="dba.color" size="48" class="elevation-4">
-                      <span class="text-h6 font-weight-black text-white">#{{ dba.dbaNumber }}</span>
-                    </v-avatar>
-                    <v-chip size="x-small" :color="dba.color" variant="tonal" class="font-weight-bold">
-                      DBA • V2
-                    </v-chip>
-                  </div>
-                  
-                  <v-card-title class="text-h6 font-weight-black text-wrap mb-2" style="line-height: 1.3;">
-                    {{ dba.statement }}
-                  </v-card-title>
-                </v-card-item>
-
-                <v-card-text class="flex-grow-1">
-                  <div class="text-caption text-uppercase font-weight-bold text-medium-emphasis mb-2">Evidencias clave</div>
-                  <div class="evidences-list">
-                    <div v-for="(ev, i) in dba.evidences.slice(0, 2)" :key="i" class="evidence-item mb-2 d-flex">
-                      <v-icon size="14" :color="dba.color" class="mr-2 mt-1">mdi-check-circle-outline</v-icon>
-                      <span class="text-body-2 text-medium-emphasis">{{ ev }}</span>
-                    </div>
-                  </div>
-                </v-card-text>
-
-                <v-divider class="opacity-10"></v-divider>
-
-                <v-card-actions class="pa-4">
-                  <v-btn
-                    block
-                    variant="flat"
-                    :color="dba.color"
-                    class="text-white font-weight-bold py-6 rounded-lg text-none"
-                    prepend-icon="mdi-rocket-launch"
-                    @click="openActivity(dba)"
-                  >
-                    Iniciar Actividades
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
+                <!-- Ruta dinámica para el video 1 del grado actual -->
+                <source :src="`/videos/grado${selectedGrade}_video1.mp4`" type="video/mp4" />
+                Tu navegador no soporta el formato de video.
+              </video>
+            </v-card>
+            <div class="text-center mt-3 font-weight-bold text-medium-emphasis">Parte 1: Conceptos Básicos</div>
+          </v-col>
           
-          <v-row v-else class="justify-center py-12">
-            <v-col cols="12" md="6" class="text-center">
-              <div class="empty-state-container">
-                <v-icon size="80" color="grey-lighten-2">mdi-math-log</v-icon>
-                <h3 class="text-h5 text-medium-emphasis mt-4">Contenido en desarrollo</h3>
-                <p class="text-body-1 text-grey">Pronto añadiremos más DBA para esta categoría.</p>
-              </div>
-            </v-col>
-          </v-row>
-        </v-window-item>
-      </v-window>
+          <!-- Video 2 -->
+          <v-col cols="12" md="6" class="pa-2 mt-4 mt-md-0">
+            <v-card elevation="6" class="rounded-xl overflow-hidden bg-black d-flex align-center justify-center" style="aspect-ratio: 16/9; border: 2px solid rgba(255,255,255,0.1);">
+              <video 
+                controls 
+                style="width: 100%; height: 100%; object-fit: cover;"
+              >
+                <!-- Ruta dinámica para el video 2 del grado actual -->
+                <source :src="`/videos/grado${selectedGrade}_video2.mp4`" type="video/mp4" />
+                Tu navegador no soporta el formato de video.
+              </video>
+            </v-card>
+            <div class="text-center mt-3 font-weight-bold text-medium-emphasis">Parte 2: Ejemplos Prácticos</div>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-container>
 
-    <v-snackbar v-model="snackbar.show" :color="snackbar.color" rounded="pill" elevation="10">
-      <div class="text-center font-weight-bold">{{ snackbar.text }}</div>
-    </v-snackbar>
+    <!-- Call to Action -->
+    <v-container class="px-8 pb-12 pt-4 text-center">
+      <v-card flat class="rounded-xl pa-12 glass-tabs border" elevation="0">
+        <v-icon size="80" :color="currentTheme.primary" class="mb-6 animate__animated animate__bounce animate__infinite">mdi-rocket-launch</v-icon>
+        <h2 class="text-h3 font-weight-black mb-4">¿Listo para jugar?</h2>
+        <p class="text-h6 text-medium-emphasis mb-8 max-width-600 mx-auto">
+          Pon a prueba lo que has aprendido en nuestras misiones interactivas. ¡Diviértete aprendiendo matemáticas!
+        </p>
+        <v-btn
+          size="x-large"
+          :color="currentTheme.primary"
+          class="text-white font-weight-bold px-12 py-6 rounded-pill text-none"
+          elevation="8"
+          @click="goToActivities"
+        >
+          <v-icon start size="28">mdi-play-circle</v-icon>
+          Ir a las Misiones
+        </v-btn>
+      </v-card>
+    </v-container>
   </v-container>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { dbasDatabase } from '../utils/DbaData'
 import { useDashboard } from '../composables/useDashboard'
 
 const router = useRouter()
 const { userName, selectedGrade, currentTheme } = useDashboard()
 
-const activeTab = ref('numerico')
-const snackbar = ref({ show: false, text: '', color: 'success' })
-
 const firstName = computed(() => userName.value.split(' ')[0])
 
-const thinkingTypes = [
-  { value: 'numerico', label: 'Numérico', icon: 'mdi-numeric-9-plus-box-outline' },
-  { value: 'geometrico', label: 'Geométrico', icon: 'mdi-shape-plus' },
-  { value: 'estadistico', label: 'Estadístico', icon: 'mdi-chart-box-outline' }
-]
-
-const filteredDbas = computed(() => {
-  return dbasDatabase.filter(
-    dba => dba.grade === selectedGrade.value && dba.type === activeTab.value
-  )
-})
-
-const openActivity = (dba) => {
-  router.push(`/app/grado${selectedGrade.value}/actividades?dba=${dba.dbaNumber}`)
+const goToActivities = () => {
+  router.push(`/app/grado${selectedGrade.value}/actividades`)
 }
 </script>
 

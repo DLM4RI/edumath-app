@@ -3,5 +3,5 @@
 </template>
 
 <script setup>
-// Dashboard content
+import DashboardGradeContent from '@/components/DashboardGradeContent.vue'
 </script>
