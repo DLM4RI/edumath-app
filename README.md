@@ -28,13 +28,14 @@ Para que trabajemos en equipo sin errores ni dolores de cabeza 🧠💥, sigue e
 # 1. Clonar el proyecto y entrar a la carpeta
 git clone https://github.com/TU_USUARIO/tu-repo.git
 cd tu-repo/frontend
+git pull origin main
 
 # 2. Instalar librerías necesarias (solo la primera vez)
 #    Si no tienes pnpm, usa npm install
-pnpm install
+npm install
 
 # 3. Correr el servidor de desarrollo
-pnpm run dev
+npm run dev
 ```
 
 ✅ Una vez ejecutado, abre el enlace que aparece en la terminal (normalmente `http://localhost:5173`) para ver tus cambios en tiempo real.
@@ -63,6 +64,11 @@ Toda su magia debe ocurrir dentro de la carpeta `frontend/src/`:
 - ✅ Mejorar la experiencia de usuario (UX)
 
 ---
+
+## COMO SUBIR VIDEOS?
+
+los videos deben ser subidos al drive que se les envio al priv
+con el nombre `gradoX_videoY.mp4` donde X es el grado y Y es el número del video.
 
 ## ❌ Qué no deben tocar (¡peligro!)
 

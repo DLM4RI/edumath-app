@@ -134,7 +134,7 @@ func main() {
 
 	// --- AUTO-APERTURA DEL NAVEGADOR ---
 	url := "http://localhost:8088"
-	
+
 	abrirNavegador := func() {
 		var cmd *exec.Cmd
 		if runtime.GOOS == "windows" {
