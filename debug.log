@@ -1,0 +1,10 @@
+2026/05/07 22:05:58 Iniciando aplicación OVA...
+2026/05/07 22:05:58 Base de datos lista en: /home/viperlightt/workspace/ova-matematicas/data/app.db
+2026/05/07 22:05:58 Servidor corriendo en http://localhost:8088
+2026/05/07 22:05:58 Descargando video faltante: introduccion.mp4
+2026/05/07 22:05:58 Descarga completada: introduccion.mp4
+2026/05/07 22:32:19 Iniciando aplicación OVA...
+2026/05/07 22:32:19 Base de datos lista en: /tmp/go-build2860790783/b001/exe/data/app.db
+2026/05/07 22:32:19 Servidor corriendo en http://localhost:8088
+2026/05/07 22:32:19 Descargando video faltante: introduccion.mp4
+2026/05/07 22:32:19 Error al iniciar servidor:listen tcp :8088: bind: address already in use
