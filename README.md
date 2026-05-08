@@ -181,7 +181,7 @@ git push origin main
 
 ## 🎯 ¡Manos a la obra!
 
-1.  Clona el repositorio
-2.  Instala las dependencias
-3.  Corre el servidor de desarrollo
+1.  Clona el repositorio.
+2.  Instala las dependencias.
+3.  Corre el servidor de desarrollo.
 4.  ¡Empieza a crear contenido matemático increíble!
