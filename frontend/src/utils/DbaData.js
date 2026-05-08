@@ -202,5 +202,72 @@ export const dbasDatabase = [
       { question: 'Si tus notas son 4.0, 4.0 y 4.0, ¿cuál es tu promedio?', options: ['3.0', '4.0', '5.0', '12.0'], answer: '4.0' },
       { question: '¿Qué medida de tendencia central es "el valor que más se repite"?', options: ['Media', 'Mediana', 'Moda', 'Rango'], answer: 'Moda' }
     ]
+  },
+  
+  // --- NUEVAS ACTIVIDADES AÑADIDAS (Alineadas a los DBA de Números) ---
+  {
+    id: 16, grade: 1, type: 'numerico', dbaNumber: 1,
+    statement: 'Resuelve problemas aditivos usando diferentes estrategias de conteo.',
+    evidences: ['Aplica la suma en contextos reales', 'Resuelve problemas sencillos'],
+    color: '#FF9F43',
+    exercises: [
+      { interactionType: 'input', question: 'Escribe el número mágico para completar la suma:<br><br><span style="font-size:1.5em">4 + 5 = <b>?</b></span>', answer: '9' },
+      { interactionType: 'input', question: 'Tienes 10 colores y pierdes 2.<br>Escribe en números cuántos te quedan:', answer: '8' },
+      { question: 'María compró 3 manzanas y su hermano le dio 3 más, ¿cuántas manzanas tiene?', options: ['5', '6', '7', '4'], answer: '6' },
+      { interactionType: 'input', question: 'Escribe el resultado de esta resta espacial:<br><br><span style="font-size:1.5em">6 - 3 = <b>?</b></span>', answer: '3' },
+      { question: 'Si sumas 5 + 4, el resultado es igual a sumar...', options: ['4 + 5', '5 + 5', '4 + 4', '1 + 2'], answer: '4 + 5' }
+    ]
+  },
+  {
+    id: 17, grade: 2, type: 'numerico', dbaNumber: 1,
+    statement: 'Estima el resultado de sumas, restas y repartos equitativos.',
+    evidences: ['Calcula resultados rápidamente', 'Entiende el reparto'],
+    color: '#FF9F43',
+    exercises: [
+      { interactionType: 'input', question: 'Completa la serie para la misión estelar:<br><br><span style="font-size:1.5em">10, 20, 30, <b>?</b>, 50</span>', answer: '40' },
+      { interactionType: 'input', question: 'Tienes 15 chocolates para repartir equitativamente entre 3 amigos.<br>Escribe cuántos le tocan a cada uno:', answer: '5' },
+      { question: '¿Qué operación matemática usamos para saber rápido cuánto es 3 veces 5?', options: ['Suma', 'Resta', 'Multiplicación', 'División'], answer: 'Multiplicación' },
+      { interactionType: 'input', question: 'Completa la ecuación de despegue:<br><br><span style="font-size:1.5em">20 ÷ 4 = <b>?</b></span>', answer: '5' },
+      { question: 'Si a 50 estrellas le restas 10, te quedan...', options: ['30', '40', '50', '60'], answer: '40' }
+    ]
+  },
+  {
+    id: 18, grade: 3, type: 'numerico', dbaNumber: 2,
+    statement: 'Interpreta, formula y resuelve problemas multiplicativos y aditivos de transformación.',
+    evidences: ['Resuelve problemas compuestos', 'Diferencia sumas y multiplicaciones'],
+    color: '#FF9F43',
+    exercises: [
+      { interactionType: 'input', question: 'Si un paquete trae 6 galletas y compras 4 paquetes...<br>¿Cuántas galletas tienes en total? (Escribe el número)', answer: '24' },
+      { interactionType: 'input', question: 'Descifra la incógnita:<br><br><span style="font-size:1.5em">15 + <b>?</b> = 25</span>', answer: '10' },
+      { question: 'Un granjero tiene 30 gallinas repartidas equitativamente en 5 corrales. ¿Cuántas hay en cada corral?', options: ['4', '5', '6', '7'], answer: '6' },
+      { question: '¿Cuál operación matemática es considerada la "inversa" (lo contrario) de la multiplicación?', options: ['Suma', 'Resta', 'División', 'Fracción'], answer: 'División' },
+      { interactionType: 'input', question: 'Cada astronauta necesita 2 trajes espaciales. Si hay 10 astronautas,<br>¿Cuántos trajes se necesitan?', answer: '20' }
+    ]
+  },
+  {
+    id: 19, grade: 4, type: 'numerico', dbaNumber: 1,
+    statement: 'Justifica estrategias para operar y hacer estimaciones con números fraccionarios y decimales.',
+    evidences: ['Realiza estimaciones de fracciones', 'Relaciona fracciones y decimales'],
+    color: '#FF9F43',
+    exercises: [
+      { interactionType: 'input', question: 'Escribe el número decimal que equivale exactamente a la fracción <b>1/4</b>:<br><br><i>Ejemplo de formato: 0.25</i>', answer: '0.25' },
+      { interactionType: 'input', question: 'Completa la suma decimal:<br><br><span style="font-size:1.5em">0.5 + 0.5 = <b>?</b></span><br><i>(Escribe 1 o 1.0)</i>', answer: '1' },
+      { question: '¿Qué fracción es mayor: la mitad de una pizza o un cuarto de ella?', options: ['1/4', 'Son iguales', '1/2', 'Depende'], answer: '1/2' },
+      { interactionType: 'input', question: 'Calcula mentalmente la suma aproximada redondeando los números:<br><br><span style="font-size:1.5em">3.1 + 4.8 ≈ <b>?</b></span>', answer: '8' },
+      { question: 'Al juntar 3/4 de litro de agua y 1/4 de litro más, ¿obtenemos un litro completo?', options: ['Sí, exactamente', 'No, falta', 'Es más de 1 litro', 'Se desborda'], answer: 'Sí, exactamente' }
+    ]
+  },
+  {
+    id: 20, grade: 5, type: 'numerico', dbaNumber: 1,
+    statement: 'Formula y resuelve problemas aditivos, multiplicativos y de potenciación.',
+    evidences: ['Aplica la potenciación en contextos', 'Resuelve problemas mixtos'],
+    color: '#FF9F43',
+    exercises: [
+      { interactionType: 'input', question: 'Si una célula se divide en 2 cada hora. En 3 horas, el total de células será de 2³.<br><br>Escribe el resultado numérico de <b>2³</b>:', answer: '8' },
+      { interactionType: 'input', question: 'Escribe la <b>base</b> de la potencia <span style="font-size:1.5em">4²</span>', answer: '4' },
+      { question: 'Si compras 3 dulces espaciales de $0.50 cada uno, ¿cuánto pagas en total?', options: ['$1.00', '$1.50', '$2.00', '$2.50'], answer: '$1.50' },
+      { interactionType: 'input', question: 'Calcula el área de un lote cuadrado que tiene 10 metros de lado utilizando potenciación (10²):<br><br><i>Escribe el número en m²</i>', answer: '100' },
+      { question: '¿Cuánto es resolver esta operación mixta: 2³ + 5?', options: ['11', '13', '15', '25'], answer: '13' }
+    ]
   }
 ];
