@@ -16,4 +16,23 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/img': {
+        target: 'http://localhost:8088',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/videos': {
+        target: 'http://localhost:8088',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/api': {
+        target: 'http://localhost:8088',
+        changeOrigin: true,
+        secure: false,
+      },
+    }
+  },
 })

@@ -122,7 +122,7 @@ const score = ref(0);
 const questions = [
   {
     text: "¿Cuántas estrellas hay en total?",
-    imagePath: "/imagenes/grado1_eval_1.png",
+    imagePath: "/img/grado1_eval_1.png",
     options: [
       { label: "6 estrellas", correct: false },
       { label: "7 estrellas", correct: true },
@@ -131,7 +131,7 @@ const questions = [
   },
   {
     text: "Si tienes 3 manzanas y compras otras 2, ¿cuántas tienes ahora?",
-    imagePath: "/imagenes/grado1_eval_2.png",
+    imagePath: "/img/grado1_eval_2.png",
     options: [
       { label: "5 manzanas", correct: true },
       { label: "4 manzanas", correct: false },
@@ -140,7 +140,7 @@ const questions = [
   },
   {
     text: "¿Cuál grupo tiene MÁS elementos?",
-    imagePath: "/imagenes/grado1_eval_3.png",
+    imagePath: "/img/grado1_eval_3.png",
     options: [
       { label: "El grupo de 4 carros", correct: false },
       { label: "El grupo de 6 carros", correct: true },
@@ -149,7 +149,7 @@ const questions = [
   },
   {
     text: "Había 8 pájaros en un árbol y se fueron 3 volando. ¿Cuántos quedaron?",
-    imagePath: "/imagenes/grado1_eval_4.png",
+    imagePath: "/img/grado1_eval_4.png",
     options: [
       { label: "11 pájaros", correct: false },
       { label: "5 pájaros", correct: true },
@@ -158,7 +158,7 @@ const questions = [
   },
   {
     text: "Para saber cuántos juguetes tienes si te regalan más, ¿qué operación debes usar?",
-    imagePath: "/imagenes/grado1_eval_5.png",
+    imagePath: "/img/grado1_eval_5.png",
     options: [
       { label: "Suma (+)", correct: true },
       { label: "Resta (-)", correct: false },

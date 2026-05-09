@@ -96,7 +96,13 @@
 
     <!-- BOTÓN DE NAVEGACIÓN -->
     <div class="mt-12 d-flex justify-end">
-      <v-btn size="x-large" color="primary" class="rounded-xl px-8" elevation="8" :to="`/app/grado/2/actividades`">
+      <v-btn
+        size="x-large"
+        color="primary"
+        class="rounded-xl px-8"
+        elevation="8"
+        :to="`/app/grado/2/actividades`"
+      >
         Ir a Practicar <v-icon end>mdi-chevron-right</v-icon>
       </v-btn>
     </div>

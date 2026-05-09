@@ -39,13 +39,18 @@
                 class="rounded-xl overflow-hidden border shadow-sm"
                 elevation="0"
               >
-                <div
-                  class="video-placeholder bg-grey-lighten-3 d-flex align-center justify-center"
-                  style="aspect-ratio: 16/9"
-                >
-                  <v-icon size="64" color="primary"
-                    >mdi-play-box-outline</v-icon
+                <div class="video-container bg-black">
+                  <video
+                    controls
+                    class="w-100 h-100"
+                    style="aspect-ratio: 16/9"
                   >
+                    <source
+                      :src="`/videos/grado1_video${n}.mp4`"
+                      type="video/mp4"
+                    />
+                    Tu navegador no soporta videos.
+                  </video>
                 </div>
                 <v-card-text class="pa-4">
                   <h3 class="text-h6 font-weight-bold mb-1">
@@ -76,120 +81,96 @@
             </div>
           </v-slide-y-transition>
 
-          <v-row>
-            <!-- TARJETA CONTEO -->
-            <v-col cols="12" md="4">
-              <v-hover v-slot="{ isHovering, props }">
-                <v-card
-                  v-bind="props"
-                  :elevation="isHovering ? 12 : 2"
-                  class="rounded-2xl transition-swing pa-4 text-center h-100"
-                  :class="{ 'on-hover': isHovering }"
-                  border
-                >
-                  <v-img
-                    src="/imagenes/grado1_conteo.png"
-                    height="180"
-                    class="rounded-xl mb-4 bg-blue-lighten-5"
-                    cover
-                  >
-                    <template v-slot:placeholder>
-                      <div
-                        class="d-flex align-center justify-center fill-height"
-                      >
-                        <v-icon size="48" color="blue-lighten-3"
-                          >mdi-image-outline</v-icon
-                        >
-                      </div>
-                    </template>
-                  </v-img>
-                  <h3 class="text-h5 font-weight-bold mb-2 blue--text">
-                    ¡A Contar!
-                  </h3>
-                  <p class="text-body-2 mb-4">
-                    Usa tus dedos o agrupa objetos para saber cuánto hay.
-                  </p>
-                  <v-chip color="blue" size="small" variant="tonal"
-                    >1, 2, 3, 4...</v-chip
-                  >
-                </v-card>
-              </v-hover>
+          <!-- SECCIÓN: APRENDAMOS (REDISEÑO) -->
+          <v-row class="mt-4">
+            <!-- TEMA 1: CONTEO -->
+            <v-col cols="12">
+              <v-card
+                class="pa-6 rounded-2xl border-none bg-blue-lighten-5 mb-6 overflow-hidden"
+                elevation="0"
+              >
+                <v-row align="center">
+                  <v-col cols="12" md="7">
+                    <h2 class="text-h4 font-weight-black mb-3 blue--text">
+                      1. ¡A Contar Números!
+                    </h2>
+                    <p class="text-h6 font-weight-regular mb-4">
+                      ¡Contar es fácil! Di los números en orden: 1, 2, 3... Cada
+                      vez es un número mayor.
+                    </p>
+                    <v-chip color="blue-darken-2" variant="flat"
+                      >Estrategia: Señalar y Nombrar</v-chip
+                    >
+                  </v-col>
+                  <v-col cols="12" md="5" class="d-flex justify-center">
+                    <v-img
+                      src="/img/grado1-imagen1-conteo.png"
+                      width="100%"
+                      class="rounded-xl"
+                    ></v-img>
+                  </v-col>
+                </v-row>
+              </v-card>
             </v-col>
 
-            <!-- TARJETA SUMA -->
-            <v-col cols="12" md="4">
-              <v-hover v-slot="{ isHovering, props }">
-                <v-card
-                  v-bind="props"
-                  :elevation="isHovering ? 12 : 2"
-                  class="rounded-2xl transition-swing pa-4 text-center h-100"
-                  border
-                >
-                  <v-img
-                    src="/imagenes/grado1_suma.png"
-                    height="180"
-                    class="rounded-xl mb-4 bg-green-lighten-5"
-                    cover
-                  >
-                    <template v-slot:placeholder>
-                      <div
-                        class="d-flex align-center justify-center fill-height"
-                      >
-                        <v-icon size="48" color="green-lighten-3"
-                          >mdi-image-outline</v-icon
-                        >
-                      </div>
-                    </template>
-                  </v-img>
-                  <h3 class="text-h5 font-weight-bold mb-2 green--text">
-                    La Suma (+)
-                  </h3>
-                  <p class="text-body-2 mb-4">
-                    ¡Cuando juntamos cosas, el grupo se hace más grande!
-                  </p>
-                  <v-chip color="green" size="small" variant="tonal"
-                    >Juntar y Ganar</v-chip
-                  >
-                </v-card>
-              </v-hover>
+            <!-- TEMA 2: SUMA -->
+            <v-col cols="12">
+              <v-card
+                class="pa-6 rounded-2xl border-none bg-green-lighten-5 mb-6 overflow-hidden"
+                elevation="0"
+              >
+                <v-row align="center">
+                  <v-col cols="12" md="7">
+                    <h2 class="text-h4 font-weight-black mb-3 green--text">
+                      2. La Suma (+) ¡Juntar es Ganar!
+                    </h2>
+                    <p class="text-h6 font-weight-regular mb-4">
+                      Sumar es juntar. Si tienes 2 pelotas y te dan 1 más,
+                      juntas todo. ¡Ahora tienes 3!
+                    </p>
+                    <v-chip color="green-darken-2" variant="flat"
+                      >Estrategia: Usar Dedos o Fichas</v-chip
+                    >
+                  </v-col>
+                  <v-col cols="12" md="5" class="d-flex justify-center">
+                    <v-img
+                      src="/img/grado1-imagen2-suma.png"
+                      width="100%"
+                      class="rounded-xl"
+                    ></v-img>
+                  </v-col>
+                </v-row>
+              </v-card>
             </v-col>
 
-            <!-- TARJETA RESTA -->
-            <v-col cols="12" md="4">
-              <v-hover v-slot="{ isHovering, props }">
-                <v-card
-                  v-bind="props"
-                  :elevation="isHovering ? 12 : 2"
-                  class="rounded-2xl transition-swing pa-4 text-center h-100"
-                  border
-                >
-                  <v-img
-                    src="/imagenes/grado1_resta.png"
-                    height="180"
-                    class="rounded-xl mb-4 bg-red-lighten-5"
-                    cover
-                  >
-                    <template v-slot:placeholder>
-                      <div
-                        class="d-flex align-center justify-center fill-height"
-                      >
-                        <v-icon size="48" color="red-lighten-3"
-                          >mdi-image-outline</v-icon
-                        >
-                      </div>
-                    </template>
-                  </v-img>
-                  <h3 class="text-h5 font-weight-bold mb-2 red--text">
-                    La Resta (-)
-                  </h3>
-                  <p class="text-body-2 mb-4">
-                    ¡Cuando quitamos cosas, buscamos lo que queda!
-                  </p>
-                  <v-chip color="red" size="small" variant="tonal"
-                    >Quitar y Buscar</v-chip
-                  >
-                </v-card>
-              </v-hover>
+            <!-- TEMA 3: RESTA -->
+            <v-col cols="12">
+              <v-card
+                class="pa-6 rounded-2xl border-none bg-red-lighten-5 mb-4 overflow-hidden"
+                elevation="0"
+              >
+                <v-row align="center">
+                  <v-col cols="12" md="7">
+                    <h2 class="text-h4 font-weight-black mb-3 red--text">
+                      3. La Resta (-) ¡Quitar y Ver!
+                    </h2>
+                    <p class="text-h6 font-weight-regular mb-4">
+                      Restar es cuando algo se va. Si tienes 5 galletas y te
+                      comes 2, ¿cuántas te quedan en el plato?
+                    </p>
+                    <v-chip color="red-darken-2" variant="flat"
+                      >Estrategia: Tachado Visual</v-chip
+                    >
+                  </v-col>
+                  <v-col cols="12" md="5" class="d-flex justify-center">
+                    <v-img
+                      src="/img/grado1-imagen3-resta.png"
+                      width="100%"
+                      class="rounded-xl"
+                    ></v-img>
+                  </v-col>
+                </v-row>
+              </v-card>
             </v-col>
           </v-row>
 
@@ -229,7 +210,7 @@
                   Tienes 4 sándwiches y traes 2 más. ¿Cuántos hay?
                 </p>
                 <v-img
-                  src="grado1-imagen1-resuelta-1.png"
+                  src="/img/grado1-imagen1-resuelta-1.png"
                   class="rounded-xl mb-4"
                   height="200"
                   cover
@@ -255,7 +236,7 @@
                   Había 5 globos y se volaron 2. ¿Cuántos quedaron?
                 </p>
                 <v-img
-                  src="grado1-imagen2-resuelta-2.png"
+                  src="/img/grado1-imagen2-resuelta-2.png"
                   class="rounded-xl mb-4"
                   height="200"
                   cover
@@ -277,7 +258,7 @@
         color="primary"
         class="rounded-xl px-8"
         elevation="8"
-        :to="`/app/grado1/actividades`"
+        :to="`/app/grado/1/actividades`"
       >
         Ir a Actividades <v-icon end>mdi-chevron-right</v-icon>
       </v-btn>
@@ -294,5 +275,11 @@ const tab = ref("videos");
 .glass-card {
   background: rgba(255, 255, 255, 0.8) !important;
   backdrop-filter: blur(10px);
+}
+.video-container {
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

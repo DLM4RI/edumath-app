@@ -14,7 +14,7 @@
     <!-- AREA DE JUEGO -->
     <div
       class="game-container pa-6 rounded-2xl mb-6 border-sm border-dashed border-orange-darken-1"
-      style="background-image: url('/imagenes/grado1_fruteria_bg.png'); background-size: cover; background-position: center;"
+      style="background-image: url('/img/grado1_fruteria_bg.png'); background-size: cover; background-position: center;"
     >
       <div class="d-flex justify-space-between align-center mb-6">
         <div class="basket-display text-center">

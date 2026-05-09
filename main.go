@@ -19,9 +19,12 @@ import (
 )
 
 func init() {
-	// Asegurar MIME types correctos en Windows (evita pantalla blanca por type="module")
+	// Asegurar MIME types correctos (evita problemas de reproducción y visualización)
 	mime.AddExtensionType(".js", "application/javascript")
 	mime.AddExtensionType(".css", "text/css")
+	mime.AddExtensionType(".mp4", "video/mp4")
+	mime.AddExtensionType(".png", "image/png")
+	mime.AddExtensionType(".jpg", "image/jpeg")
 }
 
 //go:embed frontend/dist
@@ -61,35 +64,15 @@ func main() {
 	exePath, _ := os.Executable()
 	baseDir := filepath.Dir(exePath)
 	videoDir := filepath.Join(baseDir, "videos")
-	imageDir := filepath.Join(baseDir, "imagenes")
+	imageDir := filepath.Join(baseDir, "img")
 
-	// Crear carpetas si no existen
-	if _, err := os.Stat(videoDir); os.IsNotExist(err) {
-		os.Mkdir(videoDir, 0755)
-	}
-	if _, err := os.Stat(imageDir); os.IsNotExist(err) {
-		os.Mkdir(imageDir, 0755)
-	}
+	// Crear carpetas si no existen al lado del .exe
+	os.MkdirAll(videoDir, 0755)
+	os.MkdirAll(imageDir, 0755)
 
-	// Descarga asíncrona de videos (para no bloquear el inicio de la app)
-	go func() {
-		// Ejemplo de video: añade aquí todos los que necesites
-		videoDest := filepath.Join(videoDir, "introduccion.mp4")
-		if _, err := os.Stat(videoDest); os.IsNotExist(err) {
-			log.Println("Descargando video faltante: introduccion.mp4")
-			urlVideo := "https://tu-servidor.com/videos/introduccion.mp4"
-			err := descargarVideo(urlVideo, videoDest)
-			if err != nil {
-				log.Println("Error descargando video:", err)
-			} else {
-				log.Println("Descarga completada: introduccion.mp4")
-			}
-		}
-	}()
-
-	// Servidores de archivos para carpetas externas
+	// Servidores de archivos simples
 	http.Handle("/videos/", http.StripPrefix("/videos/", http.FileServer(http.Dir(videoDir))))
-	http.Handle("/imagenes/", http.StripPrefix("/imagenes/", http.FileServer(http.Dir(imageDir))))
+	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir(imageDir))))
 
 	// --- SERVIR FRONTEND EMBEBIDO ---
 	distFS, err := fs.Sub(frontendFiles, "frontend/dist")
