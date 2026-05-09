@@ -1,7 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../pages/index.vue'
 import DashboardLayout from '../layouts/dashboard.vue'
-import DashboardHome from '../pages/dashboard.vue'
+
+// Importar estáticamente las páginas principales para evitar errores de carga en el ejecutable
+import GradoIndex from '../pages/grado[id]/index.vue'
+import GradoActividades from '../pages/grado[id]/actividades.vue'
+import GradoEvaluacion from '../pages/grado[id]/evaluacion.vue'
+import GradoRetroalimentacion from '../pages/grado[id]/retroalimentacion.vue'
 
 const routes = [
   {
@@ -14,33 +19,27 @@ const routes = [
     component: DashboardLayout,
     children: [
       {
-        path: 'dashboard',
-        name: 'dashboard',
-        component: DashboardHome
-      },
-      {
-        path: 'grado:id',
+        path: 'grado/:id',
         name: 'grado-root',
-        component: () => import('../pages/grado[id]/index.vue')
+        component: GradoIndex
       },
       {
-        path: 'grado:id/actividades',
+        path: 'grado/:id/actividades',
         name: 'grado-actividades',
-        component: () => import('../pages/grado[id]/actividades.vue')
+        component: GradoActividades
       },
       {
-        path: 'grado:id/evaluacion',
+        path: 'grado/:id/evaluacion',
         name: 'grado-evaluacion',
-        component: () => import('../pages/grado[id]/evaluacion.vue')
+        component: GradoEvaluacion
       },
       {
-        path: 'grado:id/retroalimentacion',
+        path: 'grado/:id/retroalimentacion',
         name: 'grado-retroalimentacion',
-        component: () => import('../pages/grado[id]/retroalimentacion.vue')
+        component: GradoRetroalimentacion
       }
     ]
   },
-  // Redirección por si acaso
   {
     path: '/:pathMatch(.*)*',
     redirect: '/'
