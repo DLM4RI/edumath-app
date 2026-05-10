@@ -1,35 +1,119 @@
 <template>
-  <v-card class="pa-10 rounded-3xl glass-card text-center" border="1">
-    <v-avatar color="primary-lighten-4" size="100" class="mb-6">
-      <v-icon color="primary" size="50">mdi-puzzle</v-icon>
-    </v-avatar>
-    
-    <!-- TÍTULO DE LA ACTIVIDAD -->
-    <h2 class="text-h3 font-weight-black mb-4">{t} - Grado 1</h2>
-    
-    <!-- INSTRUCCIONES: Explica aquí qué debe hacer el estudiante -->
-    <p class="text-h6 text-medium-emphasis mb-8">
-      ¡Bienvenido al reto de pensamiento geometrico! Sigue las instrucciones para ganar puntos.
-    </p>
-
-    <!-- ÁREA DE JUEGO / EJERCICIOS -->
-    <div class="game-area mb-10 py-10 bg-grey-lighten-4 rounded-xl">
-      <p class="text-h5">Espacio para la lógica de la actividad (Gráficos, Preguntas, Arrastrar y Soltar, etc.)</p>
+  <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
+    <div class="text-center mb-6">
+      <v-chip color="green-darken-2" variant="flat" class="mb-4 px-6 font-weight-black">
+        🏙️ LA CIUDAD DE LAS FORMAS
+      </v-chip>
+      <h2 class="text-h4 font-weight-black mb-2">¡Misión de Rescate!</h2>
+      <p class="text-h6 text-medium-emphasis">
+        Toca todos los <strong>{{ currentTargetShape.name }}s</strong> para salvar la ciudad.
+      </p>
     </div>
 
-    <!-- BOTÓN DE FINALIZACIÓN -->
-    <!-- INSTRUCCIÓN: Llama a $emit('completada') cuando el estudiante resuelva el reto -->
-    <v-btn color="primary" size="x-large" class="rounded-xl px-12" @click="$emit('completada')">
-      ¡Misión Completada!
-    </v-btn>
+    <!-- AREA DE JUEGO -->
+    <v-card variant="flat" class="pa-6 rounded-2xl bg-green-lighten-5 border-sm border-green-lighten-3">
+      <v-row justify="center">
+        <v-col
+          v-for="(shape, index) in shapes"
+          :key="index"
+          cols="4"
+          sm="3"
+          class="d-flex justify-center"
+        >
+          <v-btn
+            icon
+            size="x-large"
+            :color="shape.found ? 'success' : 'white'"
+            elevation="2"
+            class="shape-btn"
+            :class="{ 'found-animation': shape.found }"
+            @click="checkShape(index)"
+            :disabled="shape.found"
+          >
+            <v-icon :size="40" :color="shape.found ? 'white' : 'green-darken-1'">
+              {{ shape.icon }}
+            </v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-card>
+
+    <!-- PROGRESO -->
+    <div class="mt-8 text-center">
+      <v-chip color="primary" variant="tonal" size="large" class="font-weight-black">
+        Encontrados: {{ foundCount }} / {{ totalTargetCount }}
+      </v-chip>
+    </div>
+
+    <!-- FEEDBACK -->
+    <v-fade-transition>
+      <div v-if="isComplete" class="text-center mt-10">
+        <v-alert
+          type="success"
+          variant="flat"
+          class="rounded-xl mb-6 py-6"
+          icon="mdi-check-decagram"
+        >
+          <div class="text-h5 font-weight-black">¡Eres un experto en formas!</div>
+          <div class="text-body-1">Has encontrado todos los {{ currentTargetShape.name }}s.</div>
+        </v-alert>
+
+        <v-btn
+          color="success"
+          size="x-large"
+          class="rounded-xl px-12 font-weight-black"
+          elevation="8"
+          @click="$emit('completada')"
+        >
+          ¡Siguiente Misión! <v-icon end>mdi-chevron-right</v-icon>
+        </v-btn>
+      </div>
+    </v-fade-transition>
   </v-card>
 </template>
 
 <script setup>
-// Define el evento para avisar a la app que la actividad terminó
-defineEmits(['completada'])
+import { ref, computed } from "vue";
 
-// AQUÍ PUEDES AÑADIR TU LÓGICA DE JUEGO (Refs, Validaciones, etc.)
+defineEmits(["completada"]);
+
+const shapeTypes = [
+  { name: "Círculo", icon: "mdi-circle" },
+  { name: "Cuadrado", icon: "mdi-square" },
+  { name: "Triángulo", icon: "mdi-triangle" },
+];
+
+const currentTargetShape = ref(shapeTypes[Math.floor(Math.random() * shapeTypes.length)]);
+
+// Generar una mezcla de formas
+const shapes = ref([
+  { type: "Círculo", icon: "mdi-circle", found: false },
+  { type: "Cuadrado", icon: "mdi-square", found: false },
+  { type: "Triángulo", icon: "mdi-triangle", found: false },
+  { type: "Círculo", icon: "mdi-circle", found: false },
+  { type: "Cuadrado", icon: "mdi-square", found: false },
+  { type: "Triángulo", icon: "mdi-triangle", found: false },
+  { type: "Círculo", icon: "mdi-circle", found: false },
+  { type: "Cuadrado", icon: "mdi-square", found: false },
+  { type: "Triángulo", icon: "mdi-triangle", found: false },
+].sort(() => Math.random() - 0.5));
+
+const totalTargetCount = computed(() => shapes.value.filter(s => s.type === currentTargetShape.value.name).length);
+const foundCount = computed(() => shapes.value.filter(s => s.type === currentTargetShape.value.name && s.found).length);
+const isComplete = computed(() => foundCount.value === totalTargetCount.value && totalTargetCount.value > 0);
+
+const checkShape = (index) => {
+  if (shapes.value[index].type === currentTargetShape.value.name) {
+    shapes.value[index].found = true;
+  } else {
+    // Animación de error
+    const btn = document.querySelectorAll('.shape-btn')[index];
+    if (btn) {
+      btn.classList.add('shake-animation');
+      setTimeout(() => btn.classList.remove('shake-animation'), 500);
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -37,7 +121,25 @@ defineEmits(['completada'])
   background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(10px);
 }
-.game-area {
-  border: 2px dashed #ccc;
+.shape-btn {
+  transition: all 0.3s ease;
+}
+.found-animation {
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.shake-animation {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
 </style>

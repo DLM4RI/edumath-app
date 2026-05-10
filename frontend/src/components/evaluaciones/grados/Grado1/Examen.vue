@@ -1,13 +1,28 @@
 <template>
-  <v-card class="pa-8 rounded-3xl glass-card overflow-hidden" border="1">
-    <div class="text-center mb-8">
-      <v-avatar color="primary-lighten-4" size="90" class="mb-4">
-        <v-icon color="primary" size="45">mdi-school</v-icon>
+  <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
+    <div class="text-center mb-6">
+      <v-avatar color="primary-lighten-4" size="70" class="mb-4">
+        <v-icon color="primary" size="35">mdi-school</v-icon>
       </v-avatar>
       <h2 class="text-h4 font-weight-black mb-2">Desafío Final: Grado 1°</h2>
       <p class="text-body-1 text-medium-emphasis">
-        Demuestra lo que has aprendido sobre los números y las operaciones.
+        ¡Demuestra lo que has aprendido en tu aventura matemática!
       </p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="mb-8" v-if="currentStep < questions.length">
+      <div class="d-flex justify-space-between mb-2">
+        <span class="text-caption font-weight-bold text-primary">Progreso de la misión</span>
+        <span class="text-caption font-weight-bold text-primary">{{ Math.round((currentStep / questions.length) * 100) }}%</span>
+      </div>
+      <v-progress-linear
+        :model-value="(currentStep / questions.length) * 100"
+        color="primary"
+        height="12"
+        rounded
+        striped
+      ></v-progress-linear>
     </div>
 
     <v-window v-model="currentStep">
@@ -17,11 +32,12 @@
         :key="index"
         :value="index"
       >
-        <v-card variant="flat" class="pa-4 bg-transparent">
+        <v-card variant="flat" class="pa-2 pa-md-4 bg-transparent">
           <div class="d-flex align-center mb-4">
-            <v-chip color="primary" variant="flat" size="small" class="mr-2"
-              >Pregunta {{ index + 1 }} / {{ questions.length }}</v-chip
+            <v-chip color="secondary" variant="flat" size="small" class="mr-2"
+              >Pregunta {{ index + 1 }} de {{ questions.length }}</v-chip
             >
+            <v-chip v-if="q.category" color="primary" variant="tonal" size="small">{{ q.category }}</v-chip>
           </div>
 
           <h3 class="text-h5 font-weight-bold mb-6">{{ q.text }}</h3>
@@ -41,17 +57,20 @@
           </v-img>
 
           <v-radio-group v-model="answers[index]" class="custom-radio-group">
-            <v-radio
-              v-for="(option, optIdx) in q.options"
-              :key="optIdx"
-              :label="option.label"
-              :value="optIdx"
-              class="mb-3 pa-3 rounded-xl border"
-              :class="{
-                'bg-primary-lighten-5 border-primary':
-                  answers[index] === optIdx,
-              }"
-            ></v-radio>
+            <v-row>
+              <v-col v-for="(option, optIdx) in q.options" :key="optIdx" cols="12" md="6">
+                <v-radio
+                  :label="option.label"
+                  :value="optIdx"
+                  class="mb-2 pa-4 rounded-xl border transition-all"
+                  :class="{
+                    'bg-primary-lighten-5 border-primary elevation-2':
+                      answers[index] === optIdx,
+                    'bg-white': answers[index] !== optIdx
+                  }"
+                ></v-radio>
+              </v-col>
+            </v-row>
           </v-radio-group>
         </v-card>
       </v-window-item>
@@ -59,27 +78,36 @@
       <!-- RESULTADOS -->
       <v-window-item :value="questions.length">
         <div class="text-center pa-6">
-          <v-icon
-            :color="score >= 3 ? 'success' : 'error'"
-            size="100"
-            class="mb-4"
-          >
-            {{ score >= 3 ? "mdi-trophy" : "mdi-emoticon-sad" }}
-          </v-icon>
-          <h3 class="text-h4 font-weight-black mb-2">
-            {{ score >= 3 ? "¡Felicidades!" : "¡Sigue practicando!" }}
+          <v-avatar :color="finalGrade >= 3 ? 'success' : 'warning'" size="120" class="mb-6 elevation-10">
+            <v-icon size="60" color="white">
+              {{ finalGrade >= 3 ? "mdi-trophy" : "mdi-star-half" }}
+            </v-icon>
+          </v-avatar>
+          
+          <h3 class="text-h3 font-weight-black mb-2">
+            {{ finalGrade >= 3 ? "¡Excelente Trabajo!" : "¡Buen intento!" }}
           </h3>
-          <p class="text-h6 mb-6">
-            Tu puntaje fue de {{ score }} / {{ questions.length }}
+          
+          <div class="grade-display my-6">
+            <span class="text-h6 text-medium-emphasis d-block mb-1">Tu calificación final es:</span>
+            <div class="text-h1 font-weight-black" :class="finalGrade >= 3 ? 'text-success' : 'text-warning'">
+              {{ finalGrade.toFixed(1) }}
+            </div>
+            <span class="text-body-1 font-weight-bold">Sobre 5.0</span>
+          </div>
+
+          <p class="text-h6 mb-8 text-medium-emphasis">
+            Respondiste correctamente {{ score }} de {{ questions.length }} preguntas.
           </p>
 
           <v-btn
             color="primary"
             size="x-large"
-            class="rounded-xl px-12"
+            class="rounded-xl px-12 font-weight-black"
+            elevation="8"
             @click="$emit('finalizado')"
           >
-            Finalizar Evaluación
+            Ver Retroalimentación <v-icon end>mdi-arrow-right</v-icon>
           </v-btn>
         </div>
       </v-window-item>
@@ -92,77 +120,238 @@
     >
       <v-btn
         variant="text"
+        size="large"
+        rounded="xl"
         :disabled="currentStep === 0"
         @click="currentStep--"
+        prepend-icon="mdi-chevron-left"
       >
         Anterior
       </v-btn>
 
       <v-btn
         color="primary"
-        size="large"
-        class="rounded-xl px-8"
+        size="x-large"
+        class="rounded-xl px-10 font-weight-bold"
         :disabled="answers[currentStep] === null"
         @click="nextStep"
+        elevation="4"
       >
-        {{ currentStep === questions.length - 1 ? "Calificar" : "Siguiente" }}
+        {{ currentStep === questions.length - 1 ? "Finalizar y Calificar" : "Siguiente" }}
+        <v-icon end v-if="currentStep < questions.length - 1">mdi-chevron-right</v-icon>
       </v-btn>
     </div>
   </v-card>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const emit = defineEmits(["finalizado"]);
 
 const currentStep = ref(0);
 const score = ref(0);
+const finalGrade = ref(0);
 
 const questions = [
   {
-    text: "¿Cuántas estrellas hay en total?",
-    imagePath: "/img/grado1_eval_1.png",
+    category: "Conteo",
+    text: "¿Cuántas estrellas ves en el cielo si hay 7 brillantes?",
     options: [
-      { label: "6 estrellas", correct: false },
+      { label: "5 estrellas", correct: false },
       { label: "7 estrellas", correct: true },
       { label: "8 estrellas", correct: false },
+      { label: "6 estrellas", correct: false },
     ],
   },
   {
-    text: "Si tienes 3 manzanas y compras otras 2, ¿cuántas tienes ahora?",
-    imagePath: "/img/grado1_eval_2.png",
+    category: "Números",
+    text: "¿Qué número sigue después del 19?",
     options: [
-      { label: "5 manzanas", correct: true },
-      { label: "4 manzanas", correct: false },
-      { label: "6 manzanas", correct: false },
+      { label: "18", correct: false },
+      { label: "20", correct: true },
+      { label: "21", correct: false },
+      { label: "10", correct: false },
     ],
   },
   {
-    text: "¿Cuál grupo tiene MÁS elementos?",
-    imagePath: "/img/grado1_eval_3.png",
+    category: "Números",
+    text: "¿Qué número está antes del 11?",
     options: [
-      { label: "El grupo de 4 carros", correct: false },
-      { label: "El grupo de 6 carros", correct: true },
-      { label: "Son iguales", correct: false },
+      { label: "12", correct: false },
+      { label: "10", correct: true },
+      { label: "9", correct: false },
+      { label: "13", correct: false },
     ],
   },
   {
-    text: "Había 8 pájaros en un árbol y se fueron 3 volando. ¿Cuántos quedaron?",
-    imagePath: "/img/grado1_eval_4.png",
+    category: "Comparación",
+    text: "¿Cuál número es el más grande (MAYOR)?",
     options: [
-      { label: "11 pájaros", correct: false },
-      { label: "5 pájaros", correct: true },
-      { label: "4 pájaros", correct: false },
+      { label: "5", correct: false },
+      { label: "12", correct: false },
+      { label: "8", correct: false },
+      { label: "15", correct: true },
     ],
   },
   {
-    text: "Para saber cuántos juguetes tienes si te regalan más, ¿qué operación debes usar?",
-    imagePath: "/img/grado1_eval_5.png",
+    category: "Comparación",
+    text: "¿Cuál número es el más pequeño (MENOR)?",
     options: [
-      { label: "Suma (+)", correct: true },
-      { label: "Resta (-)", correct: false },
-      { label: "Ninguna", correct: false },
+      { label: "20", correct: false },
+      { label: "15", correct: false },
+      { label: "10", correct: true },
+      { label: "25", correct: false },
+    ],
+  },
+  {
+    category: "Suma",
+    text: "¿Cuánto es 3 + 5?",
+    options: [
+      { label: "7", correct: false },
+      { label: "8", correct: true },
+      { label: "9", correct: false },
+      { label: "6", correct: false },
+    ],
+  },
+  {
+    category: "Suma",
+    text: "Si tienes 10 dulces y te regalan 4 más, ¿cuántos tienes ahora?",
+    options: [
+      { label: "14 dulces", correct: true },
+      { label: "12 dulces", correct: false },
+      { label: "6 dulces", correct: false },
+      { label: "16 dulces", correct: false },
+    ],
+  },
+  {
+    category: "Resta",
+    text: "¿Cuánto es 9 - 3?",
+    options: [
+      { label: "5", correct: false },
+      { label: "6", correct: true },
+      { label: "4", correct: false },
+      { label: "7", correct: false },
+    ],
+  },
+  {
+    category: "Resta",
+    text: "Tenías 8 globos y se explotaron 2. ¿Cuántos te quedan?",
+    options: [
+      { label: "10 globos", correct: false },
+      { label: "6 globos", correct: true },
+      { label: "5 globos", correct: false },
+      { label: "8 globos", correct: false },
+    ],
+  },
+  {
+    category: "Conjuntos",
+    text: "¿Qué es un CONJUNTO?",
+    options: [
+      { label: "Un solo objeto", correct: false },
+      { label: "Un grupo de objetos con algo en común", correct: true },
+      { label: "Un número grande", correct: false },
+      { label: "Una línea recta", correct: false },
+    ],
+  },
+  {
+    category: "Conjuntos",
+    text: "Si tenemos un conjunto de FRUTAS, ¿cuál de estos NO pertenece?",
+    options: [
+      { label: "Manzana", correct: false },
+      { label: "Banano", correct: false },
+      { label: "Un carro", correct: true },
+      { label: "Pera", correct: false },
+    ],
+  },
+  {
+    category: "Conjuntos",
+    text: "¿Cuántos elementos hay en un conjunto que tiene: un lápiz, un borrador y un cuaderno?",
+    options: [
+      { label: "2 elementos", correct: false },
+      { label: "3 elementos", correct: true },
+      { label: "4 elementos", correct: false },
+      { label: "1 elemento", correct: false },
+    ],
+  },
+  {
+    category: "Secuencias",
+    text: "¿Qué número falta en esta serie: 2, 4, 6, __, 10?",
+    options: [
+      { label: "7", correct: false },
+      { label: "8", correct: true },
+      { label: "9", correct: false },
+      { label: "5", correct: false },
+    ],
+  },
+  {
+    category: "Geometría",
+    text: "¿Cuál de estas figuras tiene 4 lados iguales?",
+    options: [
+      { label: "Círculo", correct: false },
+      { label: "Triángulo", correct: false },
+      { label: "Cuadrado", correct: true },
+      { label: "Rectángulo", correct: false },
+    ],
+  },
+  {
+    category: "Geometría",
+    text: "¿Cuántos lados tiene un TRIÁNGULO?",
+    options: [
+      { label: "4 lados", correct: false },
+      { label: "2 lados", correct: false },
+      { label: "3 lados", correct: true },
+      { label: "5 lados", correct: false },
+    ],
+  },
+  {
+    category: "Unidades y Decenas",
+    text: "¿Cuántas unidades forman una DECENA?",
+    options: [
+      { label: "5 unidades", correct: false },
+      { label: "10 unidades", correct: true },
+      { label: "20 unidades", correct: false },
+      { label: "1 unidad", correct: false },
+    ],
+  },
+  {
+    category: "Unidades y Decenas",
+    text: "El número 13 está formado por:",
+    options: [
+      { label: "1 decena y 3 unidades", correct: true },
+      { label: "3 decenas y 1 unidad", correct: false },
+      { label: "10 decenas", correct: false },
+      { label: "13 decenas", correct: false },
+    ],
+  },
+  {
+    category: "Medición",
+    text: "¿Cuál objeto es el más LARGO?",
+    options: [
+      { label: "Un lápiz nuevo", correct: true },
+      { label: "Un borrador pequeño", correct: false },
+      { label: "Un clip", correct: false },
+      { label: "Una uña", correct: false },
+    ],
+  },
+  {
+    category: "Medición",
+    text: "¿Cuál animal es el más PESADO?",
+    options: [
+      { label: "Una hormiga", correct: false },
+      { label: "Un elefante", correct: true },
+      { label: "Un pollito", correct: false },
+      { label: "Un ratón", correct: false },
+    ],
+  },
+  {
+    category: "Espacial",
+    text: "¿Dónde están las nubes?",
+    options: [
+      { label: "Abajo en el suelo", correct: false },
+      { label: "Arriba en el cielo", correct: true },
+      { label: "Adentro de la casa", correct: false },
+      { label: "Detrás de la puerta", correct: false },
     ],
   },
 ];
@@ -179,11 +368,13 @@ const nextStep = () => {
 const calculateScore = () => {
   let total = 0;
   answers.value.forEach((answer, index) => {
-    if (questions[index].options[answer].correct) {
+    if (answer !== null && questions[index].options[answer].correct) {
       total++;
     }
   });
   score.value = total;
+  // Calificación de 0.0 a 5.0
+  finalGrade.value = (total / questions.length) * 5;
 };
 </script>
 
@@ -192,7 +383,17 @@ const calculateScore = () => {
   background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(10px);
 }
+.transition-all {
+  transition: all 0.3s ease;
+}
 .custom-radio-group :deep(.v-selection-control) {
   width: 100%;
+}
+.grade-display {
+  background: rgba(var(--v-theme-primary), 0.05);
+  padding: 2rem;
+  border-radius: 2rem;
+  display: inline-block;
+  min-width: 250px;
 }
 </style>

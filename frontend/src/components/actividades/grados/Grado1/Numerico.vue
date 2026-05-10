@@ -1,155 +1,157 @@
 <template>
-  <v-card class="pa-8 rounded-3xl glass-card overflow-hidden" border="1">
+  <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
-      <v-avatar color="orange-lighten-4" size="80" class="mb-4">
-        <v-icon color="orange-darken-3" size="40">mdi-basket</v-icon>
-      </v-avatar>
-      <h2 class="text-h4 font-weight-black mb-2">La Frutería Matemática</h2>
-      <p class="text-body-1 text-medium-emphasis">
-        ¡Ayuda a llenar el pedido! El cliente necesita
-        <strong>{{ targetScore }}</strong> manzanas.
+      <v-chip color="orange-darken-2" variant="flat" class="mb-4 px-6 font-weight-black">
+        🎉 EL FESTIVAL DE LOS CONJUNTOS
+      </v-chip>
+      <h2 class="text-h4 font-weight-black mb-2">{{ currentMission.title }}</h2>
+      <p class="text-h6 text-medium-emphasis">
+        {{ currentMission.instruction }} <strong>{{ currentMission.target }} {{ currentMission.itemName }}</strong>.
       </p>
     </div>
 
-    <!-- AREA DE JUEGO -->
-    <div
-      class="game-container pa-6 rounded-2xl mb-6 border-sm border-dashed border-orange-darken-1"
-      style="background-image: url('/img/grado1_fruteria_bg.png'); background-size: cover; background-position: center;"
-    >
-      <div class="d-flex justify-space-between align-center mb-6">
-        <div class="basket-display text-center">
-          <div class="text-h6 mb-2">Tu Canasta</div>
-          <v-badge
-            :content="currentScore"
-            color="success"
-            overlap
-            offset-x="10"
-            offset-y="10"
-          >
-            <v-icon size="100" color="brown-darken-2">mdi-basket-fill</v-icon>
-          </v-badge>
-        </div>
-
-        <v-icon size="40" color="orange-darken-2">mdi-arrow-left-bold</v-icon>
-
-        <div class="shelf text-center">
-          <div class="text-h6 mb-2">Estante de Manzanas</div>
-          <div
-            class="d-flex flex-wrap justify-center gap-2"
-            style="max-width: 200px"
-          >
+    <!-- ZONA DE JUEGO -->
+    <v-row>
+      <!-- Fuente de Objetos -->
+      <v-col cols="12" md="6">
+        <v-card variant="outlined" class="pa-4 rounded-2xl bg-grey-lighten-4 border-dashed h-100">
+          <div class="text-subtitle-2 font-weight-black mb-4 text-center">Toca para atrapar:</div>
+          <div class="d-flex flex-wrap justify-center gap-3">
             <v-btn
-              v-for="i in 10"
-              :key="i"
+              v-for="(item, index) in sourceItems"
+              :key="index"
               icon
-              variant="flat"
+              size="x-large"
               color="white"
-              class="elevation-2"
-              :disabled="currentScore >= targetScore || correct"
-              @click="addFruit"
+              elevation="2"
+              class="emoji-btn"
+              @click="moveItem(index)"
+              :disabled="isComplete"
             >
-              <v-icon color="red">mdi-apple</v-icon>
+              <span class="text-h4">{{ item }}</span>
             </v-btn>
           </div>
-        </div>
-      </div>
+        </v-card>
+      </v-col>
 
-      <div class="text-center">
-        <v-chip
-          v-if="currentScore > 0"
-          color="primary"
-          variant="flat"
-          class="font-weight-bold"
-        >
-          Llevas: {{ currentScore }} / {{ targetScore }}
-        </v-chip>
-      </div>
-    </div>
+      <!-- El Conjunto (Destino) -->
+      <v-col cols="12" md="6">
+        <v-card variant="flat" class="pa-4 rounded-2xl bg-orange-lighten-5 border-sm border-orange-lighten-3 h-100 d-flex flex-column">
+          <div class="text-subtitle-2 font-weight-black mb-4 text-center">Tu Conjunto:</div>
+          <div class="flex-grow-1 d-flex flex-wrap justify-center align-center gap-3 content-area">
+            <v-scale-transition group>
+              <div
+                v-for="(item, index) in targetItems"
+                :key="'target-' + index"
+                class="emoji-in-set"
+              >
+                <span class="text-h4">{{ item }}</span>
+              </div>
+            </v-scale-transition>
+            <div v-if="targetItems.length === 0" class="text-caption text-medium-emphasis">
+              El conjunto está vacío...
+            </div>
+          </div>
+          
+          <div class="mt-4 text-center">
+            <v-chip :color="targetItems.length === currentMission.target ? 'success' : 'primary'" variant="flat" size="large" class="font-weight-black">
+              Llevas: {{ targetItems.length }} / {{ currentMission.target }}
+            </v-chip>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
 
-    <!-- FEEDBACK Y CONTROLES -->
-    <v-expand-transition>
-      <div v-if="feedback" class="text-center">
+    <!-- FEEDBACK -->
+    <v-fade-transition>
+      <div v-if="isComplete" class="text-center mt-10">
         <v-alert
-          :type="feedbackType"
+          type="success"
           variant="tonal"
-          class="rounded-xl mb-4"
+          class="rounded-xl mb-6 py-6"
           border="start"
+          icon="mdi-party-popper"
         >
-          {{ feedback }}
+          <div class="text-h5 font-weight-black">¡Misión Cumplida!</div>
+          <div class="text-body-1">Has formado un conjunto perfecto de {{ currentMission.itemName }}.</div>
         </v-alert>
 
-        <div class="d-flex justify-center gap-4">
-          <v-btn
-            v-if="!correct"
-            variant="text"
-            color="error"
-            prepend-icon="mdi-refresh"
-            @click="resetGame"
-          >
-            Reiniciar
-          </v-btn>
-          <v-btn
-            v-if="correct"
-            color="success"
-            size="large"
-            class="rounded-xl px-10 shadow-lg"
-            @click="$emit('completada')"
-          >
-            ¡Siguiente Reto!
-          </v-btn>
-        </div>
+        <v-btn
+          color="success"
+          size="x-large"
+          class="rounded-xl px-12 font-weight-black"
+          elevation="8"
+          @click="$emit('completada')"
+        >
+          ¡Siguiente Desafío! <v-icon end>mdi-chevron-right</v-icon>
+        </v-btn>
       </div>
-    </v-expand-transition>
+    </v-fade-transition>
+
+    <div v-if="!isComplete && targetItems.length > 0" class="text-center mt-6">
+      <v-btn variant="text" color="error" prepend-icon="mdi-refresh" @click="reset">
+        Empezar de nuevo
+      </v-btn>
+    </div>
   </v-card>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-const emit = defineEmits(["completada"]);
+import { ref, computed } from "vue";
 
-const targetScore = ref(7);
-const currentScore = ref(0);
-const feedback = ref("");
-const feedbackType = ref("info");
-const correct = ref(false);
+defineEmits(["completada"]);
 
-const addFruit = () => {
-  if (currentScore.value < targetScore.value) {
-    currentScore.value++;
+const missions = [
+  { title: "El Bosque Mágico", instruction: "Agrega al conjunto", target: 5, itemName: "animalitos", emoji: "🐶" },
+  { title: "La Granja de Frutas", instruction: "Agrega al conjunto", target: 8, itemName: "manzanas", emoji: "🍎" },
+  { title: "El Cielo de Estrellas", instruction: "Agrega al conjunto", target: 6, itemName: "estrellas", emoji: "⭐" },
+];
 
-    if (currentScore.value === targetScore.value) {
-      feedback.value = "¡Excelente! Has completado el pedido correctamente.";
-      feedbackType.value = "success";
-      correct.value = true;
-    } else {
-      feedback.value = `¡Vas bien! Agregaste una manzana. Faltan ${targetScore.value - currentScore.value}.`;
-      feedbackType.value = "info";
-    }
+const currentMissionIndex = ref(0);
+const currentMission = computed(() => missions[currentMissionIndex.value]);
+
+const sourceItems = ref(Array(15).fill(currentMission.value.emoji));
+const targetItems = ref([]);
+
+const isComplete = computed(() => targetItems.value.length === currentMission.value.target);
+
+const moveItem = (index) => {
+  if (targetItems.value.length < currentMission.value.target) {
+    const item = sourceItems.value.splice(index, 1)[0];
+    targetItems.value.push(item);
   }
 };
 
-const resetGame = () => {
-  currentScore.value = 0;
-  feedback.value = "";
-  correct.value = false;
+const reset = () => {
+  sourceItems.value = Array(15).fill(currentMission.value.emoji);
+  targetItems.value = [];
 };
 </script>
 
 <style scoped>
-.game-container {
-  min-height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.gap-2 {
-  gap: 8px;
-}
-.gap-4 {
-  gap: 16px;
-}
 .glass-card {
   background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(10px);
+}
+.gap-3 {
+  gap: 12px;
+}
+.emoji-btn {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.emoji-btn:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+.content-area {
+  min-height: 150px;
+  border-radius: 16px;
+}
+.emoji-in-set {
+  animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounceIn {
+  from { opacity: 0; transform: scale(0.3); }
+  to { opacity: 1; transform: scale(1); }
 }
 </style>
