@@ -1,168 +1,149 @@
 <template>
   <div class="grade-content">
-    <!-- CABECERA: Título y Grado -->
+    <!-- CABECERA -->
     <header class="mb-8">
-      <v-chip color="primary" variant="tonal" class="mb-2 font-weight-bold">
+      <v-chip color="green-darken-2" variant="tonal" class="mb-2 font-weight-bold">
         GRADO 3° • MATEMÁTICAS
       </v-chip>
-      <h1 class="text-h3 font-weight-black tracking-tight">
-        Explora y Aprende
-      </h1>
-      <p class="text-h6 text-medium-emphasis">
-        Descubre nuevos conceptos para el Grado 3.
-      </p>
+      <h1 class="text-h3 font-weight-black tracking-tight">Arquitectos del Sistema Numérico</h1>
+      <p class="text-h6 text-medium-emphasis">Descubre patrones y relaciones multiplicativas. 🔍📐</p>
     </header>
 
-    <v-card class="rounded-2xl overflow-hidden glass-card" border="1">
-      <!-- PESTAÑAS: Navegación interna del contenido -->
-      <v-tabs
-        v-model="tab"
-        color="primary"
-        grow
-        class="content-tabs"
-        height="70"
-      >
-        <v-tab value="videos" class="text-none font-weight-bold">
-          <v-icon start>mdi-play-circle</v-icon> Videos
-        </v-tab>
-        <v-tab value="texto" class="text-none font-weight-bold">
-          <v-icon start>mdi-book-open-page-variant</v-icon> Lectura
-        </v-tab>
-        <v-tab value="ejemplos" class="text-none font-weight-bold">
-          <v-icon start>mdi-lightbulb-on</v-icon> Ejemplos
-        </v-tab>
-      </v-tabs>
+    <!-- UNIDAD 1 -->
+    <section class="mb-10">
+      <v-chip color="green" variant="tonal" class="mb-4 font-weight-bold text-body-1">
+        Desafío del Inventario
+      </v-chip>
 
-      <v-window v-model="tab" class="pa-6 pa-md-10">
-        <!-- SECCIÓN 1: VIDEOS -->
-        <v-window-item value="videos">
-          <v-row>
-            <v-col cols="12" md="6" v-for="n in 2" :key="n">
-              <v-card
-                class="rounded-xl overflow-hidden border shadow-sm"
-                elevation="0"
-              >
-                <div class="video-container bg-black">
-                  <!-- INSTRUCCIÓN: Cambia el 'src' por la ruta de tu video en public/videos/ -->
-                  <video controls class="w-100 h-100">
-                    <source
-                      :src="`/videos/grado3_video${n}.mp4`"
-                      type="video/mp4"
-                    />
-                    Tu navegador no soporta videos.
-                  </video>
-                </div>
-                <v-card-text class="pa-4">
-                  <h3 class="text-h6 font-weight-bold mb-1">
-                    Lección {{ n }}: Título del Video
-                  </h3>
-                  <p class="text-body-2 text-medium-emphasis">
-                    Breve descripción de lo que se enseña en este video.
-                  </p>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-window-item>
+      <!-- Video arriba, ancho completo -->
+      <v-card class="rounded-2xl overflow-hidden mb-6" elevation="3">
+        <div class="video-container bg-black">
+          <video controls class="w-100 h-100" preload="metadata">
+            <source :src="getVideoSrc(3, 1)" type="video/mp4" />
+            Tu navegador no soporta videos.
+          </video>
+        </div>
+      </v-card>
 
-        <!-- SECCIÓN 2: TEXTO E IMÁGENES -->
-        <v-window-item value="texto">
-          <h2 class="text-h4 font-weight-black mb-6">
-            Conceptos Clave de Grado 3°
-          </h2>
+      <!-- Pregunta disparadora + tabla de conceptos -->
+      <v-row class="mb-4">
+        <v-col cols="12" md="5">
+          <v-card class="rounded-2xl pa-6 h-100" color="green-lighten-5" elevation="0" border="1">
+            <p class="text-overline font-weight-bold text-green-darken-3 mb-2">Pregunta para pensar</p>
+            <p class="text-h5 font-weight-black mb-4">¿Qué pasa si <em>duplicas</em> una fila del arreglo?</p>
+            <p class="text-body-1 text-medium-emphasis">
+              Observa el video y anota cuántas cajas hay en cada arreglo. Luego, compara los resultados.
+            </p>
+          </v-card>
+        </v-col>
 
-          <!-- INSTRUCCIÓN: Escribe aquí el contenido teórico -->
-          <p class="text-body-1 mb-4">
-            Las matemáticas en el grado 3 se enfocan en fortalecer tus
-            habilidades de razonamiento. Aquí puedes añadir párrafos
-            explicativos sobre los temas del currículo.
-          </p>
+        <v-col cols="12" md="7">
+          <v-card class="rounded-2xl overflow-hidden" elevation="0" border="1">
+            <v-table density="comfortable">
+              <thead>
+                <tr class="bg-green-lighten-4">
+                  <th class="text-center font-weight-black text-body-1">Relación</th>
+                  <th class="text-center font-weight-black text-body-1">Ejemplo</th>
+                  <th class="text-center font-weight-black text-body-1">¿Por qué?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(fila, i) in tablaUnidad1" :key="i">
+                  <td class="text-center font-weight-bold">{{ fila.relacion }}</td>
+                  <td class="text-center">{{ fila.ejemplo }}</td>
+                  <td class="text-center text-medium-emphasis text-body-2">{{ fila.razon }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-card>
+        </v-col>
+      </v-row>
+    </section>
 
-          <v-row align="center" class="mt-8">
-            <v-col cols="12" md="7">
-              <v-alert
-                border="start"
-                color="primary"
-                variant="tonal"
-                class="rounded-xl"
-              >
-                <p class="mb-0">
-                  <strong>Dato Curioso:</strong> ¿Sabías que en Córdoba usamos
-                  las matemáticas para calcular las cosechas?
-                </p>
-              </v-alert>
-            </v-col>
-            <v-col cols="12" md="5">
-              <!-- INSTRUCCIÓN: Cambia el 'src' por una imagen representativa -->
-              <v-img
-                src="/field-bg.png"
-                class="rounded-2xl elevation-8"
-                cover
-                max-height="250"
-              ></v-img>
-            </v-col>
-          </v-row>
-        </v-window-item>
+    <v-divider class="mb-10"></v-divider>
 
-        <!-- SECCIÓN 3: EJERCICIOS RESUELTOS -->
-        <v-window-item value="ejemplos">
-          <h2 class="text-h4 font-weight-black mb-6">Aprende con Ejemplos</h2>
-          <v-expansion-panels
-            variant="accordion"
-            class="rounded-xl overflow-hidden border"
-          >
-            <!-- INSTRUCCIÓN: Añade aquí los pasos de resolución de problemas -->
-            <v-expansion-panel v-for="i in 3" :key="i">
-              <v-expansion-panel-title class="font-weight-bold py-4">
-                Reto Resuelto #{{ i }}: Título del Problema
-              </v-expansion-panel-title>
-              <v-expansion-panel-text class="pa-4 bg-grey-lighten-5">
-                <div class="mb-4">
-                  <strong class="text-primary">Situación:</strong>
-                  <p>Planteamiento del problema matemático de la vida real.</p>
-                </div>
-                <v-divider class="mb-4"></v-divider>
-                <div>
-                  <strong class="text-success">Solución:</strong>
-                  <p>Explicación paso a paso de cómo se llegó al resultado.</p>
-                </div>
-              </v-expansion-panel-text>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </v-window-item>
-      </v-window>
-    </v-card>
+    <!-- UNIDAD 2 -->
+    <section class="mb-10">
+      <v-chip color="teal" variant="tonal" class="mb-4 font-weight-bold text-body-1">
+        Detectives de Secuencias
+      </v-chip>
+
+      <v-row align="stretch" class="mb-6">
+        <!-- Video -->
+        <v-col cols="12" md="7">
+          <v-card class="rounded-2xl overflow-hidden" elevation="3" height="100%">
+            <div class="video-container bg-black">
+              <video controls class="w-100 h-100" preload="metadata">
+                <source :src="getVideoSrc(3, 2)" type="video/mp4" />
+                Tu navegador no soporta videos.
+              </video>
+            </div>
+          </v-card>
+        </v-col>
+
+        <!-- Diagrama de flujo de patrones -->
+        <v-col cols="12" md="5">
+          <v-card class="rounded-2xl pa-5 h-100" elevation="0" border="1">
+            <p class="text-overline font-weight-bold text-teal-darken-2 mb-4">📊 Tipos de Patrón</p>
+
+            <!-- Patrón aditivo -->
+            <v-card class="rounded-xl pa-4 mb-4" color="teal-lighten-5" elevation="0">
+              <p class="text-body-1 font-weight-black mb-2">➕ Patrón Aditivo</p>
+              <div class="d-flex align-center gap-2 flex-wrap">
+                <v-chip v-for="n in [2, 5, 8, 11, 14]" :key="n" color="teal" variant="tonal" size="small" class="font-weight-bold">{{ n }}</v-chip>
+              </div>
+              <p class="text-body-2 text-medium-emphasis mt-2 mb-0">Regla: <strong>+ 3</strong> cada vez</p>
+            </v-card>
+
+            <!-- Patrón multiplicativo -->
+            <v-card class="rounded-xl pa-4" color="orange-lighten-5" elevation="0">
+              <p class="text-body-1 font-weight-black mb-2">✖️ Patrón Multiplicativo</p>
+              <div class="d-flex align-center gap-2 flex-wrap">
+                <v-chip v-for="n in [2, 4, 8, 16, 32]" :key="n" color="orange" variant="tonal" size="small" class="font-weight-bold">{{ n }}</v-chip>
+              </div>
+              <p class="text-body-2 text-medium-emphasis mt-2 mb-0">Regla: <strong>× 2</strong> cada vez</p>
+            </v-card>
+          </v-card>
+        </v-col>
+      </v-row>
+    </section>
 
     <!-- BOTÓN DE NAVEGACIÓN -->
     <div class="mt-12 d-flex justify-end">
       <v-btn
         size="x-large"
-        color="primary"
+        color="green-darken-2"
         class="rounded-xl px-8"
         elevation="8"
         :to="`/app/grado/3/actividades`"
       >
-        Ir a Practicar <v-icon end>mdi-chevron-right</v-icon>
+        ¡A Practicar! <v-icon end>mdi-chevron-right</v-icon>
       </v-btn>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-// Estado para controlar qué pestaña está activa
-const tab = ref("videos");
+import { ref } from 'vue'
+
+function getVideoSrc(grado, numero) {
+  return `/videos/grado${grado}_video${numero}.mp4`
+}
+
+const tablaUnidad1 = ref([
+  { relacion: 'Doble', ejemplo: 'Tabla del 6 = 2 × tabla del 3', razon: 'Cada producto se duplica' },
+  { relacion: 'Triple', ejemplo: 'Tabla del 9 = 3 × tabla del 3', razon: 'Cada producto se triplica' },
+  { relacion: 'Mitad', ejemplo: 'Tabla del 4 = ½ × tabla del 8', razon: 'Cada producto se divide en 2' },
+])
 </script>
 
 <style scoped>
-.glass-card {
-  background: rgba(255, 255, 255, 0.8) !important;
-  backdrop-filter: blur(10px);
-}
 .video-container {
   aspect-ratio: 16/9;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
 </style>
