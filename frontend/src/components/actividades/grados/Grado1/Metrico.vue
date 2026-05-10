@@ -90,7 +90,8 @@ const challenges = [
   { target: "más CORTO", type: "shortest" },
 ];
 
-const currentChallenge = ref(challenges[Math.floor(Math.random() * challenges.length)]);
+const shuffledChallenges = ref([...challenges].sort(() => Math.random() - 0.5));
+const currentChallenge = ref(shuffledChallenges.value[Math.floor(Math.random() * shuffledChallenges.value.length)]);
 const selectedWorm = ref(null);
 
 const worms = ref([

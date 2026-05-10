@@ -108,7 +108,8 @@ const missions = [
 ];
 
 const currentMissionIndex = ref(0);
-const currentMission = computed(() => missions[currentMissionIndex.value]);
+const shuffledMissions = ref([...missions].sort(() => Math.random() - 0.5));
+const currentMission = computed(() => shuffledMissions.value[currentMissionIndex.value]);
 
 const sourceItems = ref(Array(15).fill(currentMission.value.emoji));
 const targetItems = ref([]);

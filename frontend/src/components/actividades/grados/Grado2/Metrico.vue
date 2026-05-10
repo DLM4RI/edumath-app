@@ -1,35 +1,125 @@
 <template>
-  <v-card class="pa-10 rounded-3xl glass-card text-center" border="1">
-    <v-avatar color="primary-lighten-4" size="100" class="mb-6">
-      <v-icon color="primary" size="50">mdi-puzzle</v-icon>
-    </v-avatar>
-    
-    <!-- TÍTULO DE LA ACTIVIDAD -->
-    <h2 class="text-h3 font-weight-black mb-4">{t} - Grado 2</h2>
-    
-    <!-- INSTRUCCIONES: Explica aquí qué debe hacer el estudiante -->
-    <p class="text-h6 text-medium-emphasis mb-8">
-      ¡Bienvenido al reto de pensamiento metrico! Sigue las instrucciones para ganar puntos.
-    </p>
-
-    <!-- ÁREA DE JUEGO / EJERCICIOS -->
-    <div class="game-area mb-10 py-10 bg-grey-lighten-4 rounded-xl">
-      <p class="text-h5">Espacio para la lógica de la actividad (Gráficos, Preguntas, Arrastrar y Soltar, etc.)</p>
+  <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
+    <div class="text-center mb-6">
+      <v-chip color="red-darken-2" variant="flat" class="mb-4 px-6 font-weight-black">
+        ⏰ EL RELOJ DEL TIEMPO
+      </v-chip>
+      <h2 class="text-h4 font-weight-black mb-2">¡Pon el reloj en hora!</h2>
+      <p class="text-h6 text-medium-emphasis">
+        Selecciona la hora correcta que marca el reloj digital.
+      </p>
     </div>
 
-    <!-- BOTÓN DE FINALIZACIÓN -->
-    <!-- INSTRUCCIÓN: Llama a $emit('completada') cuando el estudiante resuelva el reto -->
-    <v-btn color="primary" size="x-large" class="rounded-xl px-12" @click="$emit('completada')">
-      ¡Misión Completada!
-    </v-btn>
+    <!-- AREA DE JUEGO -->
+    <v-row justify="center" align="center">
+      <!-- Reloj Digital -->
+      <v-col cols="12" md="5" class="text-center">
+        <v-card variant="flat" class="pa-8 rounded-2xl bg-grey-darken-4 text-green-accent-3 mb-6 digital-clock">
+          <div class="text-h1 font-weight-black">{{ currentChallenge.time }}</div>
+        </v-card>
+      </v-col>
+
+      <!-- Opciones de Relojes Análogos (Representados con texto por ahora o iconos) -->
+      <v-col cols="12" md="7">
+        <v-row>
+          <v-col v-for="(option, index) in currentChallenge.options" :key="index" cols="6">
+            <v-card
+              variant="outlined"
+              class="pa-4 rounded-xl text-center cursor-pointer option-card transition-all"
+              :class="{
+                'bg-success-lighten-4 border-success': selectedOption === index && option.correct,
+                'bg-error-lighten-4 border-error': selectedOption === index && !option.correct,
+                'bg-white': selectedOption !== index
+              }"
+              @click="checkOption(index)"
+            >
+              <v-icon size="60" color="primary">mdi-clock-outline</v-icon>
+              <div class="mt-2 font-weight-bold">{{ option.label }}</div>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <!-- FEEDBACK -->
+    <v-fade-transition>
+      <div v-if="isComplete" class="text-center mt-10">
+        <v-alert
+          type="success"
+          variant="tonal"
+          class="rounded-xl mb-6 py-6"
+          icon="mdi-timer-sand"
+        >
+          <div class="text-h5 font-weight-black">¡Maestro del Tiempo!</div>
+          <div class="text-body-1">Sabes leer perfectamente las horas.</div>
+        </v-alert>
+
+        <v-btn
+          color="success"
+          size="x-large"
+          class="rounded-xl px-12 font-weight-black"
+          elevation="8"
+          @click="$emit('completada')"
+        >
+          ¡Siguiente Misión! <v-icon end>mdi-chevron-right</v-icon>
+        </v-btn>
+      </div>
+    </v-fade-transition>
   </v-card>
 </template>
 
 <script setup>
-// Define el evento para avisar a la app que la actividad terminó
-defineEmits(['completada'])
+import { ref, computed } from "vue";
 
-// AQUÍ PUEDES AÑADIR TU LÓGICA DE JUEGO (Refs, Validaciones, etc.)
+defineEmits(["completada"]);
+
+const challenges = [
+  {
+    time: "03:00",
+    options: [
+      { label: "3 en punto", correct: true },
+      { label: "6 en punto", correct: false },
+      { label: "12 y cuarto", correct: false },
+      { label: "9 en punto", correct: false },
+    ]
+  },
+  {
+    time: "06:30",
+    options: [
+      { label: "6 y cuarto", correct: false },
+      { label: "6 y media", correct: true },
+      { label: "7 en punto", correct: false },
+      { label: "5 y media", correct: false },
+    ]
+  }
+];
+
+const currentChallengeIndex = ref(0);
+const selectedOption = ref(null);
+const solvedCount = ref(0);
+
+const shuffledChallenges = ref([...challenges].sort(() => Math.random() - 0.5));
+const currentChallenge = computed(() => shuffledChallenges.value[currentChallengeIndex.value]);
+const isComplete = computed(() => solvedCount.value === challenges.length);
+
+const checkOption = (index) => {
+  if (selectedOption.value !== null) return;
+  selectedOption.value = index;
+  
+  if (currentChallenge.value.options[index].correct) {
+    setTimeout(() => {
+      solvedCount.value++;
+      if (currentChallengeIndex.value < challenges.length - 1) {
+        currentChallengeIndex.value++;
+        selectedOption.value = null;
+      }
+    }, 1000);
+  } else {
+    setTimeout(() => {
+      selectedOption.value = null;
+    }, 1500);
+  }
+};
 </script>
 
 <style scoped>
@@ -37,7 +127,19 @@ defineEmits(['completada'])
   background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(10px);
 }
-.game-area {
-  border: 2px dashed #ccc;
+.digital-clock {
+  font-family: 'Courier New', Courier, monospace;
+  border: 4px solid #333;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+.option-card {
+  border-width: 2px;
+}
+.option-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.transition-all {
+  transition: all 0.3s ease;
 }
 </style>

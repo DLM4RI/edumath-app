@@ -1,35 +1,121 @@
 <template>
-  <v-card class="pa-10 rounded-3xl glass-card text-center" border="1">
-    <v-avatar color="primary-lighten-4" size="100" class="mb-6">
-      <v-icon color="primary" size="50">mdi-puzzle</v-icon>
-    </v-avatar>
-    
-    <!-- TÍTULO DE LA ACTIVIDAD -->
-    <h2 class="text-h3 font-weight-black mb-4">{t} - Grado 3</h2>
-    
-    <!-- INSTRUCCIONES: Explica aquí qué debe hacer el estudiante -->
-    <p class="text-h6 text-medium-emphasis mb-8">
-      ¡Bienvenido al reto de pensamiento numerico! Sigue las instrucciones para ganar puntos.
-    </p>
-
-    <!-- ÁREA DE JUEGO / EJERCICIOS -->
-    <div class="game-area mb-10 py-10 bg-grey-lighten-4 rounded-xl">
-      <p class="text-h5">Espacio para la lógica de la actividad (Gráficos, Preguntas, Arrastrar y Soltar, etc.)</p>
+  <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
+    <div class="text-center mb-6">
+      <v-chip color="deep-purple-darken-2" variant="flat" class="mb-4 px-6 font-weight-black">
+        🚀 LA FÁBRICA DE MULTIPLICACIONES
+      </v-chip>
+      <h2 class="text-h4 font-weight-black mb-2">¡Carga combustible para el despegue!</h2>
+      <p class="text-h6 text-medium-emphasis">
+        Resuelve las multiplicaciones para llenar el tanque del cohete.
+      </p>
     </div>
 
-    <!-- BOTÓN DE FINALIZACIÓN -->
-    <!-- INSTRUCCIÓN: Llama a $emit('completada') cuando el estudiante resuelva el reto -->
-    <v-btn color="primary" size="x-large" class="rounded-xl px-12" @click="$emit('completada')">
-      ¡Misión Completada!
-    </v-btn>
+    <!-- AREA DE JUEGO -->
+    <v-row>
+      <!-- Cohete y Tanque -->
+      <v-col cols="12" md="4" class="d-flex flex-column align-center">
+        <div class="rocket-container mb-6">
+          <v-img src="https://cdn-icons-png.flaticon.com/512/1033/1033039.png" width="120" :class="{ 'shake-launch': isComplete }"></v-img>
+        </div>
+        <v-progress-linear
+          v-model="fuelLevel"
+          color="orange"
+          height="30"
+          rounded
+          striped
+          class="fuel-bar"
+        >
+          <template v-slot:default="{ value }">
+            <span class="font-weight-black text-white">{{ Math.ceil(value) }}% Combustible</span>
+          </template>
+        </v-progress-linear>
+      </v-col>
+
+      <!-- Panel de Control -->
+      <v-col cols="12" md="8">
+        <v-card variant="outlined" class="pa-6 rounded-2xl bg-indigo-darken-4 text-white border-md border-indigo-lighten-2">
+          <div v-if="!isComplete">
+            <div class="text-h2 font-weight-black text-center mb-8">
+              {{ currentProblem.a }} × {{ currentProblem.b }} = ?
+            </div>
+            <v-row>
+              <v-col v-for="option in currentProblem.options" :key="option" cols="6">
+                <v-btn
+                  block
+                  size="x-large"
+                  variant="flat"
+                  :color="selectedOption === option ? (option === currentProblem.answer ? 'success' : 'error') : 'indigo-lighten-1'"
+                  class="rounded-xl font-weight-black py-8 text-h4"
+                  @click="checkAnswer(option)"
+                  :disabled="selectedOption !== null"
+                >
+                  {{ option }}
+                </v-btn>
+              </v-col>
+            </v-row>
+          </div>
+
+          <!-- FEEDBACK -->
+          <v-fade-transition>
+            <div v-if="isComplete" class="text-center py-6">
+              <v-icon size="80" color="success" class="mb-4">mdi-rocket-launch</v-icon>
+              <div class="text-h4 font-weight-black mb-4">¡TANQUE LLENO!</div>
+              <p class="text-h6 mb-8">¡El cohete está listo para explorar el espacio!</p>
+              
+              <v-btn
+                color="success"
+                size="x-large"
+                class="rounded-xl px-12 font-weight-black"
+                elevation="8"
+                @click="$emit('completada')"
+              >
+                ¡Despegar! <v-icon end>mdi-chevron-right</v-icon>
+              </v-btn>
+            </div>
+          </v-fade-transition>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
 <script setup>
-// Define el evento para avisar a la app que la actividad terminó
-defineEmits(['completada'])
+import { ref, computed } from "vue";
 
-// AQUÍ PUEDES AÑADIR TU LÓGICA DE JUEGO (Refs, Validaciones, etc.)
+defineEmits(["completada"]);
+
+const problems = [
+  { a: 3, b: 4, answer: 12, options: [10, 12, 14, 16] },
+  { a: 5, b: 6, answer: 30, options: [25, 30, 35, 40] },
+  { a: 7, b: 3, answer: 21, options: [18, 20, 21, 24] },
+  { a: 8, b: 2, answer: 16, options: [14, 16, 18, 20] },
+  { a: 4, b: 9, answer: 36, options: [32, 36, 40, 45] },
+];
+
+const currentProblemIndex = ref(0);
+const selectedOption = ref(null);
+const fuelLevel = ref(0);
+
+const shuffledProblems = ref([...problems].sort(() => Math.random() - 0.5));
+const currentProblem = computed(() => shuffledProblems.value[currentProblemIndex.value]);
+const isComplete = computed(() => fuelLevel.value >= 100);
+
+const checkAnswer = (option) => {
+  selectedOption.value = option;
+  if (option === currentProblem.value.answer) {
+    fuelLevel.value += 20;
+    setTimeout(() => {
+      if (currentProblemIndex.value < problems.length - 1) {
+        currentProblemIndex.value++;
+        selectedOption.value = null;
+      }
+    }, 1000);
+  } else {
+    setTimeout(() => {
+      selectedOption.value = null;
+    }, 1500);
+  }
+};
 </script>
 
 <style scoped>
@@ -37,7 +123,23 @@ defineEmits(['completada'])
   background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(10px);
 }
-.game-area {
-  border: 2px dashed #ccc;
+.fuel-bar {
+  border: 2px solid #333;
+  width: 100%;
+}
+.rocket-container {
+  height: 150px;
+  display: flex;
+  align-items: flex-end;
+}
+.shake-launch {
+  animation: launch 0.5s ease-in infinite;
+}
+@keyframes launch {
+  0% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-2px) translateX(1px); }
+  50% { transform: translateY(0) translateX(-1px); }
+  75% { transform: translateY(-2px) translateX(1px); }
+  100% { transform: translateY(-100vh); }
 }
 </style>

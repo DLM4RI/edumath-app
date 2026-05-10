@@ -100,14 +100,61 @@
             Respondiste correctamente {{ score }} de {{ questions.length }} preguntas.
           </p>
 
+          <!-- FEEDBACK POR TEMAS -->
+          <div v-if="feedbackByTopic.length > 0" class="text-left mt-8">
+            <v-divider class="mb-6"></v-divider>
+            <h4 class="text-h5 font-weight-black mb-4 d-flex align-center">
+              <v-icon color="primary" class="mr-2">mdi-book-open-page-variant</v-icon>
+              Plan de Refuerzo Personalizado
+            </h4>
+            <p class="text-body-1 text-medium-emphasis mb-6">
+              Basado en tus resultados, te recomendamos repasar los siguientes temas:
+            </p>
+
+            <v-row>
+              <v-col v-for="topic in feedbackByTopic" :key="topic.name" cols="12" md="6">
+                <v-card variant="outlined" class="pa-4 rounded-2xl border-primary-lighten-3 bg-primary-lighten-5 h-100">
+                  <div class="d-flex justify-space-between align-center mb-2">
+                    <span class="text-subtitle-1 font-weight-black text-primary">{{ topic.name }}</span>
+                    <v-chip size="small" color="primary" variant="flat">{{ topic.correct }}/{{ topic.total }}</v-chip>
+                  </div>
+                  <v-progress-linear
+                    :model-value="(topic.correct / topic.total) * 100"
+                    color="primary"
+                    height="8"
+                    rounded
+                    class="mb-4"
+                  ></v-progress-linear>
+                  <v-btn
+                    block
+                    color="primary"
+                    variant="flat"
+                    size="small"
+                    class="rounded-pill font-weight-bold"
+                    prepend-icon="mdi-school"
+                    @click="goToStudy(topic.name)"
+                  >
+                    Estudiar Tema
+                  </v-btn>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
+
+          <div v-else class="text-center mt-8">
+            <v-alert type="success" variant="tonal" class="rounded-xl">
+              ¡Dominas todos los temas evaluados! Sigue así.
+            </v-alert>
+          </div>
+
           <v-btn
             color="primary"
             size="x-large"
-            class="rounded-xl px-12 font-weight-black"
+            class="rounded-xl px-12 font-weight-black mt-10"
             elevation="8"
             @click="$emit('finalizado')"
           >
-            Ver Retroalimentación <v-icon end>mdi-arrow-right</v-icon>
+            Finalizar Aventura <v-icon end>mdi-flag-checkered</v-icon>
           </v-btn>
         </div>
       </v-window-item>
@@ -196,7 +243,7 @@ const questions = [
   },
   {
     category: "Comparación",
-    text: "¿Cuál número es el más pequeño (MENOR)?",
+    text: "¿Cuál número es the más pequeño (MENOR)?",
     options: [
       { label: "20", correct: false },
       { label: "15", correct: false },
@@ -354,7 +401,7 @@ const questions = [
       { label: "Detrás de la puerta", correct: false },
     ],
   },
-];
+].sort(() => Math.random() - 0.5);
 
 const answers = ref(new Array(questions.length).fill(null));
 
@@ -367,14 +414,39 @@ const nextStep = () => {
 
 const calculateScore = () => {
   let total = 0;
+  const topicsMap = {};
+
   answers.value.forEach((answer, index) => {
-    if (answer !== null && questions[index].options[answer].correct) {
+    const q = questions[index];
+    if (!topicsMap[q.category]) {
+      topicsMap[q.category] = { correct: 0, total: 0 };
+    }
+    topicsMap[q.category].total++;
+
+    if (answer !== null && q.options[answer].correct) {
       total++;
+      topicsMap[q.category].correct++;
     }
   });
+
   score.value = total;
-  // Calificación de 0.0 a 5.0
   finalGrade.value = (total / questions.length) * 5;
+
+  // Filtrar temas que necesitan refuerzo (menos del 100% de aciertos)
+  feedbackByTopic.value = Object.keys(topicsMap)
+    .map((name) => ({
+      name,
+      correct: topicsMap[name].correct,
+      total: topicsMap[name].total,
+    }))
+    .filter((t) => t.correct < t.total);
+};
+
+const goToStudy = (topic) => {
+  console.log("Redirigiendo a estudio del tema:", topic);
+  // Aquí se implementaría la navegación al componente de contenido específico
+  // Por ahora, emitimos un evento o usamos el router si estuviera disponible
+  emit("finalizado"); 
 };
 </script>
 
