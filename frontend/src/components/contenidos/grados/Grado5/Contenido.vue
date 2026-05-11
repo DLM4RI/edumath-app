@@ -1,467 +1,373 @@
 <template>
-  <div class="grade-content">
+  <div class="grade-wrapper" :class="{ 'menu-open': isMenuOpen }">
 
-    <!-- CABECERA -->
-    <header class="mb-8">
-      <v-chip color="red-darken-2" variant="tonal" class="mb-2 font-weight-bold">
-        GRADO 5° • MATEMÁTICAS
-      </v-chip>
-      <h1 class="text-h3 font-weight-black tracking-tight">Potencias, Raíces y el Mundo de los Datos</h1>
-      <p class="text-h6 text-medium-emphasis">
-        Domina la notación potencial, la radicación y el análisis de información estadística y geométrica.
-      </p>
-    </header>
+    <div class="nav-overlay" :class="{ 'is-active': isMenuOpen }" @click="toggleMenu(false)"></div>
 
-    <!-- ══════════════════════════════════════════
-         UNIDAD 1 — POTENCIACIÓN
-    ══════════════════════════════════════════ -->
-    <section class="mb-10">
-      <v-chip color="red" variant="tonal" class="mb-6 font-weight-bold text-body-1">
-        Potenciación: La Multiplicación Acelerada
-      </v-chip>
-
-      <v-row align="stretch" class="mb-6">
-        <!-- Video -->
-        <v-col cols="12" md="6">
-          <v-card class="rounded-2xl overflow-hidden" elevation="4" height="100%">
-            <div class="video-container bg-black">
-              <video controls class="w-100 h-100" preload="metadata">
-                <source :src="getVideoSrc(5, 1)" type="video/mp4" />
-                Tu navegador no soporta videos.
-              </video>
+    <nav class="floating-menu-container">
+      <div class="menu-items">
+        <button
+          v-for="(u, i) in unidades"
+          :key="i"
+          class="nav-btn"
+          :class="{ 'nav-btn--active': activeUnit === i }"
+          :style="`--accent: ${u.color}`"
+          @click="selectUnit(i)"
+        >
+          <div class="nav-circle" :style="`background-color: ${u.color}`">{{ i + 1 }}</div>
+          
+          <transition name="fade-simple">
+            <div v-if="isMenuOpen" class="nav-text-box">
+              <span class="text-title">{{ u.titulo }}</span>
+              <span class="text-emoji">{{ u.emoji }}</span>
             </div>
-            <v-card-text class="pa-4 pb-3">
-              <p class="text-body-2 text-medium-emphasis mb-0">
-                <v-icon size="small" color="red">mdi-play-circle</v-icon>
-                <em>Potenciación: bases, exponentes y potencias</em>
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
+          </transition>
+        </button>
+      </div>
+    </nav>
 
-        <!-- Explicación formal + notación -->
-        <v-col cols="12" md="6">
-          <v-card class="rounded-2xl pa-6 h-100" elevation="0" border="1">
-            <p class="text-overline font-weight-bold text-red-darken-2 mb-3">¿Qué es una potencia?</p>
-            <p class="text-body-1 mb-4">
-              Una <strong>potencia</strong> es una forma abreviada de escribir una multiplicación
-              donde el mismo número se repite como factor. Se compone de dos partes:
-              la <strong>base</strong> (el número que se multiplica) y el
-              <strong>exponente</strong> (cuántas veces se multiplica por sí mismo).
-            </p>
-            <v-card class="rounded-xl pa-5 mb-4 text-center" color="red-lighten-5" elevation="0">
-              <p class="text-overline mb-1 text-red-darken-3">Anatomía de una Potencia</p>
-              <div class="d-flex align-center justify-center gap-4 flex-wrap">
-                <div class="text-center">
-                  <p class="text-h2 font-weight-black text-red mb-0" style="line-height:1">2³</p>
-                  <p class="text-caption text-medium-emphasis mt-1">Se lee: "dos al cubo"</p>
-                </div>
-                <v-divider vertical class="mx-2" style="height:60px"></v-divider>
-                <div class="text-left">
-                  <p class="text-body-2 mb-1"><strong class="text-red">2</strong> → Base (número que se multiplica)</p>
-                  <p class="text-body-2 mb-1"><strong class="text-red">3</strong> → Exponente (veces que se repite)</p>
-                  <p class="text-body-2 mb-0"><strong>= 2 × 2 × 2 = 8</strong></p>
-                </div>
-              </div>
-            </v-card>
-            <v-alert type="info" variant="tonal" density="compact" class="rounded-xl text-body-2">
-              <strong>Casos especiales:</strong> cualquier número elevado a <strong>0</strong> es igual a <strong>1</strong>.
-              Y elevado a <strong>1</strong>, es el mismo número.
-            </v-alert>
-          </v-card>
-        </v-col>
-      </v-row>
+    <button class="menu-toggle" :class="{ active: isMenuOpen }" @click="toggleMenu()">
+      <div class="menu-toggle-icon-wrap">
+        <div class="hamburger-icon">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      <span class="menu-text">Menú</span>
+    </button>
 
-      <!-- Tablas de potencias -->
-      <v-card class="rounded-2xl mb-6" elevation="0" border="1">
-        <v-card-text class="pa-5">
-          <p class="text-overline font-weight-bold text-red-darken-2 mb-4">Tabla de Potencias Frecuentes</p>
-          <v-row>
-            <v-col cols="12" md="6">
-              <p class="text-body-1 font-weight-bold mb-3 text-center">Potencias de 2</p>
-              <v-table density="comfortable" class="rounded-xl overflow-hidden border">
-                <thead>
-                  <tr class="bg-red-lighten-4">
-                    <th class="text-center font-weight-black">Potencia</th>
-                    <th class="text-center font-weight-black">Desarrollo</th>
-                    <th class="text-center font-weight-black">Resultado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="p in potencias2" :key="p.exp">
-                    <td class="text-center font-weight-bold text-red">2<sup>{{ p.exp }}</sup></td>
-                    <td class="text-center text-body-2 text-medium-emphasis">{{ p.desarrollo }}</td>
-                    <td class="text-center font-weight-black">{{ p.resultado }}</td>
-                  </tr>
-                </tbody>
-              </v-table>
-            </v-col>
-            <v-col cols="12" md="6">
-              <p class="text-body-1 font-weight-bold mb-3 text-center">Potencias de 10</p>
-              <v-table density="comfortable" class="rounded-xl overflow-hidden border">
-                <thead>
-                  <tr class="bg-red-lighten-4">
-                    <th class="text-center font-weight-black">Potencia</th>
-                    <th class="text-center font-weight-black">Resultado</th>
-                    <th class="text-center font-weight-black">Se llama</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="p in potencias10" :key="p.exp">
-                    <td class="text-center font-weight-bold text-red">10<sup>{{ p.exp }}</sup></td>
-                    <td class="text-center font-weight-black">{{ p.resultado }}</td>
-                    <td class="text-center text-body-2 text-medium-emphasis">{{ p.nombre }}</td>
-                  </tr>
-                </tbody>
-              </v-table>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
+    <main class="unit-stage">
+      <div class="grade-content">
 
-      <!-- ESPACIO IMAGEN -->
-      <v-card class="rounded-2xl mb-6" elevation="0" border="1">
-        <v-card-text class="pa-4">
-          <div class="img-placeholder rounded-xl d-flex align-center justify-center"
-               style="min-height:140px; border: 2px dashed #C62828;">
-            <p class="text-medium-emphasis text-center pa-4 text-body-2">
-              [ Imagen: Comparación multiplicación vs potencia → /images/grado5_potencia.png ]
-            </p>
+        <header class="mb-8 header-hero">
+          <div class="header-chip-wrap">
+            <span class="grado-chip">GRADO 5° • MATEMÁTICAS</span>
           </div>
-        </v-card-text>
-      </v-card>
-    </section>
+          <div class="header-centered">
+            <h1 class="title-main">{{ unidades[activeUnit].titulo }}</h1>
+            <p class="subtitle-hero">{{ unidades[activeUnit].descripcion }}</p>
+          </div>
+        </header>
 
-    <v-divider class="mb-10"></v-divider>
-
-    <!-- ══════════════════════════════════════════
-         UNIDAD 2 — RADICACIÓN
-    ══════════════════════════════════════════ -->
-    <section class="mb-10">
-      <v-chip color="deep-orange" variant="tonal" class="mb-6 font-weight-bold text-body-1">
-        Radicación: La Operación Inversa
-      </v-chip>
-
-      <v-row align="stretch" class="mb-6">
-        <!-- Explicación -->
-        <v-col cols="12" md="6" order="2" order-md="1">
-          <v-card class="rounded-2xl pa-6 h-100" elevation="0" border="1">
-            <p class="text-overline font-weight-bold text-deep-orange-darken-2 mb-3">¿Qué es la raíz cuadrada?</p>
-            <p class="text-body-1 mb-4">
-              La <strong>radicación</strong> es la operación inversa de la potenciación.
-              Encontrar la raíz cuadrada de un número significa hallar qué número,
-              multiplicado por sí mismo, produce ese resultado.
-            </p>
-            <v-card class="rounded-xl pa-5 mb-4" color="orange-lighten-5" elevation="0">
-              <p class="text-overline mb-3 text-deep-orange-darken-2 text-center">Relación Inversa</p>
-              <div class="d-flex align-center justify-center gap-3 flex-wrap">
-                <v-card class="rounded-lg pa-3 text-center" elevation="1" min-width="100">
-                  <p class="text-body-2 text-medium-emphasis mb-1">Potencia</p>
-                  <p class="text-h5 font-weight-black mb-0">4² = 16</p>
+        <!-- UNIDAD 0: POTENCIACIÓN -->
+        <transition name="fade-slide" mode="out-in">
+          <section v-if="activeUnit === 0" key="u0" class="mb-10">
+            <div class="section-label label-orange">
+              💥 Potenciación: Multiplicación Acelerada
+            </div>
+            <v-row align="stretch" class="mb-6">
+              <v-col cols="12" md="6">
+                <v-card class="rounded-3xl overflow-hidden card-shadow" elevation="0" height="100%">
+                  <div class="video-container bg-black">
+                    <video controls class="w-100 h-100" preload="metadata">
+                      <source :src="'/videos/grado5_video1.mp4'" type="video/mp4" />
+                    </video>
+                  </div>
                 </v-card>
-                <div class="d-flex flex-column align-center gap-1">
-                  <v-icon color="deep-orange">mdi-arrow-right</v-icon>
-                  <v-icon color="deep-orange">mdi-arrow-left</v-icon>
-                </div>
-                <v-card class="rounded-lg pa-3 text-center" elevation="1" min-width="100">
-                  <p class="text-body-2 text-medium-emphasis mb-1">Raíz</p>
-                  <p class="text-h5 font-weight-black mb-0">√16 = 4</p>
-                </v-card>
-              </div>
-            </v-card>
-            <p class="text-body-1 mb-3">
-              Los números que tienen raíz cuadrada exacta se llaman
-              <strong>cuadrados perfectos</strong>: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100...
-            </p>
-            <v-alert type="success" variant="tonal" density="compact" class="rounded-xl text-body-2">
-              <strong>Conexión geométrica:</strong> √A equivale al lado de un cuadrado cuya área es A.
-              Si el área es 25 m², el lado mide <strong>5 m</strong>.
-            </v-alert>
-          </v-card>
-        </v-col>
-
-        <!-- Video -->
-        <v-col cols="12" md="6" order="1" order-md="2">
-          <v-card class="rounded-2xl overflow-hidden" elevation="4" height="100%">
-            <div class="video-container bg-black">
-              <video controls class="w-100 h-100" preload="metadata">
-                <source :src="getVideoSrc(5, 2)" type="video/mp4" />
-                Tu navegador no soporta videos.
-              </video>
-            </div>
-            <v-card-text class="pa-4 pb-3">
-              <p class="text-body-2 text-medium-emphasis mb-0">
-                <v-icon size="small" color="deep-orange">mdi-play-circle</v-icon>
-                <em>Radicación y cuadrados perfectos</em>
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-
-      <!-- Chips cuadrados perfectos -->
-      <v-card class="rounded-2xl mb-6" elevation="0" border="1">
-        <v-card-text class="pa-5">
-          <p class="text-overline font-weight-bold text-deep-orange-darken-2 mb-4">Cuadrados Perfectos del 1 al 100</p>
-          <div class="d-flex flex-wrap gap-2">
-            <v-chip
-              v-for="cp in cuadradosPerfectos"
-              :key="cp.n"
-              color="deep-orange"
-              variant="tonal"
-              class="font-weight-bold"
-            >
-              √{{ cp.cuadrado }} = {{ cp.n }}
-            </v-chip>
-          </div>
-        </v-card-text>
-      </v-card>
-
-      <!-- ESPACIO IMAGEN -->
-      <v-card class="rounded-2xl mb-6" elevation="0" border="1">
-        <v-card-text class="pa-4">
-          <div class="img-placeholder rounded-xl d-flex align-center justify-center"
-               style="min-height:140px; border: 2px dashed #E64A19;">
-            <p class="text-medium-emphasis text-center pa-4 text-body-2">
-              [ Imagen: Cuadrado con área y lado → /images/grado5_radicacion.png ]
-            </p>
-          </div>
-        </v-card-text>
-      </v-card>
-    </section>
-
-    <v-divider class="mb-10"></v-divider>
-
-    <!-- ══════════════════════════════════════════
-         UNIDAD 3 — PENSAMIENTO GEOMÉTRICO
-    ══════════════════════════════════════════ -->
-    <section class="mb-10">
-      <v-chip color="blue-darken-2" variant="tonal" class="mb-6 font-weight-bold text-body-1">
-        Geometría: Área, Perímetro y Volumen
-      </v-chip>
-
-      <v-row align="stretch" class="mb-6">
-        <!-- Video -->
-        <v-col cols="12" md="6">
-          <v-card class="rounded-2xl overflow-hidden" elevation="4" height="100%">
-            <div class="video-container bg-black">
-              <video controls class="w-100 h-100" preload="metadata">
-                <source :src="getVideoSrc(5, 3)" type="video/mp4" />
-                Tu navegador no soporta videos.
-              </video>
-            </div>
-            <v-card-text class="pa-4 pb-3">
-              <p class="text-body-2 text-medium-emphasis mb-0">
-                <v-icon size="small" color="blue">mdi-play-circle</v-icon>
-                <em>Área, perímetro y volumen en figuras planas y sólidos</em>
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-        <!-- Tabla fórmulas -->
-        <v-col cols="12" md="6">
-          <v-card class="rounded-2xl pa-5 h-100" elevation="0" border="1">
-            <p class="text-overline font-weight-bold text-blue-darken-2 mb-4">Fórmulas Clave</p>
-            <v-table density="comfortable" class="rounded-xl overflow-hidden border">
-              <thead>
-                <tr class="bg-blue-lighten-4">
-                  <th class="font-weight-black">Figura</th>
-                  <th class="font-weight-black text-center">Área</th>
-                  <th class="font-weight-black text-center">Perímetro</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="f in formulasGeo" :key="f.figura">
-                  <td class="font-weight-bold">{{ f.emoji }} {{ f.figura }}</td>
-                  <td class="text-center text-body-2"><em>{{ f.area }}</em></td>
-                  <td class="text-center text-body-2"><em>{{ f.perimetro }}</em></td>
-                </tr>
-              </tbody>
-            </v-table>
-            <v-alert type="warning" variant="tonal" density="compact" class="rounded-xl mt-4 text-body-2">
-              <strong>Volumen del cubo:</strong> V = lado³ (¡aquí usamos potenciación!)
-            </v-alert>
-          </v-card>
-        </v-col>
-      </v-row>
-
-      <!-- ESPACIO IMAGEN -->
-      <v-card class="rounded-2xl mb-6" elevation="0" border="1">
-        <v-card-text class="pa-4">
-          <div class="img-placeholder rounded-xl d-flex align-center justify-center"
-               style="min-height:150px; border: 2px dashed #1565C0;">
-            <p class="text-medium-emphasis text-center pa-4 text-body-2">
-              [ Infografía: Figuras geométricas con fórmulas → /images/grado5_geometria.png ]
-            </p>
-          </div>
-        </v-card-text>
-      </v-card>
-    </section>
-
-    <v-divider class="mb-10"></v-divider>
-
-    <!-- ══════════════════════════════════════════
-         UNIDAD 4 — PENSAMIENTO ESTADÍSTICO
-    ══════════════════════════════════════════ -->
-    <section class="mb-10">
-      <v-chip color="teal-darken-2" variant="tonal" class="mb-6 font-weight-bold text-body-1">
-        Estadística: Leer e Interpretar Datos
-      </v-chip>
-
-      <v-row align="stretch" class="mb-6">
-        <!-- Acordeón medidas -->
-        <v-col cols="12" md="6" order="2" order-md="1">
-          <v-card class="rounded-2xl pa-6 h-100" elevation="0" border="1">
-            <p class="text-overline font-weight-bold text-teal-darken-2 mb-3">Medidas de Tendencia Central</p>
-            <p class="text-body-1 mb-5">
-              La estadística permite <strong>resumir y comprender grandes cantidades de datos</strong>.
-              Las medidas de tendencia central nos dicen cuál es el valor "representativo" de un conjunto.
-            </p>
-            <v-expansion-panels variant="accordion" class="rounded-xl overflow-hidden border">
-              <v-expansion-panel v-for="medida in medidasEstadisticas" :key="medida.nombre">
-                <v-expansion-panel-title class="font-weight-bold py-3">
-                  {{ medida.emoji }} {{ medida.nombre }}
-                </v-expansion-panel-title>
-                <v-expansion-panel-text>
-                  <p class="text-body-2 mb-2">{{ medida.definicion }}</p>
-                  <v-card class="rounded-lg pa-3" :color="medida.color" variant="tonal" elevation="0">
-                    <p class="text-body-2 mb-0"><strong>Ejemplo:</strong> {{ medida.ejemplo }}</p>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-card class="rounded-3xl pa-6 h-100 kid-card" elevation="0">
+                  <p class="text-overline font-weight-black title-orange mb-3">¿Qué es una potencia?</p>
+                  <p class="kid-card-body mb-4">
+                    Es una forma abreviada de escribir una multiplicación donde el mismo número se repite.
+                  </p>
+                  <v-card class="rounded-xl pa-5 mb-4 text-center" color="red-lighten-5" elevation="0">
+                    <div class="d-flex align-center justify-center gap-4">
+                      <div class="text-h2 font-weight-black text-red">2³</div>
+                      <div class="text-left text-body-2">
+                        <p class="mb-1"><strong class="text-red">2</strong> Base</p>
+                        <p class="mb-1"><strong class="text-red">3</strong> Exponente</p>
+                        <p class="mb-0"><strong>= 8</strong></p>
+                      </div>
+                    </div>
                   </v-card>
-                </v-expansion-panel-text>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </v-card>
-        </v-col>
-
-        <!-- Video -->
-        <v-col cols="12" md="6" order="1" order-md="2">
-          <v-card class="rounded-2xl overflow-hidden" elevation="4" height="100%">
-            <div class="video-container bg-black">
-              <video controls class="w-100 h-100" preload="metadata">
-                <source :src="getVideoSrc(5, 4)" type="video/mp4" />
-                Tu navegador no soporta videos.
-              </video>
+                  <v-alert type="info" variant="tonal" class="rounded-xl text-body-2">
+                    Cualquier número elevado a <strong>0</strong> es <strong>1</strong>.
+                  </v-alert>
+                </v-card>
+              </v-col>
+            </v-row>
+            <div class="divider-kids my-8">✦ ✦ ✦</div>
+            <div class="d-flex justify-end">
+              <button class="btn-practica" @click="selectUnit(1)">Radicación →</button>
             </div>
-            <v-card-text class="pa-4 pb-3">
-              <p class="text-body-2 text-medium-emphasis mb-0">
-                <v-icon size="small" color="teal">mdi-play-circle</v-icon>
-                <em>Estadística: gráficas, media, moda y mediana</em>
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+          </section>
+        </transition>
 
-      <!-- ESPACIO IMAGEN -->
-      <v-card class="rounded-2xl mb-6" elevation="0" border="1">
-        <v-card-text class="pa-4">
-          <p class="text-overline font-weight-bold text-teal-darken-2 mb-3">Tipos de Gráficas Estadísticas</p>
-          <div class="img-placeholder rounded-xl d-flex align-center justify-center"
-               style="min-height:160px; border: 2px dashed #00695C;">
-            <p class="text-medium-emphasis text-center pa-4 text-body-2">
-              [ Infografía: Gráfica de barras, pictograma y diagrama de sectores → /images/grado5_estadistica.png ]
-            </p>
-          </div>
-        </v-card-text>
-      </v-card>
-    </section>
+        <!-- UNIDAD 1: RADICACIÓN -->
+        <transition name="fade-slide" mode="out-in">
+          <section v-if="activeUnit === 1" key="u1" class="mb-10">
+            <div class="section-label label-blue">
+              🔄 Radicación: Operación Inversa
+            </div>
+            <v-row align="stretch" class="mb-6">
+              <v-col cols="12" md="6" order="2" order-md="1">
+                <v-card class="rounded-3xl pa-6 h-100 kid-card" elevation="0">
+                  <p class="text-overline font-weight-black title-blue mb-3">¿Qué es la raíz cuadrada?</p>
+                  <p class="kid-card-body mb-4">
+                    Hallar qué número multiplicado por sí mismo produce el resultado.
+                  </p>
+                  <div class="d-flex justify-center gap-4 mb-4">
+                    <v-card class="pa-3 rounded-xl text-center" border elevation="0">4² = 16</v-card>
+                    <v-icon color="blue">mdi-swap-horizontal</v-icon>
+                    <v-card class="pa-3 rounded-xl text-center" border elevation="0">√16 = 4</v-card>
+                  </div>
+                  <v-alert type="success" variant="tonal" class="rounded-xl text-body-2">
+                    <strong>Conexión:</strong> √A es el lado de un cuadrado de área A.
+                  </v-alert>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6" order="1" order-md="2">
+                <v-card class="rounded-3xl overflow-hidden card-shadow" elevation="0" height="100%">
+                  <div class="video-container bg-black">
+                    <video controls class="w-100 h-100" preload="metadata">
+                      <source :src="'/videos/grado5_video2.mp4'" type="video/mp4" />
+                    </video>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+            <div class="divider-kids my-8">✦ ✦ ✦</div>
+            <div class="d-flex justify-space-between">
+              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(0)" class="font-weight-bold">← Potenciación</v-btn>
+              <button class="btn-practica" @click="selectUnit(2)">Geometría →</button>
+            </div>
+          </section>
+        </transition>
 
-    <!-- BOTÓN DE NAVEGACIÓN -->
-    <div class="mt-12 d-flex justify-end">
-      <v-btn
-        size="x-large"
-        color="red-darken-2"
-        class="rounded-xl px-8"
-        elevation="8"
-        :to="`/app/grado/5/actividades`"
-      >
-        ¡A Practicar! <v-icon end>mdi-chevron-right</v-icon>
-      </v-btn>
-    </div>
+        <!-- UNIDAD 2: GEOMETRÍA -->
+        <transition name="fade-slide" mode="out-in">
+          <section v-if="activeUnit === 2" key="u2" class="mb-10">
+            <div class="section-label label-green">
+              📐 Espacio y Medida
+            </div>
+            <v-row align="stretch" class="mb-6">
+              <v-col cols="12" md="6">
+                <v-card class="rounded-3xl overflow-hidden card-shadow" elevation="0" height="100%">
+                  <div class="video-container bg-black">
+                    <video controls class="w-100 h-100" preload="metadata">
+                      <source :src="'/videos/grado5_video3.mp4'" type="video/mp4" />
+                    </video>
+                  </div>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-card class="rounded-3xl pa-5 h-100 kid-card" elevation="0">
+                  <p class="text-overline font-weight-black title-green mb-4">Fórmulas Mágicas</p>
+                  <div class="table-wrap">
+                    <table class="data-table">
+                      <thead class="bg-green-lighten-4">
+                        <tr>
+                          <th class="pa-2">Figura</th>
+                          <th class="pa-2">Área</th>
+                          <th class="pa-2">Perímetro</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="f in formulasGeo" :key="f.figura">
+                          <td class="pa-2 font-weight-bold">{{ f.figura }}</td>
+                          <td class="pa-2 text-body-2">{{ f.area }}</td>
+                          <td class="pa-2 text-body-2">{{ f.perimetro }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+            <div class="divider-kids my-8">✦ ✦ ✦</div>
+            <div class="d-flex justify-space-between">
+              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(1)" class="font-weight-bold">← Radicación</v-btn>
+              <button class="btn-practica" @click="selectUnit(3)">Estadística →</button>
+            </div>
+          </section>
+        </transition>
 
+        <!-- UNIDAD 3: ESTADÍSTICA -->
+        <transition name="fade-slide" mode="out-in">
+          <section v-if="activeUnit === 3" key="u3" class="mb-10">
+            <div class="section-label label-purple">
+              📊 Mundo de Datos
+            </div>
+            <v-row align="stretch" class="mb-6">
+              <v-col cols="12" md="6" order="2" order-md="1">
+                <v-card class="rounded-3xl pa-6 h-100 kid-card" elevation="0">
+                  <p class="text-overline font-weight-black title-purple mb-3">Tendencia Central</p>
+                  <v-expansion-panels variant="accordion" class="rounded-xl overflow-hidden border">
+                    <v-expansion-panel v-for="m in medidas" :key="m.nombre">
+                      <v-expansion-panel-title class="font-weight-bold">{{ m.nombre }}</v-expansion-panel-title>
+                      <v-expansion-panel-text class="text-body-2">{{ m.definicion }}</v-expansion-panel-text>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6" order="1" order-md="2">
+                <v-card class="rounded-3xl overflow-hidden card-shadow" elevation="0" height="100%">
+                  <div class="video-container bg-black">
+                    <video controls class="w-100 h-100" preload="metadata">
+                      <source :src="'/videos/grado5_video4.mp4'" type="video/mp4" />
+                    </video>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+            <div class="divider-kids my-8">✦ ✦ ✦</div>
+            <div class="d-flex justify-start">
+              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(2)" class="font-weight-bold">← Geometría</v-btn>
+            </div>
+          </section>
+        </transition>
+
+        <div class="mt-12 mb-12 d-flex justify-center">
+          <button class="btn-practica" @click="$router.push('/app/grado/5/actividades')">
+            ¡A Practicar Misiones! 🚀
+          </button>
+        </div>
+
+      </div>
+    </main>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-function getVideoSrc(grado, numero) {
-  return `/videos/grado${grado}_video${numero}.mp4`
+const activeUnit = ref(0)
+const isMenuOpen = ref(false)
+
+const toggleMenu = (force = null) => {
+  if (force !== null) {
+    isMenuOpen.value = force
+  } else {
+    isMenuOpen.value = !isMenuOpen.value
+  }
 }
 
-const potencias2 = ref([
-  { exp: 0, desarrollo: '—',                  resultado: 1  },
-  { exp: 1, desarrollo: '2',                  resultado: 2  },
-  { exp: 2, desarrollo: '2 × 2',              resultado: 4  },
-  { exp: 3, desarrollo: '2 × 2 × 2',          resultado: 8  },
-  { exp: 4, desarrollo: '2 × 2 × 2 × 2',      resultado: 16 },
-  { exp: 5, desarrollo: '2 × 2 × 2 × 2 × 2', resultado: 32 },
-])
+function selectUnit(i) {
+  activeUnit.value = i
+  toggleMenu(false)
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
-const potencias10 = ref([
-  { exp: 0, resultado: '1',       nombre: 'Uno'      },
-  { exp: 1, resultado: '10',      nombre: 'Decena'   },
-  { exp: 2, resultado: '100',     nombre: 'Centena'  },
-  { exp: 3, resultado: '1.000',   nombre: 'Mil'      },
-  { exp: 4, resultado: '10.000',  nombre: 'Diez mil' },
-  { exp: 5, resultado: '100.000', nombre: 'Cien mil' },
-])
+const unidades = [
+  { titulo: 'Potenciación', emoji: '💥', color: '#E64A19', descripcion: 'Multiplicación acelerada y sus secretos' },
+  { titulo: 'Radicación', emoji: '🔄', color: '#1565C0', descripcion: 'La operación inversa y su magia geométrica' },
+  { titulo: 'Geometría', emoji: '📐', color: '#2E7D32', descripcion: 'Área, perímetro y volumen en el espacio' },
+  { titulo: 'Estadística', emoji: '📊', color: '#7B1FA2', descripcion: 'Análisis de datos y medidas centrales' }
+]
 
-const cuadradosPerfectos = ref([
-  { n: 1,  cuadrado: 1   },
-  { n: 2,  cuadrado: 4   },
-  { n: 3,  cuadrado: 9   },
-  { n: 4,  cuadrado: 16  },
-  { n: 5,  cuadrado: 25  },
-  { n: 6,  cuadrado: 36  },
-  { n: 7,  cuadrado: 49  },
-  { n: 8,  cuadrado: 64  },
-  { n: 9,  cuadrado: 81  },
-  { n: 10, cuadrado: 100 },
-])
+const formulasGeo = [
+  { figura: 'Rectángulo', area: 'b × a', perimetro: '2(b + a)' },
+  { figura: 'Cuadrado', area: 'lado²', perimetro: '4 × lado' },
+  { figura: 'Triángulo', area: '(b × a) / 2', perimetro: 'l1 + l2 + l3' },
+  { figura: 'Círculo', area: 'π × r²', perimetro: '2 × π × r' }
+]
 
-const formulasGeo = ref([
-  { emoji: '▭', figura: 'Rectángulo', area: 'base × altura',        perimetro: '2(b + a)'      },
-  { emoji: '■', figura: 'Cuadrado',   area: 'lado²',                perimetro: '4 × lado'      },
-  { emoji: '▲', figura: 'Triángulo',  area: '(base × altura) ÷ 2', perimetro: 'l₁ + l₂ + l₃' },
-  { emoji: '⬡', figura: 'Círculo',    area: 'π × r²',              perimetro: '2 × π × r'     },
-])
-
-const medidasEstadisticas = ref([
-  {
-    emoji: '➕',
-    nombre: 'Media (Promedio)',
-    definicion: 'Se calcula sumando todos los valores y dividiendo entre la cantidad de datos. Representa el valor equilibrado del conjunto.',
-    ejemplo: 'Notas: 3, 4, 5, 4, 4 → Suma = 20 → Media = 20 ÷ 5 = 4,0',
-    color: 'teal',
-  },
-  {
-    emoji: '🎯',
-    nombre: 'Moda',
-    definicion: 'Es el valor que aparece con mayor frecuencia en el conjunto de datos. Puede haber más de una moda o ninguna.',
-    ejemplo: 'Datos: 3, 4, 4, 4, 5 → La moda es 4 (aparece 3 veces)',
-    color: 'blue',
-  },
-  {
-    emoji: '⚖️',
-    nombre: 'Mediana',
-    definicion: 'Es el valor central cuando los datos están ordenados de menor a mayor. Divide el conjunto en dos mitades iguales.',
-    ejemplo: 'Datos ordenados: 3, 4, 4, 5, 5 → La mediana es 4 (el del centro)',
-    color: 'green',
-  },
-])
+const medidas = [
+  { nombre: 'Media', definicion: 'Promedio de todos los datos.' },
+  { nombre: 'Moda', definicion: 'El valor que más se repite.' },
+  { nombre: 'Mediana', definicion: 'El valor central de los datos ordenados.' }
+]
 </script>
 
 <style scoped>
-.video-container {
-  aspect-ratio: 16/9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* ═══════════════════════════════════════════════
+   ESTILOS COPIADOS DE GRADO 3 PARA CONSISTENCIA
+═══════════════════════════════════════════════ */
+.grade-wrapper {
+  font-family: 'Nunito', 'Trebuchet MS', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  background: transparent;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
-.gap-1 { gap: 4px;  }
-.gap-2 { gap: 8px;  }
-.gap-3 { gap: 12px; }
-.gap-4 { gap: 16px; }
+
+.nav-overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px); z-index: 900; 
+  opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s; pointer-events: none;
+}
+.nav-overlay.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
+
+.floating-menu-container {
+  position: fixed; top: 0; left: 0; height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; z-index: 1000; pointer-events: none;
+}
+.menu-items { display: flex; flex-direction: column; gap: 20px; padding-left: 24px; }
+
+.nav-btn {
+  display: flex; align-items: center; gap: 16px; background: transparent; border: none; padding: 0; cursor: pointer; position: relative; opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+}
+.menu-open .nav-btn { opacity: 1; pointer-events: auto; }
+.menu-open .nav-btn:nth-child(1) { transition-delay: 0.05s; }
+.menu-open .nav-btn:nth-child(2) { transition-delay: 0.10s; }
+.menu-open .nav-btn:nth-child(3) { transition-delay: 0.15s; }
+.menu-open .nav-btn:nth-child(4) { transition-delay: 0.20s; }
+
+.nav-circle { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); flex-shrink: 0; }
+.nav-btn--active .nav-circle { outline: 3px dashed var(--accent, #2E7D32); outline-offset: 4px; }
+.nav-text-box { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 2px solid var(--accent, #c0c0c0); border-radius: 14px; padding: 10px 18px; display: flex; align-items: center; gap: 12px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); white-space: nowrap; }
+.text-title { font-weight: 800; font-size: 0.95rem; color: #222222; }
+.text-emoji { font-size: 1.2rem; }
+
+.menu-toggle {
+  position: fixed; bottom: 24px; left: 24px; z-index: 1001; height: 46px; background-color: #ffffff; border: 2px solid #E0E0D8; border-radius: 23px; cursor: pointer; display: flex; align-items: center; padding: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.15); max-width: 120px; overflow: hidden; transition: max-width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+}
+.menu-toggle.active { max-width: 46px; }
+.menu-toggle-icon-wrap { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.menu-text { font-weight: 900; font-size: 0.95rem; color: #333; padding-left: 4px; padding-right: 18px; white-space: nowrap; opacity: 1; transition: opacity 0.2s ease; }
+.menu-toggle.active .menu-text { opacity: 0; pointer-events: none; }
+.hamburger-icon { width: 22px; height: 16px; position: relative; }
+.hamburger-icon span { display: block; position: absolute; height: 2.5px; width: 100%; background: #333; border-radius: 4px; left: 0; transition: .25s ease-in-out; }
+.hamburger-icon span:nth-child(1) { top: 0px; }
+.hamburger-icon span:nth-child(2) { top: 7px; }
+.hamburger-icon span:nth-child(3) { top: 14px; }
+.menu-toggle.active .hamburger-icon span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+.menu-toggle.active .hamburger-icon span:nth-child(2) { opacity: 0; left: -20px; }
+.menu-toggle.active .hamburger-icon span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+
+.unit-stage { margin: 0 auto; width: 100%; padding: 40px 50px 100px 50px; max-width: 1200px; }
+.grade-content { width: 100%; }
+.header-hero { padding: 1rem 0 2rem; }
+.header-chip-wrap { text-align: left; margin-bottom: 1.5rem; }
+.grado-chip { display: inline-block; background: #E8EAF6; color: #304FFE; border-radius: 999px; padding: 6px 18px; font-size: 0.9rem; font-weight: 900; font-family: 'Roboto', sans-serif; letter-spacing: 0.05em; line-height: 1.6; }
+.header-centered { text-align: center; }
+.title-main { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; line-height: 1.15; background: linear-gradient(90deg, #111 0%, #1565C0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+.subtitle-hero { font-size: clamp(1rem, 3vw, 1.15rem); color: #444; max-width: 600px; margin: 0 auto; }
+
+.section-label { display: inline-flex; align-items: center; gap: 8px; border-radius: 16px; padding: 10px 22px; font-size: 1.1rem; font-weight: 900; margin-bottom: 1.25rem; }
+.label-orange { background: #FFF3E0; color: #E64A19; border: 2px solid #FFAB91; }
+.label-blue { background: #E3F2FD; color: #1565C0; border: 2px solid #90CAF9; }
+.label-green  { background: #E8F5E9; color: #2E7D32; border: 2px solid #A5D6A7; }
+.label-purple { background: #F3E5F5; color: #7B1FA2; border: 2px solid #CE93D8; }
+
+.kid-card { background: #FFFFFF; border: 2.5px solid #EAEAEA; transition: transform 0.18s, box-shadow 0.18s; }
+.kid-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+.rounded-3xl { border-radius: 24px !important; }
+
+.section-box { border-radius: 24px; padding: 1.8rem; }
+.box-title { font-size: 1.15rem; font-weight: 900; margin-bottom: 8px; }
+.box-body { font-size: 1rem; color: #444; margin-bottom: 1.2rem; line-height: 1.6; }
+.title-orange { color: #E64A19 !important; }
+.title-blue { color: #1565C0 !important; }
+.title-green { color: #2E7D32 !important; }
+.title-purple { color: #6A1B9A !important; }
+
+.table-wrap { border-radius: 12px; overflow-x: auto; border: 1.5px solid #E0E0DC; margin-bottom: 8px; }
+.data-table { width: 100%; min-width: 500px; border-collapse: collapse; background: white; }
+
+.video-container { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
+.h-100 { height: 100%; }
+.divider-kids { text-align: center; font-size: 1.4rem; color: #D0D0D0; letter-spacing: 12px; }
+
+.btn-practica {
+  background: linear-gradient(135deg, #1565C0, #0D47A1); color: #fff; font-family: inherit; font-size: clamp(1rem, 4vw, 1.25rem); font-weight: 900; padding: 16px 42px; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 6px 20px rgba(13, 71, 161, 0.35); transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-practica:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 28px rgba(13, 71, 161, 0.45); }
+.btn-practica:active { transform: translateY(0); }
+
+@media (max-width: 768px) {
+  .unit-stage { padding: 20px 16px 110px 16px; }
+  .menu-toggle { bottom: 20px; left: 20px; }
+  .menu-items { padding-left: 20px; }
+}
 </style>

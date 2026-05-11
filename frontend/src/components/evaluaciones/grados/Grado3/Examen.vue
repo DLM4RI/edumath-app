@@ -45,16 +45,22 @@
           <v-radio-group v-model="answers[index]" class="custom-radio-group">
             <v-row>
               <v-col v-for="(option, optIdx) in q.options" :key="optIdx" cols="12" md="6">
-                <v-radio
-                  :label="option.label"
-                  :value="optIdx"
-                  class="mb-2 pa-4 rounded-xl border transition-all"
+                <div 
+                  class="option-box rounded-xl border pa-4 transition-all d-flex align-center"
                   :class="{
-                    'bg-primary-lighten-5 border-primary elevation-2':
-                      answers[index] === optIdx,
-                    'bg-white': answers[index] !== optIdx
+                    'selected-box border-primary elevation-3': answers[index] === optIdx,
+                    'bg-white border-grey-lighten-2': answers[index] !== optIdx
                   }"
-                ></v-radio>
+                  @click="answers[index] = optIdx"
+                >
+                  <v-radio
+                    :value="optIdx"
+                    color="primary"
+                    hide-details
+                    class="flex-grow-0 mr-3"
+                  ></v-radio>
+                  <span class="option-label text-body-1 font-weight-bold">{{ option.label }}</span>
+                </div>
               </v-col>
             </v-row>
           </v-radio-group>
@@ -179,8 +185,12 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useStats } from "../../../../composables/useStats";
 
 const emit = defineEmits(["finalizado"]);
+const { saveExamResult } = useStats();
+
+const feedbackByTopic = ref([]);
 
 const currentStep = ref(0);
 const score = ref(0);
@@ -368,6 +378,9 @@ const calculateScore = () => {
   score.value = total;
   finalGrade.value = (total / questions.length) * 5;
 
+  // Persistir resultados
+  saveExamResult('3', score.value, questions.length, topicsMap);
+
   feedbackByTopic.value = Object.keys(topicsMap)
     .map((name) => ({
       name,
@@ -392,7 +405,23 @@ const goToStudy = (topic) => {
   transition: all 0.3s ease;
 }
 .custom-radio-group :deep(.v-selection-control) {
-  width: 100%;
+  width: auto;
+}
+.option-box {
+  cursor: pointer;
+  height: 100%;
+  background: white;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.option-box:hover {
+  background: #F5F5F5;
+  transform: translateY(-2px);
+}
+.selected-box {
+  background: rgba(var(--v-theme-primary), 0.08) !important;
+}
+.option-label {
+  color: #333;
 }
 .grade-display {
   background: rgba(var(--v-theme-primary), 0.05);

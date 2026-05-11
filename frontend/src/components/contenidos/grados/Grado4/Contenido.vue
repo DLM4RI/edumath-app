@@ -1,212 +1,300 @@
 <template>
-  <div class="grade-content">
-    <!-- CABECERA -->
-    <header class="mb-8">
-      <v-chip color="purple-darken-2" variant="tonal" class="mb-2 font-weight-bold">
-        GRADO 4° • MATEMÁTICAS
-      </v-chip>
-      <h1 class="text-h3 font-weight-black tracking-tight">Lógica de Fracciones y Decimales</h1>
-      <p class="text-h6 text-medium-emphasis">
-        Comprende los decimales en situaciones reales de medida y comercio.
-      </p>
-    </header>
+  <div class="grade-wrapper" :class="{ 'menu-open': isMenuOpen }">
 
-    <!-- UNIDAD 1 -->
-    <section class="mb-10">
-      <v-chip color="purple" variant="tonal" class="mb-6 font-weight-bold text-body-1">
-        Decimales en el Mundo Real
-      </v-chip>
+    <div class="nav-overlay" :class="{ 'is-active': isMenuOpen }" @click="toggleMenu(false)"></div>
 
-      <v-row align="stretch">
-        <!-- Video -->
-        <v-col cols="12" md="6">
-          <v-card class="rounded-2xl overflow-hidden" elevation="3" height="100%">
-            <div class="video-container bg-black">
-              <video controls class="w-100 h-100" preload="metadata">
-                <source :src="getVideoSrc(4, 1)" type="video/mp4" />
-                Tu navegador no soporta videos.
-              </video>
+    <nav class="floating-menu-container">
+      <div class="menu-items">
+        <button
+          v-for="(u, i) in unidades"
+          :key="i"
+          class="nav-btn"
+          :class="{ 'nav-btn--active': activeUnit === i }"
+          :style="`--accent: ${u.color}`"
+          @click="selectUnit(i)"
+        >
+          <div class="nav-circle" :style="`background-color: ${u.color}`">{{ i + 1 }}</div>
+          
+          <transition name="fade-simple">
+            <div v-if="isMenuOpen" class="nav-text-box">
+              <span class="text-title">{{ u.titulo }}</span>
+              <span class="text-emoji">{{ u.emoji }}</span>
             </div>
-            <v-card-text class="pa-4">
-              <p class="text-body-2 text-medium-emphasis mb-0">
-                <v-icon size="small" color="purple">mdi-play-circle</v-icon>
-                <em>Uso de decimales en situaciones cotidianas</em> — 4 min
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
+          </transition>
+        </button>
+      </div>
+    </nav>
 
-        <!-- Texto explicativo con imagen -->
-        <v-col cols="12" md="6">
-          <v-card class="rounded-2xl pa-6 h-100" elevation="0" border="1">
-            <p class="text-overline font-weight-bold text-purple-darken-2 mb-3">¿Por qué importan los decimales?</p>
-            <p class="text-body-1 mb-4">
-              Los números decimales aparecen todo el tiempo en la vida real: en los precios del supermercado, 
-              en el peso de los ingredientes de una receta y en la estatura medida en metros. 
-              Sin decimales, no podríamos expresar valores "entre" dos números enteros.
-            </p>
-            <p class="text-body-1 mb-4">
-              La <strong>coma decimal</strong> separa la parte entera de la parte fraccionaria. 
-              En el precio <strong>$3.250,75</strong>, el número a la derecha de la coma 
-              representa centavos: 75 centésimas de peso.
-            </p>
+    <button class="menu-toggle" :class="{ active: isMenuOpen }" @click="toggleMenu()">
+      <div class="menu-toggle-icon-wrap">
+        <div class="hamburger-icon">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      <span class="menu-text">Menú</span>
+    </button>
 
-            <!-- ESPACIO IMAGEN: recibo o etiqueta de supermercado -->
-            <div class="img-placeholder rounded-xl d-flex align-center justify-center" style="min-height:130px; border: 2px dashed #7B1FA2;">
-              <p class="text-medium-emphasis text-center pa-4 text-body-2">[ Imagen: Recibo supermercado → /images/grado4_recibo.png ]</p>
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
+    <main class="unit-stage">
+      <div class="grade-content">
 
-      <!-- Conceptos clave: tarjetas con más texto (nivel 4°) -->
-      <v-row class="mt-6">
-        <v-col cols="12" md="4" v-for="(concepto, i) in conceptosUnidad1" :key="i">
-          <v-card class="rounded-2xl pa-5 h-100" :color="concepto.color" variant="tonal" elevation="0">
-            <p class="text-h5 mb-2">{{ concepto.emoji }}</p>
-            <p class="text-body-1 font-weight-black mb-2">{{ concepto.titulo }}</p>
-            <p class="text-body-2">{{ concepto.descripcion }}</p>
-          </v-card>
-        </v-col>
-      </v-row>
-    </section>
-
-    <v-divider class="mb-10"></v-divider>
-
-    <!-- UNIDAD 2 -->
-    <section class="mb-10">
-      <v-chip color="deep-purple" variant="tonal" class="mb-6 font-weight-bold text-body-1">
-        Anatomía del Número Decimal
-      </v-chip>
-
-      <!-- Video arriba + tabla de valor posicional lado a lado -->
-      <v-row align="stretch" class="mb-6">
-        <v-col cols="12" md="6">
-          <v-card class="rounded-2xl overflow-hidden" elevation="3" height="100%">
-            <div class="video-container bg-black">
-              <video controls class="w-100 h-100" preload="metadata">
-                <source :src="getVideoSrc(4, 2)" type="video/mp4" />
-                Tu navegador no soporta videos.
-              </video>
-            </div>
-            <v-card-text class="pa-4">
-              <p class="text-body-2 text-medium-emphasis mb-0">
-                <v-icon size="small" color="deep-purple">mdi-play-circle</v-icon>
-                <em>Lectura, escritura y valor de los decimales</em> — 6 min
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" md="6">
-          <v-card class="rounded-2xl pa-5 h-100" elevation="0" border="1">
-            <p class="text-overline font-weight-bold text-deep-purple-darken-2 mb-4">🔎 Tabla de Valor Posicional</p>
-
-            <!-- Tabla posicional extendida -->
-            <v-table density="comfortable" class="rounded-xl overflow-hidden border mb-4">
-              <thead>
-                <tr class="bg-deep-purple-lighten-4">
-                  <th v-for="col in tablaPosicional.headers" :key="col" class="text-center font-weight-black text-body-2 pa-2">
-                    {{ col }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td v-for="(val, i) in tablaPosicional.valores" :key="i"
-                    class="text-center text-h5 font-weight-black pa-3"
-                    :class="i >= 3 ? 'text-deep-purple' : ''"
-                  >
-                    {{ val }}
-                  </td>
-                </tr>
-                <tr>
-                  <td v-for="(lbl, i) in tablaPosicional.labels" :key="i"
-                    class="text-center text-caption text-medium-emphasis pa-1"
-                  >
-                    {{ lbl }}
-                  </td>
-                </tr>
-              </tbody>
-            </v-table>
-
-            <p class="text-body-2">
-              En <strong>95,11</strong>: el 9 vale <em>noventa</em> (decenas), el 5 vale <em>cinco</em> (unidades), 
-              el primer 1 vale <em>una décima</em> y el segundo 1 vale <em>una centésima</em>.
-            </p>
-            <v-alert type="warning" variant="tonal" density="compact" class="rounded-xl text-body-2">
-              <strong>¡Alinea siempre la coma!</strong> Es el punto de referencia de todo número decimal.
-            </v-alert>
-          </v-card>
-        </v-col>
-      </v-row>
-
-      <!-- ESPACIO IMAGEN: Infografía descomposición decimal -->
-      <v-card class="rounded-2xl mb-6" elevation="0" border="1">
-        <v-card-text class="pa-4">
-          <div class="img-placeholder rounded-xl d-flex align-center justify-center" style="min-height:150px; border: 2px dashed #4527A0;">
-            <p class="text-medium-emphasis text-center pa-4 text-body-2">[ Infografía: Descomposición de 95,11 → /images/grado4_posicional.png ]</p>
+        <header class="mb-8 header-hero">
+          <div class="header-chip-wrap">
+            <span class="grado-chip">GRADO 4° • MATEMÁTICAS</span>
           </div>
-        </v-card-text>
-      </v-card>
-    </section>
+          <div class="header-centered">
+            <h1 class="title-main">{{ unidades[activeUnit].titulo }}</h1>
+            <p class="subtitle-hero">{{ unidades[activeUnit].descripcion }}</p>
+          </div>
+        </header>
 
-    <!-- BOTÓN DE NAVEGACIÓN -->
-    <div class="mt-12 d-flex justify-end">
-      <v-btn
-        size="x-large"
-        color="purple-darken-2"
-        class="rounded-xl px-8"
-        elevation="8"
-        :to="`/app/grado/4/actividades`"
-      >
-        ¡A Practicar! <v-icon end>mdi-chevron-right</v-icon>
-      </v-btn>
-    </div>
+        <!-- UNIDAD 0: MUNDO REAL -->
+        <transition name="fade-slide" mode="out-in">
+          <section v-if="activeUnit === 0" key="u0" class="mb-10">
+            <div class="section-label label-purple">
+              🌍 Decimales en el Mundo Real
+            </div>
+            <v-row align="stretch" class="mb-6">
+              <v-col cols="12" md="6">
+                <v-card class="rounded-3xl overflow-hidden card-shadow" elevation="0" height="100%">
+                  <div class="video-container bg-black">
+                    <video controls class="w-100 h-100" preload="metadata">
+                      <source :src="'/videos/grado4_video1.mp4'" type="video/mp4" />
+                    </video>
+                  </div>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-card class="rounded-3xl pa-6 h-100 kid-card" elevation="0">
+                  <p class="text-overline font-weight-black title-purple mb-3">¿Por qué importan?</p>
+                  <p class="kid-card-body mb-4">
+                    Los números decimales aparecen en los precios del supermercado, en el peso de los ingredientes y en tu estatura. Sin ellos, no podríamos ser precisos.
+                  </p>
+                  <p class="kid-card-body mb-4">
+                    La <strong>coma decimal</strong> separa la parte entera de la parte fraccionaria. En $3.250,75, el 75 representa centavos.
+                  </p>
+                  <div class="section-box box-purple text-center border-dashed" style="border: 2px dashed #7B1FA2;">
+                    <p class="text-medium-emphasis mb-0">[ Imagen: Recibo supermercado ]</p>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" md="4" v-for="(c, i) in conceptos" :key="i">
+                <v-card class="rounded-3xl pa-5 h-100 kid-card" elevation="0" :style="`background-color: ${c.bg}`">
+                  <p class="text-h4 mb-2">{{ c.emoji }}</p>
+                  <p class="kid-card-title font-weight-black mb-2">{{ c.titulo }}</p>
+                  <p class="kid-card-body text-body-2">{{ c.descripcion }}</p>
+                </v-card>
+              </v-col>
+            </v-row>
+            <div class="divider-kids my-8">✦ ✦ ✦</div>
+            <div class="d-flex justify-end">
+              <button class="btn-practica" @click="selectUnit(1)">Valor Posicional →</button>
+            </div>
+          </section>
+        </transition>
+
+        <!-- UNIDAD 1: ANATOMÍA -->
+        <transition name="fade-slide" mode="out-in">
+          <section v-if="activeUnit === 1" key="u1" class="mb-10">
+            <div class="section-label label-blue">
+              🔎 Anatomía del Número Decimal
+            </div>
+            <v-row align="stretch" class="mb-6">
+              <v-col cols="12" md="6">
+                <v-card class="rounded-3xl overflow-hidden card-shadow" elevation="0" height="100%">
+                  <div class="video-container bg-black">
+                    <video controls class="w-100 h-100" preload="metadata">
+                      <source :src="'/videos/grado4_video2.mp4'" type="video/mp4" />
+                    </video>
+                  </div>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-card class="rounded-3xl pa-5 h-100 kid-card" elevation="0">
+                  <p class="text-overline font-weight-black title-blue mb-4">Tabla de Valor Posicional</p>
+                  <div class="table-wrap mb-4">
+                    <table class="data-table text-center">
+                      <thead class="bg-blue-lighten-4">
+                        <tr>
+                          <th v-for="h in tablaPosicional.headers" :key="h" class="pa-2 font-weight-black">{{ h }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td v-for="(v, i) in tablaPosicional.valores" :key="i" class="pa-3 text-h5 font-weight-black" :class="i >= 3 ? 'text-blue' : ''">{{ v }}</td>
+                        </tr>
+                        <tr class="text-caption text-medium-emphasis">
+                          <td v-for="l in tablaPosicional.labels" :key="l" class="pa-1">{{ l }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <v-alert type="warning" variant="tonal" class="rounded-xl text-body-2">
+                    <strong>¡Alinea siempre la coma!</strong> Es el punto de referencia de todo número decimal.
+                  </v-alert>
+                </v-card>
+              </v-col>
+            </v-row>
+            <div class="section-box box-blue text-center mb-6 border-dashed" style="border: 2px dashed #1565C0;">
+              <p class="text-medium-emphasis mb-0">[ Infografía: Descomposición de 95,11 ]</p>
+            </div>
+            <div class="divider-kids my-8">✦ ✦ ✦</div>
+            <div class="d-flex justify-space-between">
+              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(0)" class="font-weight-bold">← Mundo Real</v-btn>
+              <button class="btn-practica" @click="$router.push('/app/grado/4/actividades')">¡A Practicar! 🚀</button>
+            </div>
+          </section>
+        </transition>
+
+        <div class="mt-12 mb-12 d-flex justify-center" v-if="activeUnit === 0">
+          <button class="btn-practica" @click="$router.push('/app/grado/4/actividades')">
+            ¡Ir a las Misiones! 🚀
+          </button>
+        </div>
+
+      </div>
+    </main>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-function getVideoSrc(grado, numero) {
-  return `/videos/grado${grado}_video${numero}.mp4`
+const activeUnit = ref(0)
+const isMenuOpen = ref(false)
+
+const toggleMenu = (force = null) => {
+  if (force !== null) {
+    isMenuOpen.value = force
+  } else {
+    isMenuOpen.value = !isMenuOpen.value
+  }
 }
 
-const conceptosUnidad1 = ref([
-  {
-    emoji: '🏷️',
-    titulo: 'Decimales en precios',
-    descripcion: 'Los precios usan decimales para representar centavos. $3.250,50 significa tres mil doscientos cincuenta pesos con cincuenta centavos.',
-    color: 'purple'
-  },
-  {
-    emoji: '📏',
-    titulo: 'Decimales en medidas',
-    descripcion: 'Una estatura de 1,35 m indica 1 metro entero y 35 centésimas adicionales. Sin decimales, no podríamos ser precisos.',
-    color: 'deep-purple'
-  },
-  {
-    emoji: '⚖️',
-    titulo: 'Comparar decimales',
-    descripcion: 'Para comparar, observa primero la parte entera. Si es igual, compara décima a décima. ¡La posición importa!',
-    color: 'indigo'
-  },
-])
+function selectUnit(i) {
+  activeUnit.value = i
+  toggleMenu(false)
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
-const tablaPosicional = ref({
+const unidades = [
+  { titulo: 'Mundo Decimal', emoji: '🌍', color: '#7B1FA2', descripcion: 'Comprende los decimales en situaciones reales de medida y comercio' },
+  { titulo: 'Valor Posicional', emoji: '🔎', color: '#1565C0', descripcion: 'Aprende la anatomía de los números y su valor exacto' }
+]
+
+const conceptos = [
+  { emoji: '🏷️', titulo: 'Precios', descripcion: 'Los precios usan decimales para centavos. $3.250,50 son pesos y centavos.', bg: '#F3E5F5' },
+  { emoji: '📏', titulo: 'Medidas', descripcion: 'Una estatura de 1,35 m indica 1 metro y 35 centésimas. ¡Precisión total!', bg: '#E8EAF6' },
+  { emoji: '⚖️', titulo: 'Comparar', descripcion: 'Observa la parte entera, luego décima a décima. ¡La posición importa!', bg: '#E3F2FD' }
+]
+
+const tablaPosicional = {
   headers: ['Decenas', 'Unidades', ',', 'Décimas', 'Centésimas'],
   valores: ['9', '5', ',', '1', '1'],
-  labels: ['×10', '×1', '', '÷10', '÷100'],
-})
+  labels: ['×10', '×1', '', '÷10', '÷100']
+}
 </script>
 
 <style scoped>
-.video-container {
-  aspect-ratio: 16/9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* ═══════════════════════════════════════════════
+   ESTILOS COPIADOS DE GRADO 3 PARA CONSISTENCIA
+═══════════════════════════════════════════════ */
+.grade-wrapper {
+  font-family: 'Nunito', 'Trebuchet MS', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  background: transparent;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
-.gap-3 { gap: 12px; }
+
+.nav-overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px); z-index: 900; 
+  opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s; pointer-events: none;
+}
+.nav-overlay.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
+
+.floating-menu-container {
+  position: fixed; top: 0; left: 0; height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; z-index: 1000; pointer-events: none;
+}
+.menu-items { display: flex; flex-direction: column; gap: 20px; padding-left: 24px; }
+
+.nav-btn {
+  display: flex; align-items: center; gap: 16px; background: transparent; border: none; padding: 0; cursor: pointer; position: relative; opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+}
+.menu-open .nav-btn { opacity: 1; pointer-events: auto; }
+.menu-open .nav-btn:nth-child(1) { transition-delay: 0.05s; }
+.menu-open .nav-btn:nth-child(2) { transition-delay: 0.10s; }
+
+.nav-circle { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); flex-shrink: 0; }
+.nav-btn--active .nav-circle { outline: 3px dashed var(--accent, #2E7D32); outline-offset: 4px; }
+.nav-text-box { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 2px solid var(--accent, #c0c0c0); border-radius: 14px; padding: 10px 18px; display: flex; align-items: center; gap: 12px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); white-space: nowrap; }
+.text-title { font-weight: 800; font-size: 0.95rem; color: #222222; }
+.text-emoji { font-size: 1.2rem; }
+
+.menu-toggle {
+  position: fixed; bottom: 24px; left: 24px; z-index: 1001; height: 46px; background-color: #ffffff; border: 2px solid #E0E0D8; border-radius: 23px; cursor: pointer; display: flex; align-items: center; padding: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.15); max-width: 120px; overflow: hidden; transition: max-width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+}
+.menu-toggle.active { max-width: 46px; }
+.menu-toggle-icon-wrap { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.menu-text { font-weight: 900; font-size: 0.95rem; color: #333; padding-left: 4px; padding-right: 18px; white-space: nowrap; opacity: 1; transition: opacity 0.2s ease; }
+.menu-toggle.active .menu-text { opacity: 0; pointer-events: none; }
+.hamburger-icon { width: 22px; height: 16px; position: relative; }
+.hamburger-icon span { display: block; position: absolute; height: 2.5px; width: 100%; background: #333; border-radius: 4px; left: 0; transition: .25s ease-in-out; }
+.hamburger-icon span:nth-child(1) { top: 0px; }
+.hamburger-icon span:nth-child(2) { top: 7px; }
+.hamburger-icon span:nth-child(3) { top: 14px; }
+.menu-toggle.active .hamburger-icon span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+.menu-toggle.active .hamburger-icon span:nth-child(2) { opacity: 0; left: -20px; }
+.menu-toggle.active .hamburger-icon span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+
+.unit-stage { margin: 0 auto; width: 100%; padding: 40px 50px 100px 50px; max-width: 1200px; }
+.grade-content { width: 100%; }
+.header-hero { padding: 1rem 0 2rem; }
+.header-chip-wrap { text-align: left; margin-bottom: 1.5rem; }
+.grado-chip { display: inline-block; background: #E8EAF6; color: #304FFE; border-radius: 999px; padding: 6px 18px; font-size: 0.9rem; font-weight: 900; font-family: 'Roboto', sans-serif; letter-spacing: 0.05em; line-height: 1.6; }
+.header-centered { text-align: center; }
+.title-main { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; line-height: 1.15; background: linear-gradient(90deg, #111 0%, #1565C0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+.subtitle-hero { font-size: clamp(1rem, 3vw, 1.15rem); color: #444; max-width: 600px; margin: 0 auto; }
+
+.section-label { display: inline-flex; align-items: center; gap: 8px; border-radius: 16px; padding: 10px 22px; font-size: 1.1rem; font-weight: 900; margin-bottom: 1.25rem; }
+.label-orange { background: #FFF3E0; color: #E64A19; border: 2px solid #FFAB91; }
+.label-purple { background: #F3E5F5; color: #7B1FA2; border: 2px solid #CE93D8; }
+.label-green  { background: #E8F5E9; color: #2E7D32; border: 2px solid #A5D6A7; }
+.label-blue   { background: #E3F2FD; color: #1565C0; border: 2px solid #90CAF9; }
+
+.kid-card { background: #FFFFFF; border: 2.5px solid #EAEAEA; transition: transform 0.18s, box-shadow 0.18s; }
+.kid-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+.rounded-3xl { border-radius: 24px !important; }
+
+.section-box { border-radius: 24px; padding: 1.8rem; }
+.box-purple { background: #F3E5F5; border: 2px solid #CE93D8; }
+.box-blue { background: #E3F2FD; border: 2px solid #BBDEFB; }
+
+.box-title { font-size: 1.15rem; font-weight: 900; margin-bottom: 8px; }
+.box-body { font-size: 1rem; color: #444; margin-bottom: 1.2rem; line-height: 1.6; }
+.title-purple { color: #6A1B9A !important; }
+.title-blue { color: #1565C0 !important; }
+
+.table-wrap { border-radius: 12px; overflow-x: auto; border: 1.5px solid #E0E0DC; margin-bottom: 8px; }
+.data-table { width: 100%; min-width: 500px; border-collapse: collapse; background: white; }
+
+.video-container { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
+.h-100 { height: 100%; }
+.divider-kids { text-align: center; font-size: 1.4rem; color: #D0D0D0; letter-spacing: 12px; }
+
+.btn-practica {
+  background: linear-gradient(135deg, #1565C0, #0D47A1); color: #fff; font-family: inherit; font-size: clamp(1rem, 4vw, 1.25rem); font-weight: 900; padding: 16px 42px; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 6px 20px rgba(13, 71, 161, 0.35); transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-practica:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 28px rgba(13, 71, 161, 0.45); }
+.btn-practica:active { transform: translateY(0); }
+
+@media (max-width: 768px) {
+  .unit-stage { padding: 20px 16px 110px 16px; }
+  .menu-toggle { bottom: 20px; left: 20px; }
+  .menu-items { padding-left: 20px; }
+}
 </style>
