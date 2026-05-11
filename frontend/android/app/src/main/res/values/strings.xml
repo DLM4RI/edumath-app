@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">EduMath MateCord</string>
+    <string name="title_activity_main">EduMath MateCord</string>
+    <string name="package_name">com.edumath.matecord.ova</string>
+    <string name="custom_url_scheme">com.edumath.matecord.ova</string>
+</resources>

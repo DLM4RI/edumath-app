@@ -1,10 +1,33 @@
+# Dependencias y compilados generales
 node_modules/
-frontend/dist/
-*.exe
-database.db
 .DS_Store
+dist_final/
+*.exe
+
+# Frontend y Assets
+frontend/dist/
+frontend/node_modules/
+
+# Multimedia (Archivos pesados)
 videos/
 *.mp4
 *.mov
 *.avi
 img/
+
+# Base de datos local
+database.db
+
+# ANDROID (Configuración necesaria para el APK)
+# Ignoramos solo los archivos que se generan automáticamente o son pesados
+frontend/android/.gradle/
+frontend/android/build/
+frontend/android/app/build/
+frontend/android/local.properties
+frontend/android/capacitor-cordova-android-plugins/
+frontend/android/app/src/main/assets/public/
+frontend/android/app/src/main/assets/capacitor.config.json
+frontend/android/app/src/main/assets/capacitor.plugins.json
+
+# Pero MANTENEMOS la estructura de Java, el Manifest y el build.gradle 
+# porque contienen mis arreglos para que no falle.

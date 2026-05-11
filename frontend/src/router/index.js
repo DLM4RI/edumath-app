@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../pages/index.vue'
-import DashboardLayout from '../layouts/dashboard.vue'
+import MasterLayout from '../layouts/MasterLayout.vue'
 
 // Importar estáticamente las páginas principales para evitar errores de carga en el ejecutable
 import GradoIndex from '../pages/grado[id]/index.vue'
@@ -16,7 +16,7 @@ const routes = [
   },
   {
     path: '/app',
-    component: DashboardLayout,
+    component: MasterLayout,
     children: [
       {
         path: 'grado/:id',

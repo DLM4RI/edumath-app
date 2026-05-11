@@ -1,0 +1,48 @@
+/* Global Mobile Overrides for a Premium App Feel */
+
+@media (max-width: 600px) {
+  /* Scale down massive headers */
+  .text-h1 { font-size: 2.2rem !important; line-height: 1.1 !important; letter-spacing: -0.02em !important; }
+  .text-h2 { font-size: 1.8rem !important; line-height: 1.2 !important; letter-spacing: -0.01em !important; }
+  .text-h3 { font-size: 1.6rem !important; line-height: 1.2 !important; }
+  .text-h4 { font-size: 1.4rem !important; }
+  .text-h5 { font-size: 1.2rem !important; }
+  .text-h6 { font-size: 1.0rem !important; }
+
+  /* Adjust spacing */
+  .v-container { padding: 12px !important; }
+  .v-card { border-radius: 20px !important; }
+  .v-btn { text-transform: none !important; letter-spacing: 0 !important; }
+
+  /* Navigation Bar Adjustments */
+  .v-bottom-navigation {
+    border-top: 1px solid rgba(0,0,0,0.05) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+  }
+
+  /* Fix for overlapping content with bottom nav */
+  .v-main {
+    padding-bottom: 80px !important;
+  }
+
+  /* Improve form elements on small screens */
+  .v-field {
+    border-radius: 12px !important;
+  }
+
+  /* Make grid systems more compact */
+  .v-row {
+    margin: -6px !important;
+  }
+  .v-col {
+    padding: 6px !important;
+  }
+
+  /* Premium Card Look */
+  .glass-card {
+    background: white !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+    border: 1px solid rgba(0,0,0,0.03) !important;
+  }
+}
