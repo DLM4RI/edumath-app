@@ -2,27 +2,28 @@
   <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
       <v-chip color="indigo-darken-2" variant="flat" class="mb-4 px-6 font-weight-black">
-        🧊 EL CONSTRUCTOR DE SÓLIDOS
+        🧊 FRACCIONES ESPACIALES
       </v-chip>
-      <h2 class="text-h4 font-weight-black mb-2">¡Analiza los cristales espaciales!</h2>
+      <h2 class="text-h4 font-weight-black mb-2">¡Encuentra la fracción equivalente!</h2>
       <p class="text-h6 text-medium-emphasis">
-        Identifica cuántas <strong>{{ currentChallenge.target }}</strong> tiene este sólido.
+        Selecciona la fracción que equivale a <strong>{{ currentChallenge.target }}</strong>.
       </p>
     </div>
 
     <!-- AREA DE JUEGO -->
     <v-row>
-      <!-- Sólido (Visual) -->
+      <!-- Visualización -->
       <v-col cols="12" md="6" class="d-flex justify-center align-center">
-        <v-card variant="outlined" class="pa-10 rounded-2xl bg-indigo-lighten-5 border-indigo-lighten-2 position-relative" style="min-height: 300px; width: 100%;">
-          <v-icon size="180" color="indigo-darken-4" class="floating">{{ currentChallenge.icon }}</v-icon>
-          <div class="mt-6 text-h5 font-weight-black text-indigo-darken-2">{{ currentChallenge.name }}</div>
+        <v-card variant="outlined" class="pa-10 rounded-2xl bg-indigo-lighten-5 border-indigo-lighten-2 position-relative d-flex justify-center align-center" style="min-height: 300px; width: 100%;">
+          <div class="text-h1 font-weight-black text-indigo-darken-4">
+            {{ currentChallenge.fraction }}
+          </div>
         </v-card>
       </v-col>
 
       <!-- Opciones -->
       <v-col cols="12" md="6" class="d-flex flex-column justify-center gap-4">
-        <div class="text-h6 font-weight-bold mb-2 text-center">Número de {{ currentChallenge.target }}:</div>
+        <div class="text-h6 font-weight-bold mb-2 text-center">Fracción equivalente:</div>
         <v-row>
           <v-col v-for="option in currentChallenge.options" :key="option" cols="6">
             <v-btn
@@ -44,7 +45,7 @@
     <!-- PROGRESO -->
     <div class="mt-8 text-center">
       <v-chip color="primary" variant="tonal" size="large" class="font-weight-black">
-        Cristales analizados: {{ solvedCount }} / {{ totalChallenges }}
+        Fracciones analizadas: {{ solvedCount }} / {{ totalChallenges }}
       </v-chip>
     </div>
 
@@ -55,10 +56,10 @@
           type="success"
           variant="tonal"
           class="rounded-xl mb-6 py-6"
-          icon="mdi-cube-outline"
+          icon="mdi-fraction-one-half"
         >
-          <div class="text-h5 font-weight-black">¡Ingeniero Espacial!</div>
-          <div class="text-body-1">Conoces a la perfección las dimensiones de los objetos 3D.</div>
+          <div class="text-h5 font-weight-black">¡Ingeniero de Fracciones!</div>
+          <div class="text-body-1">Conoces a la perfección las equivalencias numéricas.</div>
         </v-alert>
 
         <v-btn
@@ -81,10 +82,10 @@ import { ref, computed } from "vue";
 defineEmits(["completada"]);
 
 const challenges = [
-  { name: "Cubo", icon: "mdi-cube", target: "caras", answer: 6, options: [4, 6, 8, 12] },
-  { name: "Pirámide", icon: "mdi-pyramid", target: "vértices", answer: 5, options: [3, 4, 5, 6] },
-  { name: "Prisma Triangular", icon: "mdi-triangle", target: "aristas", answer: 9, options: [6, 8, 9, 12] },
-  { name: "Cilindro", icon: "mdi-cylinder", target: "caras planas", answer: 2, options: [1, 2, 3, 4] },
+  { fraction: "1/2", target: "un medio", answer: "2/4", options: ["1/4", "2/4", "3/4", "4/4"] },
+  { fraction: "1/3", target: "un tercio", answer: "2/6", options: ["2/3", "3/6", "2/6", "4/6"] },
+  { fraction: "3/4", target: "tres cuartos", answer: "6/8", options: ["4/8", "6/8", "5/8", "2/8"] },
+  { fraction: "2/5", target: "dos quintos", answer: "4/10", options: ["2/10", "3/10", "4/10", "5/10"] },
 ];
 
 const currentIndex = ref(0);
@@ -124,12 +125,5 @@ const checkOption = (option) => {
 }
 .gap-4 {
   gap: 16px;
-}
-.floating {
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0); }
-  50% { transform: translateY(-15px) rotate(5deg); }
 }
 </style>

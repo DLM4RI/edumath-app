@@ -36,7 +36,7 @@
           <div class="d-flex align-center mb-4">
             <v-chip color="secondary" variant="flat" size="small" class="mr-2"
               >Pregunta {{ index + 1 }} de {{ questions.length }}</v-chip
-              >
+            >
             <v-chip v-if="q.category" color="primary" variant="tonal" size="small">{{ q.category }}</v-chip>
           </div>
 
@@ -198,156 +198,106 @@ const finalGrade = ref(0);
 
 const questions = [
   {
+    category: "Problemas Aditivos",
+    text: "🚌 Un autobús llevaba 25 pasajeros. En la primera parada subieron 15 y bajaron 8. ¿Cuántos pasajeros quedan?",
+    options: [
+      { label: "32 pasajeros", correct: true },
+      { label: "40 pasajeros", correct: false },
+      { label: "18 pasajeros", correct: false },
+      { label: "35 pasajeros", correct: false },
+    ],
+  },
+  {
     category: "Multiplicación",
-    text: "¿Cuánto es 7 x 8?",
+    text: "✖️ ¿Cuánto es 6 veces 4 (6 x 4)?",
     options: [
-      { label: "54", correct: false },
-      { label: "56", correct: true },
-      { label: "48", correct: false },
-      { label: "64", correct: false },
+      { label: "20", correct: false },
+      { label: "24", correct: true },
+      { label: "18", correct: false },
+      { label: "28", correct: false },
     ],
   },
   {
-    category: "División",
-    text: "Si reparto 20 manzanas entre 4 niños, ¿cuántas le tocan a cada uno?",
+    category: "Problemas Multiplicativos",
+    text: "📦 En una caja caben 8 chocolates. Si tienes 5 cajas llenas, ¿cuántos chocolates tienes en total?",
     options: [
-      { label: "4", correct: false },
-      { label: "5", correct: true },
-      { label: "6", correct: false },
-      { label: "10", correct: false },
+      { label: "13 chocolates", correct: false },
+      { label: "40 chocolates", correct: true },
+      { label: "45 chocolates", correct: false },
+      { label: "32 chocolates", correct: false },
     ],
   },
   {
-    category: "Números",
-    text: "¿Cuál es el valor del número 4 en 4.567?",
+    category: "Repartos",
+    text: "➗ Tienes 20 canicas y quieres repartirlas por igual entre 4 amigos. ¿Cuántas canicas le tocan a cada uno?",
     options: [
-      { label: "40", correct: false },
-      { label: "400", correct: false },
-      { label: "4.000", correct: true },
-      { label: "4", correct: false },
-    ],
-  },
-  {
-    category: "Geometría",
-    text: "¿Cómo se llama un ángulo de exactamente 90 grados?",
-    options: [
-      { label: "Agudo", correct: false },
-      { label: "Obtuso", correct: false },
-      { label: "Recto", correct: true },
-      { label: "Llano", correct: false },
-    ],
-  },
-  {
-    category: "Geometría",
-    text: "¿Cuántos lados tiene un octágono?",
-    options: [
-      { label: "6", correct: false },
-      { label: "7", correct: false },
-      { label: "8", correct: true },
-      { label: "10", correct: false },
-    ],
-  },
-  {
-    category: "Geometría",
-    text: "¿Qué figura tiene 3 lados iguales?",
-    options: [
-      { label: "Triángulo equilátero", correct: true },
-      { label: "Cuadrado", correct: false },
-      { label: "Pentágono", correct: false },
-      { label: "Triángulo escaleno", correct: false },
-    ],
-  },
-  {
-    category: "Medición",
-    text: "¿Cuántos gramos hay en 1 kilogramo?",
-    options: [
-      { label: "100g", correct: false },
-      { label: "500g", correct: false },
-      { label: "1000g", correct: true },
-      { label: "10g", correct: false },
-    ],
-  },
-  {
-    category: "Medición",
-    text: "Si un evento comienza a las 2:15 y dura 45 minutos, ¿a qué hora termina?",
-    options: [
-      { label: "2:45", correct: false },
-      { label: "3:00", correct: true },
-      { label: "3:15", correct: false },
-      { label: "2:50", correct: false },
-    ],
-  },
-  {
-    category: "Perímetro",
-    text: "¿Cuál es el perímetro de un cuadrado que mide 5cm por lado?",
-    options: [
-      { label: "10cm", correct: false },
-      { label: "15cm", correct: false },
-      { label: "20cm", correct: true },
-      { label: "25cm", correct: false },
+      { label: "4 canicas", correct: false },
+      { label: "5 canicas", correct: true },
+      { label: "6 canicas", correct: false },
+      { label: "10 canicas", correct: false },
     ],
   },
   {
     category: "Fracciones",
-    text: "¿Cómo se escribe 'un cuarto' en números?",
+    text: "🍰 Si divides una torta en 4 partes iguales y te comes 1 parte, ¿qué fracción de la torta te comiste?",
     options: [
       { label: "1/2", correct: false },
       { label: "1/4", correct: true },
       { label: "1/3", correct: false },
-      { label: "4/1", correct: false },
+      { label: "3/4", correct: false },
     ],
   },
   {
     category: "Fracciones",
-    text: "En la fracción 3/5, ¿cuál es el denominador?",
+    text: "🍕 ¿Qué es mayor, 1/2 de pizza o 1/4 de pizza?",
     options: [
-      { label: "3", correct: false },
-      { label: "5", correct: true },
-      { label: "8", correct: false },
-      { label: "15", correct: false },
+      { label: "1/4 es mayor", correct: false },
+      { label: "1/2 es mayor", correct: true },
+      { label: "Son iguales", correct: false },
+      { label: "Ninguna", correct: false },
     ],
   },
   {
-    category: "Estadística",
-    text: "¿Qué es la MODA en un conjunto de datos?",
+    category: "Valor Posicional",
+    text: "🔢 ¿Qué número representa 5 centenas, 0 decenas y 3 unidades?",
     options: [
-      { label: "El número que más se repite", correct: true },
-      { label: "El número más grande", correct: false },
-      { label: "La suma de todos", correct: false },
-      { label: "El número del medio", correct: false },
+      { label: "53", correct: false },
+      { label: "530", correct: false },
+      { label: "503", correct: true },
+      { label: "305", correct: false },
     ],
   },
   {
-    category: "Secuencias",
-    text: "¿Qué número falta: 2, 4, 8, 16, __?",
+    category: "Operaciones",
+    text: "➕➖ ¿Cuánto es 100 - 25 + 10?",
     options: [
-      { label: "20", correct: false },
-      { label: "32", correct: true },
-      { label: "24", correct: false },
-      { label: "40", correct: false },
+      { label: "85", correct: true },
+      { label: "75", correct: false },
+      { label: "65", correct: false },
+      { label: "90", correct: false },
     ],
   },
   {
-    category: "Problemas",
-    text: "Compré 3 lápices a $500 cada uno. ¿Cuánto pagué en total?",
+    category: "Multiplicación Inversa",
+    text: "🤔 Si 5 x 6 = 30, entonces ¿cuánto es 30 dividido entre 5?",
     options: [
-      { label: "$1.000", correct: false },
-      { label: "$1.500", correct: true },
-      { label: "$2.000", correct: false },
-      { label: "$800", correct: false },
+      { label: "5", correct: false },
+      { label: "6", correct: true },
+      { label: "7", correct: false },
+      { label: "35", correct: false },
     ],
   },
   {
-    category: "Lógica",
-    text: "Si hoy es martes, ¿qué día fue hace 2 días?",
+    category: "Problemas Multiplicativos",
+    text: "🚲 En un parque hay 7 triciclos. Si cada triciclo tiene 3 llantas, ¿cuántas llantas hay en total?",
     options: [
-      { label: "Lunes", correct: false },
-      { label: "Domingo", correct: true },
-      { label: "Sábado", correct: false },
-      { label: "Jueves", correct: false },
+      { label: "10 llantas", correct: false },
+      { label: "21 llantas", correct: true },
+      { label: "14 llantas", correct: false },
+      { label: "18 llantas", correct: false },
     ],
   },
-].sort(() => Math.random() - 0.5);
+];
 
 const answers = ref(new Array(questions.length).fill(null));
 

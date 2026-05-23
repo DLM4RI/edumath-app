@@ -2,11 +2,11 @@
   <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
       <v-chip color="amber-darken-3" variant="flat" class="mb-4 px-6 font-weight-black">
-        ⚖️ LA BALANZA DE ORO
+        ⚖️ LA SUMA EXACTA
       </v-chip>
-      <h2 class="text-h4 font-weight-black mb-2">¡Equilibra la balanza!</h2>
+      <h2 class="text-h4 font-weight-black mb-2">¡Alcanza el número exacto!</h2>
       <p class="text-h6 text-medium-emphasis">
-        Selecciona las pesas necesarias para igualar el peso del objeto.
+        Selecciona las fichas numéricas necesarias para igualar la meta.
       </p>
     </div>
 
@@ -18,7 +18,7 @@
           <v-icon size="100" color="amber-darken-3">{{ currentChallenge.icon }}</v-icon>
           <div class="text-h4 font-weight-black mt-4">{{ currentChallenge.name }}</div>
           <v-chip color="black" variant="flat" class="mt-2 font-weight-black" size="large">
-            Peso: {{ currentChallenge.targetWeight }}g
+            Meta: {{ currentChallenge.targetWeight }}
           </v-chip>
         </v-card>
       </v-col>
@@ -26,7 +26,7 @@
       <!-- Balanza y Pesas -->
       <v-col cols="12" md="6">
         <v-card variant="flat" class="pa-6 rounded-2xl bg-grey-lighten-4 border-sm h-100">
-          <div class="text-subtitle-1 font-weight-bold mb-4 text-center">Tus Pesas (Suma: {{ currentWeight }}g)</div>
+          <div class="text-subtitle-1 font-weight-bold mb-4 text-center">Tus Fichas (Suma: {{ currentWeight }})</div>
           
           <div class="d-flex flex-wrap justify-center gap-3 mb-6">
             <v-btn
@@ -53,7 +53,7 @@
 
           <div class="text-center mt-6">
             <v-btn variant="text" color="error" prepend-icon="mdi-refresh" @click="reset">
-              Reiniciar Pesas
+              Reiniciar Fichas
             </v-btn>
           </div>
         </v-card>
@@ -67,10 +67,10 @@
           type="success"
           variant="flat"
           class="rounded-xl mb-6 py-6"
-          icon="mdi-scale-balance"
+          icon="mdi-bullseye-arrow"
         >
-          <div class="text-h5 font-weight-black">¡Equilibrio Perfecto!</div>
-          <div class="text-body-1">Has pesado el objeto con total precisión.</div>
+          <div class="text-h5 font-weight-black">¡Suma Exacta!</div>
+          <div class="text-body-1">Has alcanzado el número meta con precisión.</div>
         </v-alert>
 
         <v-btn

@@ -2,11 +2,11 @@
   <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
       <v-chip color="red-darken-2" variant="flat" class="mb-4 px-6 font-weight-black">
-        ⏰ EL RELOJ DEL TIEMPO
+        🔢 CÁLCULO RÁPIDO
       </v-chip>
-      <h2 class="text-h4 font-weight-black mb-2">¡Pon el reloj en hora!</h2>
+      <h2 class="text-h4 font-weight-black mb-2">¡Encuentra la operación!</h2>
       <p class="text-h6 text-medium-emphasis">
-        Selecciona la hora correcta que marca el reloj digital.
+        Selecciona la suma correcta que da el resultado mostrado.
       </p>
     </div>
 
@@ -33,7 +33,7 @@
               }"
               @click="checkOption(index)"
             >
-              <v-icon size="60" color="primary">mdi-clock-outline</v-icon>
+              <v-icon size="60" color="primary">mdi-plus-box-outline</v-icon>
               <div class="mt-2 font-weight-bold">{{ option.label }}</div>
             </v-card>
           </v-col>
@@ -50,8 +50,8 @@
           class="rounded-xl mb-6 py-6"
           icon="mdi-timer-sand"
         >
-          <div class="text-h5 font-weight-black">¡Maestro del Tiempo!</div>
-          <div class="text-body-1">Sabes leer perfectamente las horas.</div>
+          <div class="text-h5 font-weight-black">¡Maestro del Cálculo!</div>
+          <div class="text-body-1">Sabes sumar perfectamente.</div>
         </v-alert>
 
         <v-btn
@@ -75,21 +75,21 @@ defineEmits(["completada"]);
 
 const challenges = [
   {
-    time: "03:00",
+    time: "15",
     options: [
-      { label: "3 en punto", correct: true },
-      { label: "6 en punto", correct: false },
-      { label: "12 y cuarto", correct: false },
-      { label: "9 en punto", correct: false },
+      { label: "10 + 5", correct: true },
+      { label: "8 + 6", correct: false },
+      { label: "9 + 7", correct: false },
+      { label: "11 + 3", correct: false },
     ]
   },
   {
-    time: "06:30",
+    time: "20",
     options: [
-      { label: "6 y cuarto", correct: false },
-      { label: "6 y media", correct: true },
-      { label: "7 en punto", correct: false },
-      { label: "5 y media", correct: false },
+      { label: "15 + 4", correct: false },
+      { label: "10 + 10", correct: true },
+      { label: "12 + 7", correct: false },
+      { label: "18 + 3", correct: false },
     ]
   }
 ];

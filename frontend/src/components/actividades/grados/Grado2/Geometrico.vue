@@ -2,11 +2,11 @@
   <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
       <v-chip color="purple-darken-2" variant="flat" class="mb-4 px-6 font-weight-black">
-        🏛️ EL MUSEO DE LOS POLÍGONOS
+        🏛️ EL MUSEO DE LAS MATEMÁTICAS
       </v-chip>
-      <h2 class="text-h4 font-weight-black mb-2">¡Ordena las piezas del museo!</h2>
+      <h2 class="text-h4 font-weight-black mb-2">¡Resuelve las operaciones!</h2>
       <p class="text-h6 text-medium-emphasis">
-        Toca la figura y selecciona cuántos <strong>lados</strong> tiene.
+        Mira la operación y selecciona el <strong>resultado</strong> correcto.
       </p>
     </div>
 
@@ -15,7 +15,7 @@
       <!-- Figura Actual -->
       <v-col cols="12" md="6" class="d-flex justify-center align-center">
         <v-card variant="outlined" class="pa-10 rounded-2xl bg-white border-dashed d-flex justify-center align-center" style="min-height: 250px; width: 100%;">
-          <v-icon :size="150" :color="currentShape.color">{{ currentShape.icon }}</v-icon>
+          <div :style="{ color: currentShape.color, fontSize: '5rem', fontWeight: 'bold' }">{{ currentShape.text }}</div>
         </v-card>
       </v-col>
 
@@ -31,7 +31,7 @@
           @click="checkOption(option)"
           :disabled="isCorrect"
         >
-          {{ option }} Lados
+          {{ option }}
         </v-btn>
       </v-col>
     </v-row>
@@ -39,7 +39,7 @@
     <!-- PROGRESO -->
     <div class="mt-8 text-center">
       <v-chip color="primary" variant="tonal" size="large" class="font-weight-black">
-        Figuras clasificadas: {{ completedShapes }} / {{ totalShapes }}
+        Operaciones resueltas: {{ completedShapes }} / {{ totalShapes }}
       </v-chip>
     </div>
 
@@ -52,8 +52,8 @@
           class="rounded-xl mb-6 py-6"
           icon="mdi-bank-outline"
         >
-          <div class="text-h5 font-weight-black">¡Curador Experto!</div>
-          <div class="text-body-1">Has organizado todas las figuras del museo correctamente.</div>
+          <div class="text-h5 font-weight-black">¡Matemático Experto!</div>
+          <div class="text-body-1">Has resuelto todas las operaciones correctamente.</div>
         </v-alert>
 
         <v-btn
@@ -76,10 +76,10 @@ import { ref, computed } from "vue";
 defineEmits(["completada"]);
 
 const shapes = [
-  { name: "Triángulo", icon: "mdi-triangle", sides: 3, color: "orange" },
-  { name: "Cuadrado", icon: "mdi-square", sides: 4, color: "blue" },
-  { name: "Pentágono", icon: "mdi-pentagon", sides: 5, color: "green" },
-  { name: "Hexágono", icon: "mdi-hexagon", sides: 6, color: "purple" },
+  { text: "1 + 2", sides: 3, color: "orange" },
+  { text: "2 + 2", sides: 4, color: "blue" },
+  { text: "3 + 2", sides: 5, color: "green" },
+  { text: "3 + 3", sides: 6, color: "purple" },
 ];
 
 const currentShapeIndex = ref(0);

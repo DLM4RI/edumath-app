@@ -6,7 +6,7 @@
       </v-avatar>
       <h2 class="text-h4 font-weight-black mb-2">Desafío Final: Grado 2°</h2>
       <p class="text-body-1 text-medium-emphasis">
-        ¡Demuestra lo que has aprendido en tu segundo año de aventura!
+        ¡Demuestra lo que has aprendido en tu aventura de segundo grado!
       </p>
     </div>
 
@@ -36,7 +36,7 @@
           <div class="d-flex align-center mb-4">
             <v-chip color="secondary" variant="flat" size="small" class="mr-2"
               >Pregunta {{ index + 1 }} de {{ questions.length }}</v-chip
-              >
+            >
             <v-chip v-if="q.category" color="primary" variant="tonal" size="small">{{ q.category }}</v-chip>
           </div>
 
@@ -198,156 +198,106 @@ const finalGrade = ref(0);
 
 const questions = [
   {
-    category: "Números",
-    text: "¿Cuál es el resultado de sumar 25 + 15?",
+    category: "Valor Posicional",
+    text: "🔢 ¿Qué número está formado por 3 centenas, 2 decenas y 5 unidades?",
     options: [
-      { label: "30", correct: false },
-      { label: "40", correct: true },
-      { label: "35", correct: false },
-      { label: "45", correct: false },
-    ],
-  },
-  {
-    category: "Números",
-    text: "Si tengo 3 centenas, 5 decenas y 2 unidades, ¿qué número formo?",
-    options: [
-      { label: "352", correct: true },
-      { label: "253", correct: false },
+      { label: "325", correct: true },
+      { label: "235", correct: false },
       { label: "532", correct: false },
-      { label: "325", correct: false },
+      { label: "352", correct: false },
     ],
   },
   {
-    category: "Suma",
-    text: "¿Cuánto es 128 + 34?",
+    category: "Sumas",
+    text: "➕ Si sumas 45 + 30, ¿cuánto obtienes?",
     options: [
-      { label: "152", correct: false },
-      { label: "162", correct: true },
-      { label: "160", correct: false },
-      { label: "142", correct: false },
+      { label: "65", correct: false },
+      { label: "75", correct: true },
+      { label: "85", correct: false },
+      { label: "70", correct: false },
     ],
   },
   {
-    category: "Resta",
-    text: "¿Cuánto es 50 - 18?",
+    category: "Restas",
+    text: "➖ A 80 le quitas 25. ¿Cuánto te queda?",
     options: [
-      { label: "42", correct: false },
-      { label: "32", correct: true },
-      { label: "38", correct: false },
-      { label: "22", correct: false },
+      { label: "55", correct: true },
+      { label: "65", correct: false },
+      { label: "45", correct: false },
+      { label: "60", correct: false },
     ],
   },
   {
     category: "Secuencias",
-    text: "¿Qué número sigue en la serie: 100, 110, 120, ...?",
+    text: "🎈 ¿Qué número sigue en la serie: 15, 20, 25, 30, __?",
     options: [
-      { label: "121", correct: false },
-      { label: "130", correct: true },
-      { label: "140", correct: false },
-      { label: "150", correct: false },
-    ],
-  },
-  {
-    category: "Geometría",
-    text: "¿Cómo se llama un polígono de 5 lados?",
-    options: [
-      { label: "Cuadrado", correct: false },
-      { label: "Hexágono", correct: false },
-      { label: "Pentágono", correct: true },
-      { label: "Triángulo", correct: false },
-    ],
-  },
-  {
-    category: "Geometría",
-    text: "¿Cuántos vértices tiene un cuadrado?",
-    options: [
-      { label: "3", correct: false },
-      { label: "4", correct: true },
-      { label: "5", correct: false },
-      { label: "6", correct: false },
-    ],
-  },
-  {
-    category: "Geometría",
-    text: "¿Cuál de estos es un cuerpo sólido (3D)?",
-    options: [
-      { label: "Círculo", correct: false },
-      { label: "Cubo", correct: true },
-      { label: "Línea", correct: false },
-      { label: "Punto", correct: false },
-    ],
-  },
-  {
-    category: "Medición",
-    text: "¿Qué instrumento usamos para medir el tiempo?",
-    options: [
-      { label: "Regla", correct: false },
-      { label: "Reloj", correct: true },
-      { label: "Balanza", correct: false },
-      { label: "Termómetro", correct: false },
-    ],
-  },
-  {
-    category: "Medición",
-    text: "Si el reloj pequeño marca el 3 y el grande el 12, ¿qué hora es?",
-    options: [
-      { label: "Las 12:03", correct: false },
-      { label: "Las 3 en punto", correct: true },
-      { label: "Las 3 y media", correct: false },
-      { label: "Las 6:00", correct: false },
-    ],
-  },
-  {
-    category: "Medición",
-    text: "¿Cuántos minutos hay en una hora?",
-    options: [
-      { label: "30 minutos", correct: false },
-      { label: "60 minutos", correct: true },
-      { label: "100 minutos", correct: false },
-      { label: "12 minutos", correct: false },
-    ],
-  },
-  {
-    category: "Longitud",
-    text: "¿Cuál unidad es mejor para medir el largo de un lápiz?",
-    options: [
-      { label: "Kilómetros", correct: false },
-      { label: "Metros", correct: false },
-      { label: "Centímetros", correct: true },
-      { label: "Litros", correct: false },
-    ],
-  },
-  {
-    category: "Capacidad",
-    text: "¿Cuál recipiente le cabe más agua?",
-    options: [
-      { label: "Un vaso", correct: false },
-      { label: "Una cuchara", correct: false },
-      { label: "Un balde", correct: true },
-      { label: "Una tapa", correct: false },
-    ],
-  },
-  {
-    category: "Estadística",
-    text: "Si en un salón hay 10 niños y 12 niñas, ¿cuántos estudiantes hay en total?",
-    options: [
-      { label: "20", correct: false },
-      { label: "22", correct: true },
-      { label: "24", correct: false },
-      { label: "21", correct: false },
+      { label: "35", correct: true },
+      { label: "40", correct: false },
+      { label: "50", correct: false },
+      { label: "31", correct: false },
     ],
   },
   {
     category: "Multiplicación",
-    text: "Tengo 2 bolsas con 5 dulces cada una. ¿Cuántos dulces tengo?",
+    text: "📦 Tienes 3 bolsas y en cada bolsa hay 4 dulces. ¿Cuántos dulces tienes en total?",
     options: [
       { label: "7", correct: false },
-      { label: "10", correct: true },
-      { label: "5", correct: false },
+      { label: "10", correct: false },
+      { label: "12", correct: true },
+      { label: "15", correct: false },
+    ],
+  },
+  {
+    category: "Multiplicación",
+    text: "✖️ ¿Cuánto es 5 veces 3?",
+    options: [
+      { label: "10", correct: false },
+      { label: "15", correct: true },
+      { label: "8", correct: false },
+      { label: "20", correct: false },
+    ],
+  },
+  {
+    category: "Suma y Resta",
+    text: "💰 Juan tenía 50 monedas. Gastó 20 en un juguete y su mamá le dio 10 más. ¿Cuántas tiene ahora?",
+    options: [
+      { label: "40 monedas", correct: true },
+      { label: "30 monedas", correct: false },
+      { label: "60 monedas", correct: false },
+      { label: "20 monedas", correct: false },
+    ],
+  },
+  {
+    category: "Problemas",
+    text: "🍬 María tiene 32 caramelos y regala 15. ¿Cuántos le quedan?",
+    options: [
+      { label: "17 caramelos", correct: true },
+      { label: "27 caramelos", correct: false },
+      { label: "18 caramelos", correct: false },
+      { label: "15 caramelos", correct: false },
+    ],
+  },
+  {
+    category: "Agrupación",
+    text: "🥛 Si quieres repartir 10 galletas en 2 platos por igual, ¿cuántas galletas pones en cada plato?",
+    options: [
+      { label: "4", correct: false },
+      { label: "5", correct: true },
+      { label: "6", correct: false },
       { label: "2", correct: false },
     ],
   },
-].sort(() => Math.random() - 0.5);
+  {
+    category: "Centenas",
+    text: "💯 ¿Cuántas unidades hay en una CENTENA?",
+    options: [
+      { label: "10", correct: false },
+      { label: "50", correct: false },
+      { label: "100", correct: true },
+      { label: "1.000", correct: false },
+    ],
+  },
+];
 
 const answers = ref(new Array(questions.length).fill(null));
 

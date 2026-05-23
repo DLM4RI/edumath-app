@@ -15,7 +15,7 @@
             <v-card class="rounded-3xl pa-10 text-center glass-card" border="1">
               <h2 class="text-h4 font-weight-black mb-4">¿Estás listo, {{ firstName }}?</h2>
               <p class="text-body-1 mb-8">
-                Esta evaluación cubrirá los temas de pensamiento numérico, geométrico y métrico vistos en clase.
+                Esta evaluación cubrirá de manera exclusiva los temas de pensamiento numérico alineados a los Derechos Básicos de Aprendizaje (DBA).
               </p>
               <div class="d-flex justify-center gap-4">
                 <v-btn 

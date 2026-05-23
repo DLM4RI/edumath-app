@@ -2,11 +2,11 @@
   <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
       <v-chip color="green-darken-2" variant="flat" class="mb-4 px-6 font-weight-black">
-        🏙️ LA CIUDAD DE LAS FORMAS
+        🔢 BÚSQUEDA DE NÚMEROS
       </v-chip>
-      <h2 class="text-h4 font-weight-black mb-2">¡Misión de Rescate!</h2>
+      <h2 class="text-h4 font-weight-black mb-2">¡Misión de Exploración!</h2>
       <p class="text-h6 text-medium-emphasis">
-        Toca todos los <strong>{{ currentTargetShape.name }}s</strong> para salvar la ciudad.
+        Toca todos los <strong>{{ currentTargetShape.name }}</strong> que veas.
       </p>
     </div>
 
@@ -54,8 +54,8 @@
           class="rounded-xl mb-6 py-6"
           icon="mdi-check-decagram"
         >
-          <div class="text-h5 font-weight-black">¡Eres un experto en formas!</div>
-          <div class="text-body-1">Has encontrado todos los {{ currentTargetShape.name }}s.</div>
+          <div class="text-h5 font-weight-black">¡Eres un experto en números!</div>
+          <div class="text-body-1">Has encontrado todos los {{ currentTargetShape.name }}.</div>
         </v-alert>
 
         <v-btn
@@ -78,24 +78,24 @@ import { ref, computed } from "vue";
 defineEmits(["completada"]);
 
 const shapeTypes = [
-  { name: "Círculo", icon: "mdi-circle" },
-  { name: "Cuadrado", icon: "mdi-square" },
-  { name: "Triángulo", icon: "mdi-triangle" },
+  { name: "Número 5", icon: "mdi-numeric-5-circle" },
+  { name: "Número 7", icon: "mdi-numeric-7-circle" },
+  { name: "Número 9", icon: "mdi-numeric-9-circle" },
 ];
 
 const currentTargetShape = ref(shapeTypes[Math.floor(Math.random() * shapeTypes.length)]);
 
-// Generar una mezcla de formas
+// Generar una mezcla de números
 const shapes = ref([
-  { type: "Círculo", icon: "mdi-circle", found: false },
-  { type: "Cuadrado", icon: "mdi-square", found: false },
-  { type: "Triángulo", icon: "mdi-triangle", found: false },
-  { type: "Círculo", icon: "mdi-circle", found: false },
-  { type: "Cuadrado", icon: "mdi-square", found: false },
-  { type: "Triángulo", icon: "mdi-triangle", found: false },
-  { type: "Círculo", icon: "mdi-circle", found: false },
-  { type: "Cuadrado", icon: "mdi-square", found: false },
-  { type: "Triángulo", icon: "mdi-triangle", found: false },
+  { type: "Número 5", icon: "mdi-numeric-5-circle", found: false },
+  { type: "Número 7", icon: "mdi-numeric-7-circle", found: false },
+  { type: "Número 9", icon: "mdi-numeric-9-circle", found: false },
+  { type: "Número 5", icon: "mdi-numeric-5-circle", found: false },
+  { type: "Número 7", icon: "mdi-numeric-7-circle", found: false },
+  { type: "Número 9", icon: "mdi-numeric-9-circle", found: false },
+  { type: "Número 5", icon: "mdi-numeric-5-circle", found: false },
+  { type: "Número 7", icon: "mdi-numeric-7-circle", found: false },
+  { type: "Número 9", icon: "mdi-numeric-9-circle", found: false },
 ].sort(() => Math.random() - 0.5));
 
 const totalTargetCount = computed(() => shapes.value.filter(s => s.type === currentTargetShape.value.name).length);

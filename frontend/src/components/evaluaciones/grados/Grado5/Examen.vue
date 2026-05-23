@@ -36,7 +36,7 @@
           <div class="d-flex align-center mb-4">
             <v-chip color="secondary" variant="flat" size="small" class="mr-2"
               >Pregunta {{ index + 1 }} de {{ questions.length }}</v-chip
-              >
+            >
             <v-chip v-if="q.category" color="primary" variant="tonal" size="small">{{ q.category }}</v-chip>
           </div>
 
@@ -198,156 +198,106 @@ const finalGrade = ref(0);
 
 const questions = [
   {
-    category: "Fracciones",
-    text: "¿Cuál es el resultado de sumar 1/4 + 2/4?",
+    category: "Potenciación",
+    text: "⚡ ¿Cuánto es 5 elevado al cuadrado (5²)?",
     options: [
-      { label: "3/8", correct: false },
-      { label: "3/4", correct: true },
-      { label: "2/8", correct: false },
-      { label: "1/2", correct: false },
-    ],
-  },
-  {
-    category: "Decimales",
-    text: "¿Cuál número es mayor: 0,75 o 0,8?",
-    options: [
-      { label: "0,75", correct: false },
-      { label: "0,8", correct: true },
-      { label: "Son iguales", correct: false },
-      { label: "Ninguno", correct: false },
-    ],
-  },
-  {
-    category: "Porcentajes",
-    text: "¿Cuánto es el 50% de 500?",
-    options: [
-      { label: "100", correct: false },
-      { label: "250", correct: true },
-      { label: "50", correct: false },
-      { label: "200", correct: false },
-    ],
-  },
-  {
-    category: "Multiplicación",
-    text: "¿Cuánto es 25 x 4?",
-    options: [
-      { label: "80", correct: false },
-      { label: "100", correct: true },
-      { label: "125", correct: false },
-      { label: "75", correct: false },
-    ],
-  },
-  {
-    category: "Geometría",
-    text: "¿Cómo se llama la línea que une el centro de un círculo con cualquier punto de su borde?",
-    options: [
-      { label: "Diámetro", correct: false },
-      { label: "Radio", correct: true },
-      { label: "Cuerda", correct: false },
-      { label: "Arco", correct: false },
-    ],
-  },
-  {
-    category: "Geometría",
-    text: "¿Cuántas aristas tiene un cubo?",
-    options: [
-      { label: "6", correct: false },
-      { label: "8", correct: false },
-      { label: "12", correct: true },
       { label: "10", correct: false },
-    ],
-  },
-  {
-    category: "Área",
-    text: "¿Cuál es el área de un triángulo de base 10cm y altura 5cm?",
-    options: [
-      { label: "50 cm²", correct: false },
-      { label: "25 cm²", correct: true },
-      { label: "15 cm²", correct: false },
-      { label: "20 cm²", correct: false },
-    ],
-  },
-  {
-    category: "Volumen",
-    text: "¿En qué unidad se mide el volumen de un sólido?",
-    options: [
-      { label: "Metros", correct: false },
-      { label: "Metros cuadrados", correct: false },
-      { label: "Metros cúbicos", correct: true },
-      { label: "Litros", correct: false },
-    ],
-  },
-  {
-    category: "Medición",
-    text: "¿A cuántos metros equivalen 2,5 kilómetros?",
-    options: [
-      { label: "250 m", correct: false },
-      { label: "2.500 m", correct: true },
-      { label: "25.000 m", correct: false },
-      { label: "25 m", correct: false },
-    ],
-  },
-  {
-    category: "Capacidad",
-    text: "Si tengo 3 botellas de 500ml cada una, ¿cuántos litros tengo en total?",
-    options: [
-      { label: "1 L", correct: false },
-      { label: "1,5 L", correct: true },
-      { label: "2 L", correct: false },
-      { label: "0,5 L", correct: false },
-    ],
-  },
-  {
-    category: "Estadística",
-    text: "¿Qué es el PROMEDIO de 10, 20 y 30?",
-    options: [
-      { label: "20", correct: true },
-      { label: "30", correct: false },
-      { label: "60", correct: false },
+      { label: "25", correct: true },
+      { label: "20", correct: false },
       { label: "15", correct: false },
     ],
   },
   {
-    category: "Probabilidad",
-    text: "Si lanzo un dado, ¿cuál es la probabilidad de que salga un número par?",
+    category: "Potenciación",
+    text: "⚡ ¿Qué significa 2 elevado al cubo (2³)?",
     options: [
-      { label: "1 de 6", correct: false },
-      { label: "3 de 6 (o 1/2)", correct: true },
-      { label: "2 de 6", correct: false },
-      { label: "0", correct: false },
+      { label: "2 + 3", correct: false },
+      { label: "2 x 2 x 2", correct: true },
+      { label: "2 x 3", correct: false },
+      { label: "2 + 2 + 2", correct: false },
     ],
   },
   {
-    category: "Potenciación",
-    text: "¿Cuánto es 3 elevado a la 2 (3²)?",
+    category: "Fracciones",
+    text: "🍰 ¿Cuál es el resultado de sumar 1/4 + 1/4?",
     options: [
-      { label: "6", correct: false },
-      { label: "9", correct: true },
+      { label: "2/8", correct: false },
+      { label: "2/4 (o 1/2)", correct: true },
+      { label: "1/4", correct: false },
+      { label: "4/4", correct: false },
+    ],
+  },
+  {
+    category: "Decimales",
+    text: "🔢 ¿Qué número es mayor: 0,75 o 0,8?",
+    options: [
+      { label: "0,75", correct: false },
+      { label: "0,8", correct: true },
+      { label: "Son iguales", correct: false },
+      { label: "0,08", correct: false },
+    ],
+  },
+  {
+    category: "Porcentajes",
+    text: "📊 Si una camiseta de $100.000 tiene el 50% de descuento, ¿cuánto pagas?",
+    options: [
+      { label: "$50.000", correct: true },
+      { label: "$25.000", correct: false },
+      { label: "$75.000", correct: false },
+      { label: "$10.000", correct: false },
+    ],
+  },
+  {
+    category: "Múltiplos y Divisores",
+    text: "➗ ¿Cuál de los siguientes números es divisor de 24?",
+    options: [
       { label: "5", correct: false },
-      { label: "1", correct: false },
+      { label: "6", correct: true },
+      { label: "7", correct: false },
+      { label: "10", correct: false },
+    ],
+  },
+  {
+    category: "Múltiplos y Divisores",
+    text: "✖️ ¿Cuál es el Mínimo Común Múltiplo (MCM) entre 4 y 6?",
+    options: [
+      { label: "10", correct: false },
+      { label: "12", correct: true },
+      { label: "24", correct: false },
+      { label: "8", correct: false },
+    ],
+  },
+  {
+    category: "Operaciones Combinadas",
+    text: "🧮 ¿Cuánto es 10 + 5 x 2?",
+    options: [
+      { label: "30", correct: false },
+      { label: "20", correct: true },
+      { label: "17", correct: false },
+      { label: "15", correct: false },
+    ],
+  },
+  {
+    category: "Operaciones",
+    text: "🧮 ¿Cuánto es (2 + 3) x 5?",
+    options: [
+      { label: "25", correct: true },
+      { label: "17", correct: false },
+      { label: "10", correct: false },
+      { label: "15", correct: false },
     ],
   },
   {
     category: "Problemas",
-    text: "Un televisor cuesta $1.000.000 y tiene el 20% de descuento. ¿Cuánto pagaré?",
+    text: "🍎 Si una docena de manzanas cuesta $12.000, ¿cuánto cuesta media docena?",
     options: [
-      { label: "$800.000", correct: true },
-      { label: "$200.000", correct: false },
-      { label: "$900.000", correct: false },
-      { label: "$980.000", correct: false },
+      { label: "$3.000", correct: false },
+      { label: "$6.000", correct: true },
+      { label: "$10.000", correct: false },
+      { label: "$4.000", correct: false },
     ],
   },
-  {
-    category: "Lógica",
-    text: "¿Cuál es la raíz cuadrada de 49?",
-    options: [
-      { label: "6", correct: false },
-      { label: "7", correct: true },
-      { label: "8", correct: false },
-      { label: "9", correct: false },
-    ],
-  },
-].sort(() => Math.random() - 0.5);
+];
 
 const answers = ref(new Array(questions.length).fill(null));
 

@@ -2,11 +2,11 @@
   <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
       <v-chip color="orange-darken-3" variant="flat" class="mb-4 px-6 font-weight-black">
-        🐛 LA CARRERA DE GUSANOS
+        🐛 LA CARRERA DE NÚMEROS
       </v-chip>
-      <h2 class="text-h4 font-weight-black mb-2">¿Quién ganará?</h2>
+      <h2 class="text-h4 font-weight-black mb-2">¿Quién es el ganador?</h2>
       <p class="text-h6 text-medium-emphasis">
-        Toca el gusano que es <strong>{{ currentChallenge.target }}</strong>.
+        Toca el número que es <strong>{{ currentChallenge.target }}</strong>.
       </p>
     </div>
 
@@ -25,7 +25,7 @@
           >
             <!-- Cabeza del gusano -->
             <v-avatar :color="worm.color" size="40" class="mr-2">
-              <v-icon color="white" size="24">mdi-emoticon-happy</v-icon>
+              <span class="text-white font-weight-bold text-h6">{{ worm.value }}</span>
             </v-avatar>
             
             <!-- Cuerpo del gusano (largo dinámico) -->
@@ -57,7 +57,7 @@
           icon="mdi-trophy-variant"
         >
           <div class="text-h5 font-weight-black">¡Increíble!</div>
-          <div class="text-body-1">Sabes medir muy bien con tus ojos.</div>
+          <div class="text-body-1">Sabes comparar números muy bien.</div>
         </v-alert>
 
         <v-btn
@@ -86,8 +86,8 @@ import { ref, computed } from "vue";
 defineEmits(["completada"]);
 
 const challenges = [
-  { target: "más LARGO", type: "longest" },
-  { target: "más CORTO", type: "shortest" },
+  { target: "MAYOR", type: "longest" },
+  { target: "MENOR", type: "shortest" },
 ];
 
 const shuffledChallenges = ref([...challenges].sort(() => Math.random() - 0.5));
@@ -95,9 +95,9 @@ const currentChallenge = ref(shuffledChallenges.value[Math.floor(Math.random() *
 const selectedWorm = ref(null);
 
 const worms = ref([
-  { color: "green", length: 40 },
-  { color: "blue", length: 80 },
-  { color: "orange", length: 20 },
+  { color: "green", length: 40, value: 4 },
+  { color: "blue", length: 80, value: 8 },
+  { color: "orange", length: 20, value: 2 },
 ].sort(() => Math.random() - 0.5));
 
 const isCorrect = (index) => {

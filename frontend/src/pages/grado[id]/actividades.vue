@@ -67,9 +67,9 @@ const showActivity = ref(false)
 const selectedType = ref('')
 
 const activityTypes = [
-  { type: 'Numerico', title: 'P. Numérico', icon: 'mdi-numeric', color: 'blue', desc: 'Contar, sumar y jugar con los números del campo.' },
-  { type: 'Geometrico', title: 'P. Geométrico', icon: 'mdi-shape', color: 'green', desc: 'Descubre las formas en la naturaleza cordobesa.' },
-  { type: 'Metrico', title: 'P. Métrico', icon: 'mdi-ruler', color: 'orange', desc: 'Mide distancias y tamaños en nuestra granja.' }
+  { type: 'Numerico', title: 'P. Numérico (Básico)', icon: 'mdi-numeric-1-circle', color: 'blue', desc: 'Contar, sumar y jugar con los primeros números.' },
+  { type: 'Geometrico', title: 'P. Numérico (Intermedio)', icon: 'mdi-numeric-2-circle', color: 'green', desc: 'Descubre nuevos retos con números más grandes y operaciones.' },
+  { type: 'Metrico', title: 'P. Numérico (Avanzado)', icon: 'mdi-numeric-3-circle', color: 'orange', desc: 'Mide tus habilidades matemáticas con misiones avanzadas.' }
 ]
 
 // Mapeo explícito de componentes para asegurar que Vite los incluya correctamente en el build

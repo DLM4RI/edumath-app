@@ -2,11 +2,11 @@
   <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
       <v-chip color="light-blue-darken-3" variant="flat" class="mb-4 px-6 font-weight-black">
-        🧪 EL LABORATORIO DE UNIDADES
+        🧪 EL LABORATORIO DE LAS POTENCIAS
       </v-chip>
-      <h2 class="text-h4 font-weight-black mb-2">¡Calibra los instrumentos!</h2>
+      <h2 class="text-h4 font-weight-black mb-2">¡Calcula la potencia exacta!</h2>
       <p class="text-h6 text-medium-emphasis">
-        Selecciona la medida equivalente para que el experimento funcione.
+        Selecciona el resultado de elevar la <strong>base</strong> al <strong>exponente</strong> indicado.
       </p>
     </div>
 
@@ -15,12 +15,12 @@
       <!-- Instrumento Principal -->
       <v-col cols="12" md="5" class="text-center">
         <v-card variant="flat" class="pa-8 rounded-2xl bg-light-blue-lighten-5 border-md border-light-blue-lighten-2 h-100 d-flex flex-column align-center justify-center">
-          <v-icon size="100" color="light-blue-darken-2">mdi-flask-empty-outline</v-icon>
-          <div class="text-h2 font-weight-black mt-4 text-light-blue-darken-4">
-            {{ currentChallenge.value }} {{ currentChallenge.unit }}
+          <div class="d-flex align-start justify-center mt-4">
+            <span class="text-h1 font-weight-black text-light-blue-darken-4">{{ currentChallenge.base }}</span>
+            <span class="text-h4 font-weight-bold text-light-blue-darken-2 mt-2">{{ currentChallenge.exponent }}</span>
           </div>
-          <v-icon size="40" color="light-blue" class="my-4">mdi-equal</v-icon>
-          <div class="text-h4 font-weight-bold text-grey-darken-1">? {{ currentChallenge.targetUnit }}</div>
+          <v-icon size="40" color="light-blue" class="my-4">mdi-arrow-down</v-icon>
+          <div class="text-h4 font-weight-bold text-grey-darken-1">?</div>
         </v-card>
       </v-col>
 
@@ -38,8 +38,7 @@
               }"
               @click="checkOption(index)"
             >
-              <div class="text-h4 font-weight-black">{{ option.label }}</div>
-              <div class="text-subtitle-1">{{ currentChallenge.targetUnit }}</div>
+              <div class="text-h3 font-weight-black">{{ option.label }}</div>
             </v-card>
           </v-col>
         </v-row>
@@ -53,10 +52,10 @@
           type="success"
           variant="flat"
           class="rounded-xl mb-6 py-6"
-          icon="mdi-flask-check"
+          icon="mdi-brain"
         >
           <div class="text-h5 font-weight-black">¡Científico de Élite!</div>
-          <div class="text-body-1">Tus cálculos de conversión son increíblemente precisos.</div>
+          <div class="text-body-1">Tus cálculos de potenciación son increíbles.</div>
         </v-alert>
 
         <v-btn
@@ -80,39 +79,39 @@ defineEmits(["completada"]);
 
 const challenges = [
   {
-    value: 5, unit: "km", targetUnit: "m",
+    base: 2, exponent: 3, // 2^3 = 8
     options: [
-      { label: "50", correct: false },
-      { label: "500", correct: false },
-      { label: "5.000", correct: true },
-      { label: "50.000", correct: false },
+      { label: "6", correct: false },
+      { label: "8", correct: true },
+      { label: "5", correct: false },
+      { label: "9", correct: false },
     ]
   },
   {
-    value: 2, unit: "kg", targetUnit: "g",
+    base: 3, exponent: 2, // 3^2 = 9
     options: [
-      { label: "200", correct: false },
-      { label: "2.000", correct: true },
-      { label: "20.000", correct: false },
+      { label: "6", correct: false },
+      { label: "9", correct: true },
+      { label: "12", correct: false },
+      { label: "5", correct: false },
+    ]
+  },
+  {
+    base: 4, exponent: 2, // 4^2 = 16
+    options: [
+      { label: "8", correct: false },
+      { label: "12", correct: false },
+      { label: "16", correct: true },
       { label: "20", correct: false },
     ]
   },
   {
-    value: 3, unit: "L", targetUnit: "ml",
+    base: 5, exponent: 2, // 5^2 = 25
     options: [
-      { label: "300", correct: false },
-      { label: "30", correct: false },
-      { label: "3.000", correct: true },
-      { label: "30.000", correct: false },
-    ]
-  },
-  {
-    value: 4.5, unit: "m", targetUnit: "cm",
-    options: [
-      { label: "45", correct: false },
-      { label: "450", correct: true },
-      { label: "4.500", correct: false },
-      { label: "4,5", correct: false },
+      { label: "10", correct: false },
+      { label: "25", correct: true },
+      { label: "15", correct: false },
+      { label: "20", correct: false },
     ]
   }
 ];

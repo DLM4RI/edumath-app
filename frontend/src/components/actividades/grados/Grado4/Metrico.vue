@@ -2,64 +2,45 @@
   <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
       <v-chip color="teal-darken-3" variant="flat" class="mb-4 px-6 font-weight-black">
-        📐 EL TOPÓGRAFO REAL
+        🧮 EL EXPLORADOR DE FRACCIONES
       </v-chip>
-      <h2 class="text-h4 font-weight-black mb-2">¡Mide los terrenos del reino!</h2>
+      <h2 class="text-h4 font-weight-black mb-2">¡Identifica la fracción correcta!</h2>
       <p class="text-h6 text-medium-emphasis">
-        Calcula el <strong>{{ currentChallenge.mode }}</strong> de la figura mostrada.
+        Selecciona la fracción que representa la <strong>palabra</strong> mostrada.
       </p>
     </div>
 
     <!-- AREA DE JUEGO -->
     <v-row justify="center" align="center">
-      <!-- Terreno (Visual) -->
+      <!-- Expresión (Visual) -->
       <v-col cols="12" md="6" class="text-center">
-        <v-card variant="outlined" class="pa-10 rounded-2xl bg-green-lighten-5 border-green-darken-2 position-relative overflow-hidden">
-          <div 
-            class="shape-preview mx-auto bg-green-darken-1 rounded-lg d-flex align-center justify-center text-white font-weight-black text-h4"
-            :style="{ width: currentChallenge.width * 20 + 'px', height: currentChallenge.height * 20 + 'px' }"
-          >
-            {{ currentChallenge.width }}m × {{ currentChallenge.height }}m
+        <v-card variant="outlined" class="pa-10 rounded-2xl bg-teal-lighten-5 border-teal-darken-2 position-relative overflow-hidden d-flex justify-center align-center" style="min-height: 250px;">
+          <div class="text-h3 font-weight-black text-teal-darken-4 text-capitalize">
+            {{ currentChallenge.word }}
           </div>
-          <div class="mt-6 text-subtitle-1 font-italic">"El Jardín de las Rosas"</div>
         </v-card>
       </v-col>
 
       <!-- Entrada de Datos -->
       <v-col cols="12" md="6">
         <v-card variant="flat" class="pa-8 rounded-2xl bg-grey-lighten-4 border-sm">
-          <div class="text-h5 font-weight-black mb-4">¿Cuál es el {{ currentChallenge.mode }}?</div>
+          <div class="text-h5 font-weight-black mb-4 text-center">¿Cuál es la fracción?</div>
           
-          <v-text-field
-            v-model="userAnswer"
-            :label="'Tu respuesta en ' + (currentChallenge.mode === 'Perímetro' ? 'metros' : 'metros cuadrados')"
-            variant="outlined"
-            type="number"
-            class="text-h5"
-            @keyup.enter="checkAnswer"
-            suffix="m"
-          ></v-text-field>
-
-          <v-btn
-            block
-            color="teal-darken-2"
-            size="x-large"
-            class="rounded-xl font-weight-black mt-4"
-            @click="checkAnswer"
-          >
-            Validar Medida
-          </v-btn>
-
-          <v-expand-transition>
-            <v-alert
-              v-if="feedback"
-              :type="feedback.type"
-              variant="tonal"
-              class="mt-6 rounded-xl"
-            >
-              {{ feedback.text }}
-            </v-alert>
-          </v-expand-transition>
+          <v-row>
+            <v-col v-for="option in currentChallenge.options" :key="option" cols="6">
+              <v-btn
+                block
+                size="x-large"
+                variant="outlined"
+                :color="selectedOption === option ? (option === currentChallenge.answer ? 'success' : 'error') : 'teal-darken-3'"
+                class="rounded-xl font-weight-black py-8 text-h4 border-md"
+                @click="checkOption(option)"
+                :disabled="isCorrect"
+              >
+                {{ option }}
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-card>
       </v-col>
     </v-row>
@@ -71,10 +52,10 @@
           type="success"
           variant="flat"
           class="rounded-xl mb-6 py-6"
-          icon="mdi-ruler-square"
+          icon="mdi-fraction-one-half"
         >
-          <div class="text-h5 font-weight-black">¡Topógrafo Maestro!</div>
-          <div class="text-body-1">Has medido todos los terrenos con precisión real.</div>
+          <div class="text-h5 font-weight-black">¡Explorador Experto!</div>
+          <div class="text-body-1">Sabes leer e identificar fracciones perfectamente.</div>
         </v-alert>
 
         <v-btn
@@ -97,37 +78,38 @@ import { ref, computed } from "vue";
 defineEmits(["completada"]);
 
 const challenges = [
-  { mode: "Perímetro", width: 5, height: 4, answer: 18 }, // (5+4)*2
-  { mode: "Área", width: 6, height: 3, answer: 18 },      // 6*3
-  { mode: "Perímetro", width: 10, height: 2, answer: 24 }, // (10+2)*2
-  { mode: "Área", width: 4, height: 4, answer: 16 },      // 4*4
+  { word: "Un Medio", answer: "1/2", options: ["1/2", "1/3", "2/1", "2/2"] },
+  { word: "Tres Cuartos", answer: "3/4", options: ["4/3", "3/4", "1/4", "3/5"] },
+  { word: "Dos Quintos", answer: "2/5", options: ["5/2", "2/3", "2/5", "1/5"] },
+  { word: "Un Tercio", answer: "1/3", options: ["3/1", "1/3", "1/2", "2/3"] },
 ];
 
 const currentIndex = ref(0);
-const userAnswer = ref("");
-const feedback = ref(null);
 const solvedCount = ref(0);
+const selectedOption = ref(null);
+const isCorrect = ref(false);
 
 const shuffledChallenges = ref([...challenges].sort(() => Math.random() - 0.5));
 const currentChallenge = computed(() => shuffledChallenges.value[currentIndex.value]);
-const isComplete = computed(() => solvedCount.value === challenges.length);
+const totalChallenges = challenges.length;
+const isComplete = computed(() => solvedCount.value === totalChallenges);
 
-const checkAnswer = () => {
-  if (parseInt(userAnswer.value) === currentChallenge.value.answer) {
-    feedback.value = { type: "success", text: "¡Correcto! Excelente cálculo." };
+const checkOption = (option) => {
+  selectedOption.value = option;
+  if (option === currentChallenge.value.answer) {
+    isCorrect.value = true;
     setTimeout(() => {
       solvedCount.value++;
-      if (currentIndex.value < challenges.length - 1) {
+      if (currentIndex.value < totalChallenges - 1) {
         currentIndex.value++;
-        userAnswer.value = "";
-        feedback.value = null;
+        selectedOption.value = null;
+        isCorrect.value = false;
       }
-    }, 1500);
+    }, 1000);
   } else {
-    feedback.value = { type: "error", text: "Incorrecto. Revisa tus cálculos." };
     setTimeout(() => {
-      feedback.value = null;
-    }, 2000);
+      selectedOption.value = null;
+    }, 1500);
   }
 };
 </script>
@@ -136,10 +118,5 @@ const checkAnswer = () => {
 .glass-card {
   background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(10px);
-}
-.shape-preview {
-  border: 4px solid #fff;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  transition: all 0.5s ease;
 }
 </style>

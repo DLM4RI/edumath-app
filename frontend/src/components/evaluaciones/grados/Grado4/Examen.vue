@@ -36,7 +36,7 @@
           <div class="d-flex align-center mb-4">
             <v-chip color="secondary" variant="flat" size="small" class="mr-2"
               >Pregunta {{ index + 1 }} de {{ questions.length }}</v-chip
-              >
+            >
             <v-chip v-if="q.category" color="primary" variant="tonal" size="small">{{ q.category }}</v-chip>
           </div>
 
@@ -199,7 +199,7 @@ const finalGrade = ref(0);
 const questions = [
   {
     category: "Fracciones",
-    text: "¿Cuál es una fracción equivalente a 1/2?",
+    text: "🍕 ¿Cuál es una fracción equivalente a 1/2 (la mitad)?",
     options: [
       { label: "1/4", correct: false },
       { label: "2/4", correct: true },
@@ -208,8 +208,8 @@ const questions = [
     ],
   },
   {
-    category: "Números",
-    text: "En el número 45.678, ¿qué cifra ocupa el lugar de las decenas de mil?",
+    category: "Valor Posicional",
+    text: "🔢 En el número 4.567, ¿qué cifra representa las unidades de MIL?",
     options: [
       { label: "4", correct: true },
       { label: "5", correct: false },
@@ -219,135 +219,85 @@ const questions = [
   },
   {
     category: "Multiplicación",
-    text: "¿Cuánto es 12 x 100?",
+    text: "✖️ ¿Cuánto es 15 x 10?",
     options: [
-      { label: "120", correct: false },
-      { label: "1.200", correct: true },
-      { label: "12.000", correct: false },
-      { label: "1.020", correct: false },
+      { label: "15", correct: false },
+      { label: "150", correct: true },
+      { label: "1.500", correct: false },
+      { label: "105", correct: false },
     ],
   },
   {
     category: "División",
-    text: "¿Cuál es el resultado de 100 ÷ 5?",
+    text: "➗ Si repartes 100 dulces equitativamente entre 4 niños, ¿cuántos le tocan a cada uno?",
     options: [
       { label: "10", correct: false },
-      { label: "20", correct: true },
-      { label: "25", correct: false },
+      { label: "25", correct: true },
+      { label: "20", correct: false },
       { label: "50", correct: false },
     ],
   },
   {
-    category: "Geometría",
-    text: "¿Qué nombre reciben las líneas que nunca se cruzan?",
-    options: [
-      { label: "Perpendiculares", correct: false },
-      { label: "Secantes", correct: false },
-      { label: "Paralelas", correct: true },
-      { label: "Curvas", correct: false },
-    ],
-  },
-  {
-    category: "Geometría",
-    text: "¿Cómo se llama el ángulo que mide más de 90° pero menos de 180°?",
-    options: [
-      { label: "Agudo", correct: false },
-      { label: "Recto", correct: false },
-      { label: "Obtuso", correct: true },
-      { label: "Llano", correct: false },
-    ],
-  },
-  {
-    category: "Perímetro",
-    text: "Si un rectángulo tiene base 10cm y altura 4cm, ¿cuál es su perímetro?",
-    options: [
-      { label: "14cm", correct: false },
-      { label: "28cm", correct: true },
-      { label: "40cm", correct: false },
-      { label: "20cm", correct: false },
-    ],
-  },
-  {
-    category: "Área",
-    text: "¿Cuál es el área de un cuadrado de 6cm de lado?",
-    options: [
-      { label: "12 cm²", correct: false },
-      { label: "24 cm²", correct: false },
-      { label: "36 cm²", correct: true },
-      { label: "18 cm²", correct: false },
-    ],
-  },
-  {
-    category: "Decimales",
-    text: "¿Cómo se lee el número 0,5?",
-    options: [
-      { label: "Cinco enteros", correct: false },
-      { label: "Cinco décimas", correct: true },
-      { label: "Cinco centésimas", correct: false },
-      { label: "Cinco milésimas", correct: false },
-    ],
-  },
-  {
-    category: "Medición",
-    text: "¿Cuántos mililitros hay en un litro?",
-    options: [
-      { label: "100 ml", correct: false },
-      { label: "500 ml", correct: false },
-      { label: "1.000 ml", correct: true },
-      { label: "10.000 ml", correct: false },
-    ],
-  },
-  {
-    category: "Tiempo",
-    text: "¿Cuántas horas hay en 2 días?",
-    options: [
-      { label: "24 horas", correct: false },
-      { label: "48 horas", correct: true },
-      { label: "12 horas", correct: false },
-      { label: "60 horas", correct: false },
-    ],
-  },
-  {
-    category: "Estadística",
-    text: "¿Qué gráfico es mejor para representar la temperatura durante una semana?",
-    options: [
-      { label: "Gráfico de barras", correct: false },
-      { label: "Gráfico de líneas", correct: true },
-      { label: "Pictograma", correct: false },
-      { label: "Círculo", correct: false },
-    ],
-  },
-  {
-    category: "Problemas",
-    text: "Tengo $5.000 y compro un helado de $2.300. ¿Cuánto dinero me queda?",
-    options: [
-      { label: "$3.700", correct: false },
-      { label: "$2.700", correct: true },
-      { label: "$3.300", correct: false },
-      { label: "$2.300", correct: false },
-    ],
-  },
-  {
     category: "Fracciones",
-    text: "Si me como 3/4 de una pizza, ¿cuánto queda?",
+    text: "🍰 Si te comes 3/4 de una tarta, ¿qué parte queda?",
     options: [
       { label: "1/4", correct: true },
       { label: "2/4", correct: false },
-      { label: "3/4", correct: false },
-      { label: "4/4", correct: false },
+      { label: "1/2", correct: false },
+      { label: "Nada", correct: false },
     ],
   },
   {
-    category: "Lógica",
-    text: "¿Cuál es el doble de 150?",
+    category: "Números Decimales",
+    text: "💰 Si tienes 0,50 pesos, ¿qué parte del peso tienes?",
     options: [
-      { label: "200", correct: false },
-      { label: "300", correct: true },
-      { label: "450", correct: false },
-      { label: "250", correct: false },
+      { label: "Un cuarto", correct: false },
+      { label: "La mitad (1/2)", correct: true },
+      { label: "El total", correct: false },
+      { label: "Nada", correct: false },
     ],
   },
-].sort(() => Math.random() - 0.5);
+  {
+    category: "Operaciones",
+    text: "➕ ¿Cuánto es la suma de 1.250 + 750?",
+    options: [
+      { label: "1.900", correct: false },
+      { label: "2.000", correct: true },
+      { label: "2.100", correct: false },
+      { label: "1.500", correct: false },
+    ],
+  },
+  {
+    category: "Números Decimales",
+    text: "🔢 ¿Qué número decimal representa la fracción 1/4?",
+    options: [
+      { label: "0.25", correct: true },
+      { label: "0.50", correct: false },
+      { label: "0.75", correct: false },
+      { label: "0.10", correct: false },
+    ],
+  },
+  {
+    category: "Estimación",
+    text: "🤔 Si compras 3 libros que cuestan $4.900 cada uno, ¿cuánto pagas aproximadamente?",
+    options: [
+      { label: "Unos $10.000", correct: false },
+      { label: "Unos $15.000", correct: true },
+      { label: "Unos $12.000", correct: false },
+      { label: "Unos $20.000", correct: false },
+    ],
+  },
+  {
+    category: "Problemas Multiplicativos",
+    text: "🛍️ Un paquete trae 12 galletas. Si compras 5 paquetes, ¿cuántas galletas tienes?",
+    options: [
+      { label: "50", correct: false },
+      { label: "60", correct: true },
+      { label: "70", correct: false },
+      { label: "40", correct: false },
+    ],
+  },
+];
 
 const answers = ref(new Array(questions.length).fill(null));
 

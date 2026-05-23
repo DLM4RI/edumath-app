@@ -96,7 +96,7 @@
                   <!-- 📷 IMAGEN UNIDAD 0: coloca grado4-imagen1.png en /public/img/ -->
                   <div class="img-slot img-slot--purple">
                     <img
-                      src="/img/grado4-imagen2.png"
+                      :src="'/img/grado4-imagen2.png'"
                       alt="Decimales en el mundo real"
                       class="content-img"
                       @error="onImgError"
@@ -207,7 +207,7 @@
             <!-- 📷 IMAGEN UNIDAD 1: coloca grado4-imagen2.png en /public/img/ -->
             <div class="img-slot img-slot--blue mb-6">
               <img
-                src="/img/grado4-imagen1.png"
+                :src="'/img/grado4-imagen1.png'"
                 alt="Infografía: Descomposición del número 95,11"
                 class="content-img"
                 @error="onImgError"

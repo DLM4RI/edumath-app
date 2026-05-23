@@ -42,20 +42,6 @@
 
           <h3 class="text-h5 font-weight-bold mb-6">{{ q.text }}</h3>
 
-          <v-img
-            v-if="q.imagePath"
-            :src="q.imagePath"
-            height="200"
-            class="rounded-2xl mb-6 bg-grey-lighten-4 border"
-            cover
-          >
-            <template v-slot:placeholder>
-              <div class="d-flex align-center justify-center fill-height">
-                <v-icon size="48" color="grey-lighten-2">mdi-image-outline</v-icon>
-              </div>
-            </template>
-          </v-img>
-
           <v-radio-group v-model="answers[index]" class="custom-radio-group">
             <v-row>
               <v-col v-for="(option, optIdx) in q.options" :key="optIdx" cols="12" md="6">
@@ -213,205 +199,105 @@ const finalGrade = ref(0);
 const questions = [
   {
     category: "Conteo",
-    text: "¿Cuántas estrellas ves en el cielo si hay 7 brillantes?",
+    text: "🚀 Si en el cielo hay 3 estrellas y aparecen 2 más, ¿cuántas hay en total?",
     options: [
-      { label: "5 estrellas", correct: false },
-      { label: "7 estrellas", correct: true },
-      { label: "8 estrellas", correct: false },
+      { label: "4 estrellas", correct: false },
+      { label: "5 estrellas", correct: true },
       { label: "6 estrellas", correct: false },
-    ],
-  },
-  {
-    category: "Números",
-    text: "¿Qué número sigue después del 19?",
-    options: [
-      { label: "18", correct: false },
-      { label: "20", correct: true },
-      { label: "21", correct: false },
-      { label: "10", correct: false },
-    ],
-  },
-  {
-    category: "Números",
-    text: "¿Qué número está antes del 11?",
-    options: [
-      { label: "12", correct: false },
-      { label: "10", correct: true },
-      { label: "9", correct: false },
-      { label: "13", correct: false },
-    ],
-  },
-  {
-    category: "Comparación",
-    text: "¿Cuál número es el más grande (MAYOR)?",
-    options: [
-      { label: "5", correct: false },
-      { label: "12", correct: false },
-      { label: "8", correct: false },
-      { label: "15", correct: true },
-    ],
-  },
-  {
-    category: "Comparación",
-    text: "¿Cuál número es the más pequeño (MENOR)?",
-    options: [
-      { label: "20", correct: false },
-      { label: "15", correct: false },
-      { label: "10", correct: true },
-      { label: "25", correct: false },
-    ],
-  },
-  {
-    category: "Suma",
-    text: "¿Cuánto es 3 + 5?",
-    options: [
-      { label: "7", correct: false },
-      { label: "8", correct: true },
-      { label: "9", correct: false },
-      { label: "6", correct: false },
-    ],
-  },
-  {
-    category: "Suma",
-    text: "Si tienes 10 dulces y te regalan 4 más, ¿cuántos tienes ahora?",
-    options: [
-      { label: "14 dulces", correct: true },
-      { label: "12 dulces", correct: false },
-      { label: "6 dulces", correct: false },
-      { label: "16 dulces", correct: false },
-    ],
-  },
-  {
-    category: "Resta",
-    text: "¿Cuánto es 9 - 3?",
-    options: [
-      { label: "5", correct: false },
-      { label: "6", correct: true },
-      { label: "4", correct: false },
-      { label: "7", correct: false },
-    ],
-  },
-  {
-    category: "Resta",
-    text: "Tenías 8 globos y se explotaron 2. ¿Cuántos te quedan?",
-    options: [
-      { label: "10 globos", correct: false },
-      { label: "6 globos", correct: true },
-      { label: "5 globos", correct: false },
-      { label: "8 globos", correct: false },
-    ],
-  },
-  {
-    category: "Conjuntos",
-    text: "¿Qué es un CONJUNTO?",
-    options: [
-      { label: "Un solo objeto", correct: false },
-      { label: "Un grupo de objetos con algo en común", correct: true },
-      { label: "Un número grande", correct: false },
-      { label: "Una línea recta", correct: false },
-    ],
-  },
-  {
-    category: "Conjuntos",
-    text: "Si tenemos un conjunto de FRUTAS, ¿cuál de estos NO pertenece?",
-    options: [
-      { label: "Manzana", correct: false },
-      { label: "Banano", correct: false },
-      { label: "Un carro", correct: true },
-      { label: "Pera", correct: false },
-    ],
-  },
-  {
-    category: "Conjuntos",
-    text: "¿Cuántos elementos hay en un conjunto que tiene: un lápiz, un borrador y un cuaderno?",
-    options: [
-      { label: "2 elementos", correct: false },
-      { label: "3 elementos", correct: true },
-      { label: "4 elementos", correct: false },
-      { label: "1 elemento", correct: false },
+      { label: "3 estrellas", correct: false },
     ],
   },
   {
     category: "Secuencias",
-    text: "¿Qué número falta en esta serie: 2, 4, 6, __, 10?",
+    text: "🔢 ¿Qué número sigue en esta secuencia: 5, 6, 7, 8, __?",
     options: [
+      { label: "8", correct: false },
+      { label: "9", correct: true },
+      { label: "10", correct: false },
       { label: "7", correct: false },
-      { label: "8", correct: true },
-      { label: "9", correct: false },
-      { label: "5", correct: false },
     ],
   },
   {
-    category: "Geometría",
-    text: "¿Cuál de estas figuras tiene 4 lados iguales?",
+    category: "Comparar",
+    text: "🐘 ¿Cuál de estos grupos tiene más elementos?",
     options: [
-      { label: "Círculo", correct: false },
-      { label: "Triángulo", correct: false },
-      { label: "Cuadrado", correct: true },
-      { label: "Rectángulo", correct: false },
+      { label: "8 manzanas", correct: false },
+      { label: "12 manzanas", correct: true },
+      { label: "5 manzanas", correct: false },
+      { label: "10 manzanas", correct: false },
     ],
   },
   {
-    category: "Geometría",
-    text: "¿Cuántos lados tiene un TRIÁNGULO?",
+    category: "Sumas",
+    text: "🍎 Tienes 4 manzanas y tu amigo te regala 3 más. ¿Cuántas tienes ahora?",
     options: [
-      { label: "4 lados", correct: false },
-      { label: "2 lados", correct: false },
-      { label: "3 lados", correct: true },
-      { label: "5 lados", correct: false },
+      { label: "6 manzanas", correct: false },
+      { label: "7 manzanas", correct: true },
+      { label: "8 manzanas", correct: false },
+      { label: "5 manzanas", correct: false },
     ],
   },
   {
-    category: "Unidades y Decenas",
-    text: "¿Cuántas unidades forman una DECENA?",
+    category: "Restas",
+    text: "🎈 Tenías 8 globos y se explotaron 3. ¿Cuántos te quedan?",
+    options: [
+      { label: "5 globos", correct: true },
+      { label: "4 globos", correct: false },
+      { label: "6 globos", correct: false },
+      { label: "3 globos", correct: false },
+    ],
+  },
+  {
+    category: "Sumas",
+    text: "🧩 Si juntas 10 bloques azules y 5 bloques rojos, ¿cuántos bloques tienes?",
+    options: [
+      { label: "14", correct: false },
+      { label: "12", correct: false },
+      { label: "15", correct: true },
+      { label: "10", correct: false },
+    ],
+  },
+  {
+    category: "Restas",
+    text: "🍪 En una caja hay 10 galletas y te comes 4. ¿Cuántas quedan?",
+    options: [
+      { label: "7 galletas", correct: false },
+      { label: "6 galletas", correct: true },
+      { label: "5 galletas", correct: false },
+      { label: "4 galletas", correct: false },
+    ],
+  },
+  {
+    category: "Decenas",
+    text: "📦 ¿Cuántas unidades forman una DECENA?",
     options: [
       { label: "5 unidades", correct: false },
       { label: "10 unidades", correct: true },
-      { label: "20 unidades", correct: false },
       { label: "1 unidad", correct: false },
+      { label: "20 unidades", correct: false },
     ],
   },
   {
-    category: "Unidades y Decenas",
-    text: "El número 13 está formado por:",
+    category: "Suma y Resta",
+    text: "💰 Tienes 5 monedas, ganas 2 más, pero pierdes 1. ¿Cuántas te quedan?",
     options: [
-      { label: "1 decena y 3 unidades", correct: true },
-      { label: "3 decenas y 1 unidad", correct: false },
-      { label: "10 decenas", correct: false },
-      { label: "13 decenas", correct: false },
+      { label: "6 monedas", correct: true },
+      { label: "5 monedas", correct: false },
+      { label: "7 monedas", correct: false },
+      { label: "8 monedas", correct: false },
     ],
   },
   {
-    category: "Medición",
-    text: "¿Cuál objeto es el más LARGO?",
+    category: "Comparar",
+    text: "⚖️ ¿Qué número es MENOR que 15?",
     options: [
-      { label: "Un lápiz nuevo", correct: true },
-      { label: "Un borrador pequeño", correct: false },
-      { label: "Un clip", correct: false },
-      { label: "Una uña", correct: false },
+      { label: "18", correct: false },
+      { label: "12", correct: true },
+      { label: "15", correct: false },
+      { label: "20", correct: false },
     ],
   },
-  {
-    category: "Medición",
-    text: "¿Cuál animal es el más PESADO?",
-    options: [
-      { label: "Una hormiga", correct: false },
-      { label: "Un elefante", correct: true },
-      { label: "Un pollito", correct: false },
-      { label: "Un ratón", correct: false },
-    ],
-  },
-  {
-    category: "Espacial",
-    text: "¿Dónde están las nubes?",
-    options: [
-      { label: "Abajo en el suelo", correct: false },
-      { label: "Arriba en el cielo", correct: true },
-      { label: "Adentro de la casa", correct: false },
-      { label: "Detrás de la puerta", correct: false },
-    ],
-  },
-].sort(() => Math.random() - 0.5);
+];
 
 const answers = ref(new Array(questions.length).fill(null));
 
@@ -457,8 +343,6 @@ const calculateScore = () => {
 
 const goToStudy = (topic) => {
   console.log("Redirigiendo a estudio del tema:", topic);
-  // Aquí se implementaría la navegación al componente de contenido específico
-  // Por ahora, emitimos un evento o usamos el router si estuviera disponible
   emit("finalizado"); 
 };
 </script>
