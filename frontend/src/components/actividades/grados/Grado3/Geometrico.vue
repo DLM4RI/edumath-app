@@ -26,10 +26,10 @@
         <v-btn
           v-for="option in currentOperation.options"
           :key="option"
-          size="x-large"
+          height="80"
           variant="flat"
           :color="selectedOption === option ? (option === currentOperation.answer ? 'success' : 'error') : 'cyan-darken-1'"
-          class="rounded-xl font-weight-black py-8"
+          class="rounded-xl font-weight-black text-h4"
           @click="checkAnswer(option)"
           :disabled="isCorrect"
         >

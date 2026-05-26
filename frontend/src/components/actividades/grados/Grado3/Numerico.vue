@@ -42,10 +42,10 @@
               <v-col v-for="option in currentProblem.options" :key="option" cols="6">
                 <v-btn
                   block
-                  size="x-large"
+                  height="80"
                   variant="flat"
                   :color="selectedOption === option ? (option === currentProblem.answer ? 'success' : 'error') : 'indigo-lighten-1'"
-                  class="rounded-xl font-weight-black py-8 text-h4"
+                  class="rounded-xl font-weight-black text-h4"
                   @click="checkAnswer(option)"
                   :disabled="selectedOption !== null"
                 >

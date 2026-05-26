@@ -3,27 +3,27 @@
 
     <div class="nav-overlay" :class="{ 'is-active': isMenuOpen }" @click="toggleMenu(false)"></div>
 
-    <nav class="floating-menu-container">
-      <div class="menu-items">
-        <button
-          v-for="(u, i) in unidades"
-          :key="i"
-          class="nav-btn"
-          :class="{ 'nav-btn--active': activeUnit === i }"
-          :style="`--accent: ${u.color}`"
-          @click="selectUnit(i)"
-        >
-          <div class="nav-circle" :style="`background-color: ${u.color}`">{{ i + 1 }}</div>
-          
-          <transition name="fade-simple">
-            <div v-if="isMenuOpen" class="nav-text-box">
+    <!-- Menú Desplegable (Hamburguesa) -->
+    <transition name="menu-slide">
+      <nav v-if="isMenuOpen" class="popup-menu-container">
+        <div class="menu-items-vertical">
+          <button
+            v-for="(u, i) in unidades"
+            :key="i"
+            class="nav-btn-vertical"
+            :class="{ 'nav-btn-vertical--active': activeUnit === i }"
+            :style="`--accent: ${u.color}`"
+            @click="selectUnit(i)"
+          >
+            <div class="nav-circle-vertical" :style="`background-color: ${u.color}`">{{ i + 1 }}</div>
+            <div class="nav-text-box-vertical">
               <span class="text-title">{{ u.titulo }}</span>
               <span class="text-emoji">{{ u.emoji }}</span>
             </div>
-          </transition>
-        </button>
-      </div>
-    </nav>
+          </button>
+        </div>
+      </nav>
+    </transition>
 
     <button class="menu-toggle" :class="{ active: isMenuOpen }" @click="toggleMenu()">
       <div class="menu-toggle-icon-wrap">
@@ -31,15 +31,15 @@
           <span></span><span></span><span></span>
         </div>
       </div>
-      <span class="menu-text">Menú</span>
+      <span class="menu-text">Temas</span>
     </button>
 
-    <main class="unit-stage">
+    <main class="unit-stage" :class="{ 'unit-stage-shifted': false }">
       <div class="grade-content">
 
         <header class="mb-8 header-hero">
           <div class="header-chip-wrap">
-            <span class="grado-chip">GRADO 2° • MATEMÁTICAS</span>
+            <span class="grado-chip">GRADO 2° • PENSAMIENTO NUMÉRICO</span>
           </div>
           <div class="header-centered">
             <h1 class="title-main">{{ unidades[activeUnit].titulo }}</h1>
@@ -47,131 +47,280 @@
           </div>
         </header>
 
-        <!-- UNIDAD 0: MULTIPLICACIÓN -->
+        <!-- UNIDAD 1: NÚMEROS HASTA 999 -->
         <transition name="fade-slide" mode="out-in">
-          <section v-if="activeUnit === 0" key="u0" class="mb-10">
-            <div class="section-label label-orange">
-              ✖️ La Máquina de Sumas Rápidas
+          <section v-if="activeUnit === 0" key="u1" class="mb-10">
+            <div class="section-label label-blue">
+              {{ unidades[0].emoji }} Números Grandes
             </div>
+
             <v-row align="stretch" class="mb-6">
               <v-col cols="12" md="7">
                 <v-card class="rounded-3xl overflow-hidden card-shadow" elevation="0" height="100%">
                   <div class="video-container bg-black">
                     <video controls class="w-100 h-100" preload="metadata">
-                      <source :src="'/videos/grado2_video1.mp4'" type="video/mp4" />
+                      <source :src="getVideoSrc(2, 1)" type="video/mp4" />
                     </video>
                   </div>
                 </v-card>
               </v-col>
+
               <v-col cols="12" md="5">
-                <v-row>
-                  <v-col cols="12" v-for="(f, i) in unidad1Frases" :key="i">
-                    <v-card class="rounded-3xl pa-5 kid-card" elevation="0">
-                      <p class="kid-card-title title-orange">{{ f.titulo }}</p>
-                      <p class="kid-card-body">{{ f.subtitulo }}</p>
-                    </v-card>
-                  </v-col>
-                </v-row>
+                <v-card class="rounded-3xl pa-6 kid-card h-100 d-flex flex-column justify-center" style="border-color: #90CAF9; background: #E3F2FD;" elevation="0">
+                  <span class="text-h2 mb-3">💯</span>
+                  <p class="kid-card-title title-blue text-h5 mb-3">Conociendo las Centenas</p>
+                  <p class="kid-card-body text-body-1">¡Ya pasamos del 99! Cuando juntas 10 decenas, formas <strong>1 Centena</strong> (100). Es como tener una bolsa gigante llena de bloques.</p>
+                </v-card>
               </v-col>
             </v-row>
-            <div class="section-box box-orange mb-6">
-              <p class="box-title title-orange">¡Lo vemos todos los días!</p>
-              <v-row>
-                <v-col cols="12" sm="4" v-for="(ej, i) in unidad1Ejemplos" :key="i">
+
+            <div class="section-box box-blue mb-6">
+              <p class="box-title title-blue">Valor Posicional</p>
+              <v-row justify="center">
+                <v-col cols="12" sm="4" v-for="(v, i) in valorPosicional" :key="i">
                   <v-card class="rounded-3xl pa-5 kid-card h-100 text-center" elevation="0">
-                    <p class="kid-example-icon">{{ ej.emoji }}</p>
-                    <p class="kid-card-body font-weight-bold mb-3">{{ ej.situacion }}</p>
-                    <span class="resultado-chip chip-orange">{{ ej.operacion }}</span>
+                    <div class="text-h1 mb-2">{{ v.emoji }}</div>
+                    <p class="kid-card-title title-blue">{{ v.nombre }}</p>
+                    <p class="kid-card-body font-weight-bold mb-2">{{ v.valor }}</p>
+                    <v-chip :color="v.color" variant="flat">{{ v.ejemplo }}</v-chip>
                   </v-card>
                 </v-col>
               </v-row>
             </div>
+
+            <div class="section-box box-teal mb-6">
+              <p class="box-title title-teal">Desarmando Números (Descomposición)</p>
+              <v-row align="center">
+                <v-col cols="12" md="6">
+                  <v-card class="rounded-3xl pa-5 kid-card h-100 text-center bg-teal-lighten-5" elevation="0">
+                    <p class="text-h2 font-weight-black text-teal-darken-3 mb-2">345</p>
+                    <p class="text-h6 text-teal-darken-4 mb-4">Trescientos cuarenta y cinco</p>
+                    <div class="d-flex justify-center align-center gap-2">
+                      <v-chip color="green" size="large" class="font-weight-black">300</v-chip>
+                      <span class="text-h5 font-weight-bold">+</span>
+                      <v-chip color="blue" size="large" class="font-weight-black">40</v-chip>
+                      <span class="text-h5 font-weight-bold">+</span>
+                      <v-chip color="orange" size="large" class="font-weight-black">5</v-chip>
+                    </div>
+                  </v-card>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <div v-for="(ej, i) in ejemplosDescomposicion" :key="i" class="d-flex align-center justify-space-between mb-3 bg-white pa-4 rounded-xl border">
+                    <span class="text-h5 font-weight-black">{{ ej.num }}</span>
+                    <span class="text-h5 font-weight-black text-grey-darken-1">=</span>
+                    <span class="resultado-chip chip-teal text-body-1">{{ ej.desc }}</span>
+                  </div>
+                </v-col>
+              </v-row>
+            </div>
+
             <div class="divider-kids my-8">✦ ✦ ✦</div>
             <div class="d-flex justify-end">
-              <button class="btn-practica" @click="selectUnit(1)">Números Grandes →</button>
+              <button class="btn-practica" @click="selectUnit(1)">Siguiente: Sumar Llevando →</button>
             </div>
           </section>
         </transition>
 
-        <!-- UNIDAD 1: NÚMEROS GRANDES -->
+        <!-- UNIDAD 2: SUMA CON LLEVADAS -->
         <transition name="fade-slide" mode="out-in">
-          <section v-if="activeUnit === 1" key="u1" class="mb-10">
-            <div class="section-label label-purple">
-              🔢 Arquitectos de Números
+          <section v-if="activeUnit === 1" key="u2" class="mb-10">
+            <div class="section-label label-green">
+              {{ unidades[1].emoji }} Sumar Llevando
             </div>
-            <v-row align="stretch" class="mb-6">
-              <v-col cols="12" md="5" order="2" order-md="1">
-                <v-row>
-                  <v-col cols="12" v-for="(f, i) in unidad2Frases" :key="i">
-                    <v-card class="rounded-3xl pa-5 kid-card" elevation="0">
-                      <p class="kid-card-title title-purple">{{ f.titulo }}</p>
-                      <p class="kid-card-body">{{ f.subtitulo }}</p>
-                    </v-card>
-                  </v-col>
-                </v-row>
+
+            <v-row class="mb-6">
+              <v-col cols="12" md="6">
+                <div class="section-box box-green h-100">
+                  <p class="box-title title-green">¿Qué pasa si me paso de 9?</p>
+                  <p class="box-body">Si al sumar unidades te da 10 o más, ¡no caben en su cuarto! Tienes que "llevar" el 1 a la columna de las Decenas.</p>
+                  <div class="d-flex align-center gap-3 mb-3 bg-white pa-3 rounded-xl border">
+                    <v-avatar color="green-darken-2" class="text-white font-weight-bold" size="36">1</v-avatar>
+                    <div>
+                      <p class="font-weight-bold mb-0 text-body-1">Sumo Unidades</p>
+                      <p class="text-body-2 text-grey-darken-1 mb-0">8 + 5 = 13. ¡Ups! 13 no cabe en las unidades.</p>
+                    </div>
+                  </div>
+                  <div class="d-flex align-center gap-3 mb-3 bg-white pa-3 rounded-xl border">
+                    <v-avatar color="green-darken-2" class="text-white font-weight-bold" size="36">2</v-avatar>
+                    <div>
+                      <p class="font-weight-bold mb-0 text-body-1">Dejo y Llevo</p>
+                      <p class="text-body-2 text-grey-darken-1 mb-0">Dejo el 3 abajo, y el 1 (que vale 10) me lo "llevo" arriba al techo de las decenas.</p>
+                    </div>
+                  </div>
+                </div>
               </v-col>
-              <v-col cols="12" md="7" order="1" order-md="2">
+              <v-col cols="12" md="6">
+                <v-card class="rounded-3xl pa-6 chalkboard h-100 d-flex flex-column justify-center" elevation="0">
+                  <div class="text-center text-white mb-4 font-weight-bold">Ejemplo: 48 + 25</div>
+                  <div class="chalk-line chalk-num" style="position:relative;">
+                    <span style="position:absolute; top:-20px; left:60%; color:#FFEB3B; font-size:1.2rem;">+1</span>
+                    4 8
+                  </div>
+                  <div class="chalk-line chalk-op">+ 2 5</div>
+                  <div class="chalk-sep"></div>
+                  <div class="chalk-result">
+                    <v-chip color="green" size="large" variant="flat" class="text-h6 px-6">= 7 3</v-chip>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+
+            <div class="divider-kids my-8">✦ ✦ ✦</div>
+            <div class="d-flex flex-wrap gap-4 justify-space-between">
+              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(0)" class="font-weight-bold">← Números Grandes</v-btn>
+              <button class="btn-practica" @click="selectUnit(2)">Restar Desagrupando →</button>
+            </div>
+          </section>
+        </transition>
+
+        <!-- UNIDAD 3: RESTA DESAGRUPANDO -->
+        <transition name="fade-slide" mode="out-in">
+          <section v-if="activeUnit === 2" key="u3" class="mb-10">
+            <div class="section-label label-red">
+              {{ unidades[2].emoji }} Restar Desagrupando
+            </div>
+
+            <div class="section-box box-red mb-6">
+              <p class="box-title title-red">Pidiendo Prestado al Vecino</p>
+              <v-row align="center">
+                <v-col cols="12" sm="6">
+                  <v-card class="rounded-3xl pa-5 kid-card h-100" elevation="0">
+                    <p class="text-body-1 mb-2">A veces el número de arriba es menor que el de abajo (ej. 2 - 5 no se puede restar sin dar números negativos).</p>
+                    <p class="text-body-1 mb-3">¡La Decena vecina es buena y te presta 1! Pero ese 1 vale 10 unidades. Así el 2 se convierte en 12.</p>
+                    <div class="d-flex justify-center my-3">
+                      <v-chip color="red-darken-3" variant="flat" size="x-large" class="font-weight-black px-6">Toca la puerta del vecino 🚪</v-chip>
+                    </div>
+                  </v-card>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-card class="rounded-3xl pa-6 chalkboard h-100 d-flex flex-column justify-center" elevation="0">
+                    <div class="text-center text-white mb-4 font-weight-bold">Ejemplo: 52 - 18</div>
+                    <div class="chalk-line chalk-num" style="position:relative;">
+                      <span style="position:absolute; top:-20px; left:30%; color:#FF5252; text-decoration:line-through; font-size:1.2rem;">5</span>
+                      <span style="position:absolute; top:-40px; left:30%; color:#4CAF50; font-size:1.2rem;">4</span>
+                      <span style="position:absolute; top:-20px; left:60%; color:#4CAF50; font-size:1.2rem;">12</span>
+                      5 2
+                    </div>
+                    <div class="chalk-line chalk-op">- 1 8</div>
+                    <div class="chalk-sep"></div>
+                    <div class="chalk-result">
+                      <v-chip color="red" size="large" variant="flat" class="text-h6 px-6">= 3 4</v-chip>
+                    </div>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </div>
+
+            <div class="divider-kids my-8">✦ ✦ ✦</div>
+            <div class="d-flex flex-wrap gap-4 justify-space-between">
+              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(1)" class="font-weight-bold">← Sumar Llevando</v-btn>
+              <button class="btn-practica" @click="selectUnit(3)">A Multiplicar →</button>
+            </div>
+          </section>
+        </transition>
+
+        <!-- UNIDAD 4: INTRODUCCIÓN A LA MULTIPLICACIÓN -->
+        <transition name="fade-slide" mode="out-in">
+          <section v-if="activeUnit === 3" key="u4" class="mb-10">
+            <div class="section-label label-orange">
+              {{ unidades[3].emoji }} Intro a la Multiplicación
+            </div>
+
+            <v-row align="stretch" class="mb-6">
+              <v-col cols="12" md="7">
                 <v-card class="rounded-3xl overflow-hidden card-shadow" elevation="0" height="100%">
                   <div class="video-container bg-black">
                     <video controls class="w-100 h-100" preload="metadata">
-                      <source :src="'/videos/grado2_video2.mp4'" type="video/mp4" />
+                      <source :src="getVideoSrc(2, 4)" type="video/mp4" />
                     </video>
                   </div>
                 </v-card>
               </v-col>
+
+              <v-col cols="12" md="5">
+                <v-card class="rounded-3xl pa-6 kid-card h-100 d-flex flex-column justify-center" style="border-color: #FFAB91; background: #FBE9E7;" elevation="0">
+                  <span class="text-h2 mb-3">🔄</span>
+                  <p class="kid-card-title title-orange text-h5 mb-3">¡Multiplicar es sumar lo mismo!</p>
+                  <p class="kid-card-body text-body-1">En vez de decir "2 + 2 + 2 + 2", puedes decirlo más rápido: <strong>"4 veces el 2"</strong>, y eso se escribe matemáticamente como <strong>4 × 2</strong>.</p>
+                </v-card>
+              </v-col>
             </v-row>
-            <div class="section-box box-blue mb-6">
-              <p class="box-title title-blue">¿Cómo se arma un número?</p>
-              <v-row justify="center">
-                <v-col cols="12" sm="4" v-for="(nivel, i) in valorPosicional" :key="i">
-                  <v-card class="rounded-3xl pa-5 text-center kid-card h-100" elevation="0">
-                    <div class="posicion-icon">{{ nivel.icono }}</div>
-                    <p class="kid-card-title title-blue">{{ nivel.nombre }}</p>
-                    <p class="kid-card-body mb-3">{{ nivel.descripcion }}</p>
-                    <span class="resultado-chip chip-blue">{{ nivel.ejemplo }}</span>
+
+            <div class="section-box box-orange mb-6">
+              <p class="box-title title-orange">Suma Iterada vs. Multiplicación</p>
+              <v-row>
+                <v-col cols="12" sm="4" v-for="(m, i) in introMultiplicacion" :key="i">
+                  <v-card class="rounded-3xl pa-5 kid-card h-100 text-center" elevation="0">
+                    <p class="kid-card-body text-body-2 mb-2">Si sumas:</p>
+                    <div class="d-flex flex-wrap justify-center gap-1 mb-2">
+                       <v-chip color="orange-lighten-4" class="font-weight-black text-orange-darken-4">{{ m.suma }}</v-chip>
+                    </div>
+                    <p class="text-caption text-grey-darken-1 mb-2">Se dice: {{ m.veces }}</p>
+                    <v-chip color="deep-orange" variant="flat" size="x-large" class="font-weight-black">
+                      {{ m.mult }}
+                    </v-chip>
                   </v-card>
                 </v-col>
               </v-row>
             </div>
+
+            <div class="section-box box-teal">
+              <div class="d-flex gap-3 align-start">
+                <span class="text-h4">🧊</span>
+                <div>
+                  <p class="box-title title-teal">Filas y Columnas (Arreglos)</p>
+                  <p class="box-body mb-0">Imagina una cubeta de hielo o las sillas del cine. Si hay 3 filas y 4 columnas, ¡solo multiplica 3 × 4 y sabrás que hay 12 sillas sin contar una por una!</p>
+                </div>
+              </div>
+            </div>
+
             <div class="divider-kids my-8">✦ ✦ ✦</div>
-            <div class="d-flex justify-space-between">
-              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(0)" class="font-weight-bold">← Multiplicación</v-btn>
-              <button class="btn-practica" @click="selectUnit(2)">¡Ver Logros! →</button>
+            <div class="d-flex flex-wrap gap-4 justify-space-between">
+              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(2)" class="font-weight-bold">← Resta Desagrupando</v-btn>
+              <button class="btn-practica" @click="selectUnit(4)">La Tiendita →</button>
             </div>
           </section>
         </transition>
 
-        <!-- UNIDAD 2: REPASO -->
+        <!-- UNIDAD 5: LA TIENDITA (PROBLEMAS NUMÉRICOS) -->
         <transition name="fade-slide" mode="out-in">
-          <section v-if="activeUnit === 2" key="u2" class="mb-10">
-            <div class="section-label label-green">
-              🏆 ¡Misión Cumplida!
+          <section v-if="activeUnit === 4" key="u5" class="mb-10">
+            <div class="section-label label-purple">
+              {{ unidades[4].emoji }} Pequeños Comerciantes
             </div>
-            <v-row>
-              <v-col cols="12" sm="6" md="3" v-for="(logro, i) in logros" :key="i">
-                <v-card class="rounded-3xl pa-5 h-100 kid-card text-center" elevation="0">
-                  <div class="text-h3 mb-3">{{ logro.emoji }}</div>
-                  <p class="kid-card-title" :style="`color: ${logroColors[i]}`">{{ logro.titulo }}</p>
-                  <p class="kid-card-body">{{ logro.descripcion }}</p>
-                </v-card>
-              </v-col>
-            </v-row>
-            <div class="section-box box-cyan mt-6">
-              <p class="box-title title-teal">¿Sabías esto?</p>
-              <p class="box-body mb-0">
-                ¡Los números no terminan nunca! Siempre puedes agregar uno más. Por eso los organizamos en grupos: unidades, decenas, centenas... Se llama el <strong>sistema decimal</strong>.
-              </p>
+
+            <div class="section-box box-purple mb-6">
+              <p class="box-title title-purple">Problemas de la Tiendita</p>
+              <p class="box-body">Si vas a la tienda, tienes que saber sumar para pagar y restar para pedir el cambio (vuelto).</p>
+              <v-row>
+                <v-col cols="12" md="6" v-for="(prob, i) in problemasTienda" :key="i">
+                  <v-card class="rounded-3xl pa-5 kid-card mb-4" elevation="0" style="border-top: 6px solid #7B1FA2;">
+                    <div class="d-flex align-center gap-3 mb-4">
+                      <span class="text-h3">{{ prob.emoji }}</span>
+                      <p class="kid-card-title title-purple mb-0 text-h6">{{ prob.titulo }}</p>
+                    </div>
+                    <div class="bg-purple-lighten-5 pa-4 rounded-xl mb-4 border">
+                      <p class="font-weight-bold mb-0 text-purple-darken-4">{{ prob.enunciado }}</p>
+                    </div>
+                    <div class="mt-4 text-center">
+                      <p class="text-body-2 mb-2 font-weight-bold">Operación: {{ prob.operacion }}</p>
+                      <span class="resultado-chip chip-purple bg-purple-lighten-4 px-6 text-purple-darken-4 font-weight-black">R: {{ prob.respuesta }}</span>
+                    </div>
+                  </v-card>
+                </v-col>
+              </v-row>
             </div>
+
             <div class="divider-kids my-8">✦ ✦ ✦</div>
             <div class="d-flex justify-start">
-              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(1)" class="font-weight-bold">← Números Grandes</v-btn>
+              <v-btn variant="text" color="grey-darken-2" @click="selectUnit(3)" class="font-weight-bold">← Intro Multiplicación</v-btn>
             </div>
           </section>
         </transition>
 
-        <div class="mt-12 mb-12 d-flex justify-center">
+        <div class="mt-6 mb-12 d-flex justify-center">
           <button class="btn-practica" @click="$router.push('/app/grado/2/actividades')">
-            ¡A Practicar Misiones! 🚀
+            ¡A Practicar Misiones Numéricas! 🚀
           </button>
         </div>
 
@@ -182,6 +331,10 @@
 
 <script setup>
 import { ref } from 'vue'
+
+function getVideoSrc(grado, numero) {
+  return `/videos/grado${grado}_video${numero}.mp4`
+}
 
 const activeUnit = ref(0)
 const isMenuOpen = ref(false)
@@ -201,150 +354,390 @@ function selectUnit(i) {
 }
 
 const unidades = [
-  { titulo: 'Multiplicación', emoji: '✖️', color: '#E64A19', descripcion: 'Aprende a sumar rápido con grupos iguales' },
-  { titulo: 'Números Grandes', emoji: '🔢', color: '#7B1FA2', descripcion: 'Descubre el valor de cada número según su lugar' },
-  { titulo: 'Logros', emoji: '🏆', color: '#2E7D32', descripcion: 'Repasa todo lo que has aprendido en esta aventura' }
+  { titulo: 'Números Grandes',          emoji: '💯', color: '#1976D2', descripcion: 'Centenas, lectura y descomposición de números hasta 999' },
+  { titulo: 'Sumar Llevando',           emoji: '✍️', color: '#2E7D32', descripcion: 'Algoritmo vertical de suma reagrupando' },
+  { titulo: 'Restar Desagrupando',      emoji: '🚪', color: '#D32F2F', descripcion: 'Resta pidiendo prestado al vecino' },
+  { titulo: 'Intro a la Multiplicación',emoji: '🔄', color: '#E64A19', descripcion: 'Sumas iteradas y arreglos rectangulares' },
+  { titulo: 'La Tiendita',              emoji: '🛒', color: '#7B1FA2', descripcion: 'Problemas numéricos de compra y venta' }
 ]
 
-const unidad1Frases = [
-  { titulo: 'Multiplicar es sumar grupos', subtitulo: '4 + 4 + 4 es lo mismo que 3 × 4. ¡Los dos dan 12!' },
-  { titulo: 'El signo × significa "grupos de"', subtitulo: '3 × 5 se lee "3 grupos de 5". El resultado es el producto.' },
-  { titulo: 'Da igual el orden', subtitulo: '3 × 5 es igual a 5 × 3. ¡Siempre dan 15!' }
-]
+/* -- DATOS U1 -- */
+const valorPosicional = ref([
+  { emoji: '🎒', nombre: 'Centena', valor: 'Vale 100', color: 'green', ejemplo: '1 bolsa grande' },
+  { emoji: '🖍️', nombre: 'Decena', valor: 'Vale 10', color: 'blue', ejemplo: '1 caja de 10' },
+  { emoji: '✏️', nombre: 'Unidad', valor: 'Vale 1', color: 'orange', ejemplo: '1 lápiz suelto' }
+])
+const ejemplosDescomposicion = ref([
+  { num: '428', desc: '400 + 20 + 8' },
+  { num: '705', desc: '700 + 0 + 5' },
+  { num: '999', desc: '900 + 90 + 9' }
+])
 
-const unidad1Ejemplos = [
-  { emoji: '🍬', situacion: '3 bolsas con 4 dulces cada una', operacion: '3 × 4 = 12' },
-  { emoji: '🐾', situacion: '4 animales con 4 patas cada uno', operacion: '4 × 4 = 16' },
-  { emoji: '✏️', situacion: '5 cajas con 8 lápices cada una', operacion: '5 × 8 = 40' }
-]
+/* -- DATOS U4 -- */
+const introMultiplicacion = ref([
+  { suma: '5 + 5 + 5', veces: '3 veces el 5', mult: '3 × 5 = 15' },
+  { suma: '2 + 2 + 2 + 2', veces: '4 veces el 2', mult: '4 × 2 = 8' },
+  { suma: '10 + 10', veces: '2 veces el 10', mult: '2 × 10 = 20' }
+])
 
-const unidad2Frases = [
-  { titulo: 'El lugar importa', subtitulo: 'En 52, el 5 vale 50. En 25, el 5 vale solo 5. ¡El lugar cambia el valor!' },
-  { titulo: 'Las decenas', subtitulo: 'Si juntamos 10 unidades, formamos 1 decena. ¡Es como cambiar monedas!' },
-  { titulo: 'Las centenas', subtitulo: 'Si juntamos 10 decenas, formamos 1 centena. ¡Eso son 100 unidades!' }
-]
-
-const valorPosicional = [
-  { icono: '1️⃣', nombre: 'Unidades', descripcion: 'Números del 0 al 9. Lado derecho.', ejemplo: 'el 3 en 43' },
-  { icono: '🔟', nombre: 'Decenas', descripcion: 'Grupos de 10. En el medio.', ejemplo: 'el 4 en 43 vale 40' },
-  { icono: '💯', nombre: 'Centenas', descripcion: 'Grupos de 100. A la izquierda.', ejemplo: 'el 1 en 143 vale 100' }
-]
-
-const logros = [
-  { emoji: '✖️', titulo: '¡Entiendo la multiplicación!', descripcion: 'Sé que es una forma rápida de sumar grupos iguales.' },
-  { emoji: '📍', titulo: '¡Sé el valor de cada número!', descripcion: 'Puedo decir cuánto vale cada dígito según su lugar.' },
-  { emoji: '🌍', titulo: '¡Lo veo en mi vida!', descripcion: 'Reconozco la multiplicación y los números grandes.' },
-  { emoji: '🧠', titulo: '¡Pienso como matemático!', descripcion: 'Encuentro patrones y puedo explicar mis soluciones.' }
-]
-
-const logroColors = ['#E64A19', '#1565C0', '#00796B', '#7B1FA2']
+/* -- DATOS U5 -- */
+const problemasTienda = ref([
+  {
+    emoji: '🍬',
+    titulo: 'Comprando dulces',
+    enunciado: 'Juan compra unos chocolates por $150 y unos chicles por $85. ¿Cuánto paga en total?',
+    operacion: '150 + 85',
+    respuesta: '$235'
+  },
+  {
+    emoji: '💵',
+    titulo: 'El vuelto (cambio)',
+    enunciado: 'Ana compró un jugo de $320 y pagó con un billete de $500. ¿Cuánto le sobra?',
+    operacion: '500 - 320',
+    respuesta: '$180'
+  }
+])
 </script>
 
 <style scoped>
-/* ═══════════════════════════════════════════════
-   ESTILOS COPIADOS DE GRADO 3 PARA CONSISTENCIA
-═══════════════════════════════════════════════ */
 .grade-wrapper {
-  font-family: 'Nunito', 'Trebuchet MS', system-ui, sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
-  background: transparent;
-  min-height: 100vh;
-  overflow-x: hidden;
   position: relative;
+  min-height: 100vh;
+  background-color: #F8F9FA;
 }
 
-.nav-overlay {
-  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px); z-index: 900; 
-  opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s; pointer-events: none;
+/* MENÚ DESPLEGABLE TIPO HAMBURGUESA */
+.popup-menu-container {
+  position: fixed;
+  bottom: 100px;
+  left: 30px;
+  background: white;
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 2px solid #EEEEEE;
 }
-.nav-overlay.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
-
-.floating-menu-container {
-  position: fixed; top: 0; left: 0; height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; z-index: 1000; pointer-events: none;
+.menu-items-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-.menu-items { display: flex; flex-direction: column; gap: 20px; padding-left: 24px; }
-
-.nav-btn {
-  display: flex; align-items: center; gap: 16px; background: transparent; border: none; padding: 0; cursor: pointer; position: relative; opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+.nav-btn-vertical {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50px;
+  transition: background 0.3s;
 }
-.menu-open .nav-btn { opacity: 1; pointer-events: auto; }
-.menu-open .nav-btn:nth-child(1) { transition-delay: 0.05s; }
-.menu-open .nav-btn:nth-child(2) { transition-delay: 0.10s; }
-.menu-open .nav-btn:nth-child(3) { transition-delay: 0.15s; }
+.nav-btn-vertical:hover {
+  background: #F5F5F5;
+}
+.nav-btn-vertical--active {
+  background: #E3F2FD;
+}
+.nav-circle-vertical {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+.nav-btn-vertical--active .nav-circle-vertical {
+  box-shadow: 0 0 0 3px var(--accent), 0 4px 12px rgba(0,0,0,0.2);
+}
+.nav-text-box-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.nav-text-box-vertical .text-title {
+  font-weight: 800;
+  color: #333;
+  font-size: 0.9rem;
+}
+.nav-text-box-vertical .text-emoji {
+  font-size: 1rem;
+}
 
-.nav-circle { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); flex-shrink: 0; }
-.nav-btn--active .nav-circle { outline: 3px dashed var(--accent, #2E7D32); outline-offset: 4px; }
-.nav-text-box { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 2px solid var(--accent, #c0c0c0); border-radius: 14px; padding: 10px 18px; display: flex; align-items: center; gap: 12px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); white-space: nowrap; }
-.text-title { font-weight: 800; font-size: 0.95rem; color: #222222; }
-.text-emoji { font-size: 1.2rem; }
+/* ANIMACIÓN DEL MENÚ DESPLEGABLE */
+.menu-slide-enter-active, .menu-slide-leave-active {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: bottom left;
+}
+.menu-slide-enter-from, .menu-slide-leave-to {
+  opacity: 0;
+  transform: scale(0.5) translateY(50px);
+}
 
+/* BOTÓN HAMBURGUESA */
 .menu-toggle {
-  position: fixed; bottom: 24px; left: 24px; z-index: 1001; height: 46px; background-color: #ffffff; border: 2px solid #E0E0D8; border-radius: 23px; cursor: pointer; display: flex; align-items: center; padding: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.15); max-width: 120px; overflow: hidden; transition: max-width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 60px;
+  height: 60px;
+  background: #2C3E50;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  z-index: 101;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
 }
-.menu-toggle.active { max-width: 46px; }
-.menu-toggle-icon-wrap { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.menu-text { font-weight: 900; font-size: 0.95rem; color: #333; padding-left: 4px; padding-right: 18px; white-space: nowrap; opacity: 1; transition: opacity 0.2s ease; }
-.menu-toggle.active .menu-text { opacity: 0; pointer-events: none; }
-.hamburger-icon { width: 22px; height: 16px; position: relative; }
-.hamburger-icon span { display: block; position: absolute; height: 2.5px; width: 100%; background: #333; border-radius: 4px; left: 0; transition: .25s ease-in-out; }
+.menu-toggle:hover {
+  background: #34495E;
+  transform: scale(1.05);
+}
+.hamburger-icon {
+  width: 24px;
+  height: 18px;
+  position: relative;
+  margin-bottom: 2px;
+}
+.hamburger-icon span {
+  display: block;
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  background: white;
+  border-radius: 3px;
+  left: 0;
+  transition: .25s ease-in-out;
+}
 .hamburger-icon span:nth-child(1) { top: 0px; }
 .hamburger-icon span:nth-child(2) { top: 7px; }
 .hamburger-icon span:nth-child(3) { top: 14px; }
 .menu-toggle.active .hamburger-icon span:nth-child(1) { top: 7px; transform: rotate(135deg); }
 .menu-toggle.active .hamburger-icon span:nth-child(2) { opacity: 0; left: -20px; }
 .menu-toggle.active .hamburger-icon span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+.menu-text {
+  font-size: 0.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 
-.unit-stage { margin: 0 auto; width: 100%; padding: 40px 50px 100px 50px; max-width: 1200px; }
-.grade-content { width: 100%; }
-.header-hero { padding: 1rem 0 2rem; }
-.header-chip-wrap { text-align: left; margin-bottom: 1.5rem; }
-.grado-chip { display: inline-block; background: #E8EAF6; color: #304FFE; border-radius: 999px; padding: 6px 18px; font-size: 0.9rem; font-weight: 900; font-family: 'Roboto', sans-serif; letter-spacing: 0.05em; line-height: 1.6; }
-.header-centered { text-align: center; }
-.title-main { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; line-height: 1.15; background: linear-gradient(90deg, #111 0%, #1565C0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
-.subtitle-hero { font-size: clamp(1rem, 3vw, 1.15rem); color: #444; max-width: 600px; margin: 0 auto; }
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(5px);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.nav-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
 
-.section-label { display: inline-flex; align-items: center; gap: 8px; border-radius: 16px; padding: 10px 22px; font-size: 1.1rem; font-weight: 900; margin-bottom: 1.25rem; }
-.label-orange { background: #FFF3E0; color: #E64A19; border: 2px solid #FFAB91; }
-.label-purple { background: #F3E5F5; color: #7B1FA2; border: 2px solid #CE93D8; }
-.label-green  { background: #E8F5E9; color: #2E7D32; border: 2px solid #A5D6A7; }
-.label-blue   { background: #E3F2FD; color: #1565C0; border: 2px solid #90CAF9; }
+/* ÁREA DE CONTENIDO */
+.unit-stage {
+  transition: padding 0.3s;
+  min-height: 100vh;
+}
+.grade-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px 100px;
+}
 
-.kid-card { background: #FFFFFF; border: 2.5px solid #EAEAEA; transition: transform 0.18s, box-shadow 0.18s; }
-.kid-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-.card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
-.rounded-3xl { border-radius: 24px !important; }
+/* HERO HEADER */
+.header-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.header-chip-wrap {
+  margin-bottom: 16px;
+}
+.grado-chip {
+  background: #E0E0E0;
+  color: #424242;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+.title-main {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #1A237E;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.subtitle-hero {
+  font-size: 1.2rem;
+  color: #546E7A;
+  max-width: 600px;
+  margin: 0 auto;
+}
 
-.section-box { border-radius: 24px; padding: 1.8rem; }
-.box-orange { background: #FFF8E1; border: 2px solid #FFE082; }
-.box-blue { background: #E3F2FD; border: 2px solid #BBDEFB; }
-.box-cyan { background: #E0F7FA; border: 2px solid #B2EBF2; }
+/* LABELS & BOXES */
+.section-label {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 12px 12px 0 0;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 2;
+}
+.label-blue { background: #1976D2; color: white; }
+.label-green { background: #2E7D32; color: white; }
+.label-teal { background: #00796B; color: white; }
+.label-orange { background: #E64A19; color: white; }
+.label-purple { background: #7B1FA2; color: white; }
+.label-red { background: #D32F2F; color: white; }
 
-.box-title { font-size: 1.15rem; font-weight: 900; margin-bottom: 8px; }
-.box-body { font-size: 1rem; color: #444; margin-bottom: 1.2rem; line-height: 1.6; }
-.title-orange { color: #E64A19 !important; }
-.title-purple { color: #6A1B9A !important; }
-.title-blue { color: #1565C0 !important; }
-.title-teal { color: #00695C !important; }
+.section-box {
+  background: white;
+  border-radius: 0 24px 24px 24px;
+  padding: 30px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+  border: 2px solid;
+}
+.box-blue { border-color: #BBDEFB; }
+.box-green { border-color: #C8E6C9; }
+.box-teal { border-color: #B2DFDB; }
+.box-orange { border-color: #FFCCBC; }
+.box-purple { border-color: #E1BEE7; }
+.box-red { border-color: #FFCDD2; }
 
-.resultado-chip { display: inline-block; padding: 6px 18px; border-radius: 999px; font-size: 1rem; font-weight: 900; color: #111; margin-top: 8px; }
-.chip-orange { background: #FFE0B2; }
-.chip-blue { background: #BBDEFB; }
-.chip-indigo { background: #C5CAE9; }
+.box-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+.title-blue { color: #1565C0; }
+.title-green { color: #2E7D32; }
+.title-teal { color: #00695C; }
+.title-orange { color: #D84315; }
+.title-purple { color: #6A1B9A; }
+.title-red { color: #C62828; }
 
-.video-container { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
-.h-100 { height: 100%; }
-.divider-kids { text-align: center; font-size: 1.4rem; color: #D0D0D0; letter-spacing: 12px; }
+.box-body {
+  font-size: 1.1rem;
+  color: #455A64;
+  margin-bottom: 24px;
+}
 
+/* KID CARDS & CHALKBOARD */
+.kid-card {
+  border: 3px solid #EEEEEE;
+  transition: transform 0.3s;
+}
+.kid-card:hover {
+  transform: translateY(-5px);
+  border-color: #BDBDBD;
+}
+.kid-example-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+.kid-card-title {
+  font-weight: 800;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+.kid-card-body {
+  color: #546E7A;
+  line-height: 1.5;
+}
+
+.chalkboard {
+  background-color: #2E4B31 !important;
+  color: white;
+  border: 8px solid #795548 !important;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+  font-family: 'Courier New', Courier, monospace;
+}
+.chalk-line {
+  font-size: 2.5rem;
+  font-weight: bold;
+  letter-spacing: 12px;
+  text-align: center;
+}
+.chalk-sep {
+  height: 4px;
+  background: white;
+  width: 60%;
+  margin: 10px auto;
+  border-radius: 2px;
+}
+.chalk-result {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.resultado-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+.chip-blue { background: #E3F2FD; color: #1565C0; }
+.chip-orange { background: #FBE9E7; color: #D84315; }
+.chip-amber { background: #FFF8E1; color: #F57F17; }
+.chip-teal { background: #E0F2F1; color: #00695C; }
+.chip-purple { background: #F3E5F5; color: #7B1FA2; }
+
+/* REPRODUCTOR */
+.video-container {
+  aspect-ratio: 16/9;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+/* DIVIDER & BTN */
+.divider-kids {
+  text-align: center;
+  color: #B0BEC5;
+  letter-spacing: 8px;
+  font-size: 1.2rem;
+}
 .btn-practica {
-  background: linear-gradient(135deg, #1565C0, #0D47A1); color: #fff; font-family: inherit; font-size: clamp(1rem, 4vw, 1.25rem); font-weight: 900; padding: 16px 42px; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 6px 20px rgba(13, 71, 161, 0.35); transition: transform 0.15s, box-shadow 0.15s;
+  background: linear-gradient(135deg, #FF9800, #F57C00);
+  color: white;
+  font-weight: 900;
+  font-size: 1.2rem;
+  padding: 16px 32px;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 8px 20px rgba(230, 81, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s;
 }
-.btn-practica:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 28px rgba(13, 71, 161, 0.45); }
-.btn-practica:active { transform: translateY(0); }
+.btn-practica:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 25px rgba(230, 81, 0, 0.4);
+}
 
-@media (max-width: 768px) {
-  .unit-stage { padding: 20px 16px 110px 16px; }
-  .menu-toggle { bottom: 20px; left: 20px; }
-  .menu-items { padding-left: 20px; }
-}
+/* TRANSITIONS */
+.fade-slide-enter-active, .fade-slide-leave-active { transition: all 0.4s ease; }
+.fade-slide-enter-from { opacity: 0; transform: translateY(20px); }
+.fade-slide-leave-to { opacity: 0; transform: translateY(-20px); }
 </style>

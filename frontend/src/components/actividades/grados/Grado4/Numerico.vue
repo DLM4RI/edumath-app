@@ -176,6 +176,10 @@ const checkOption = (index) => {
   if (currentChallenge.value.options[index].correct) {
     setTimeout(() => {
       solvedCount.value++;
+      if (currentIndex.value < challenges.length - 1 && !isLastChallenge.value) {
+        currentIndex.value++;
+        selectedOption.value = null;
+      }
     }, 1000);
   } else {
     setTimeout(() => {

@@ -197,14 +197,14 @@
             class="mx-auto mb-6"
           ></v-img>
           <h2 class="text-h3 font-weight-black mb-2">Edumath</h2>
-          <p class="text-h6 opacity-80">1,2,3 Matemáticas</p>
+          <p class="text-h6 opacity-80">1,2,3 Aprende!</p>
         </div>
         <v-card-text class="pa-10">
           <h3 class="text-h5 font-weight-bold mb-4">Pensar Numéricamente</h3>
           <p class="text-body-1 text-medium-emphasis mb-6">
             Transforma la enseñanza de las matemáticas integrando herramientas
-            tecnologicas, creando una conexión real entre el estudiante, las
-            matematicas y la tecnologia.
+            tecnológicas, creando una conexión real entre el estudiante, las
+            matemáticas y la tecnología.
           </p>
           <div class="d-flex flex-wrap gap-2">
             <v-chip

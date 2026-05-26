@@ -77,7 +77,7 @@
           </v-avatar>
           
           <h3 class="text-h3 font-weight-black mb-2">
-            {{ finalGrade >= 3 ? "¡Excelente Trabajo!" : "¡Buen intento!" }}
+            {{ getGradeMessage(finalGrade) }}
           </h3>
           
           <div class="grade-display my-6">
@@ -86,6 +86,16 @@
               {{ finalGrade.toFixed(1) }}
             </div>
             <span class="text-body-1 font-weight-bold">Sobre 5.0</span>
+            <div class="mt-3">
+              <v-chip
+                :color="getScaleColor(finalGrade)"
+                variant="flat"
+                class="font-weight-black px-6"
+                size="large"
+              >
+                Desempeño {{ getScaleLabel(finalGrade) }}
+              </v-chip>
+            </div>
           </div>
 
           <p class="text-h6 mb-8 text-medium-emphasis">
@@ -344,6 +354,28 @@ const calculateScore = () => {
 const goToStudy = (topic) => {
   console.log("Redirigiendo a estudio del tema:", topic);
   emit("finalizado"); 
+};
+
+// Escala de calificación colombiana (MEN)
+const getScaleLabel = (grade) => {
+  if (grade >= 4.6) return 'Superior';
+  if (grade >= 4.0) return 'Alto';
+  if (grade >= 3.0) return 'Básico';
+  return 'Bajo';
+};
+
+const getScaleColor = (grade) => {
+  if (grade >= 4.6) return 'success';
+  if (grade >= 4.0) return 'blue';
+  if (grade >= 3.0) return 'warning';
+  return 'error';
+};
+
+const getGradeMessage = (grade) => {
+  if (grade >= 4.6) return '¡Desempeño Superior!';
+  if (grade >= 4.0) return '¡Excelente Trabajo!';
+  if (grade >= 3.0) return '¡Buen Esfuerzo!';
+  return '¡Sigue Intentándolo!';
 };
 </script>
 

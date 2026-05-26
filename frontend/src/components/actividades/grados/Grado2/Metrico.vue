@@ -2,7 +2,7 @@
   <v-card class="pa-4 pa-md-8 rounded-3xl glass-card overflow-hidden" border="1">
     <div class="text-center mb-6">
       <v-chip color="red-darken-2" variant="flat" class="mb-4 px-6 font-weight-black">
-        🔢 CÁLCULO RÁPIDO
+        🎯 CÁLCULO RÁPIDO
       </v-chip>
       <h2 class="text-h4 font-weight-black mb-2">¡Encuentra la operación!</h2>
       <p class="text-h6 text-medium-emphasis">
@@ -12,14 +12,16 @@
 
     <!-- AREA DE JUEGO -->
     <v-row justify="center" align="center">
-      <!-- Reloj Digital -->
+      <!-- Número Objetivo -->
       <v-col cols="12" md="5" class="text-center">
-        <v-card variant="flat" class="pa-8 rounded-2xl bg-grey-darken-4 text-green-accent-3 mb-6 digital-clock">
-          <div class="text-h1 font-weight-black">{{ currentChallenge.time }}</div>
+        <v-card variant="flat" class="pa-8 rounded-2xl target-display mb-6">
+          <div class="text-caption font-weight-bold text-white mb-2" style="opacity: 0.8;">EL RESULTADO ES:</div>
+          <div class="text-h1 font-weight-black text-white">{{ currentChallenge.time }}</div>
+          <v-icon color="white" class="mt-2" size="30">mdi-bullseye-arrow</v-icon>
         </v-card>
       </v-col>
 
-      <!-- Opciones de Relojes Análogos (Representados con texto por ahora o iconos) -->
+      <!-- Opciones de Sumas -->
       <v-col cols="12" md="7">
         <v-row>
           <v-col v-for="(option, index) in currentChallenge.options" :key="index" cols="6">
@@ -33,7 +35,7 @@
               }"
               @click="checkOption(index)"
             >
-              <v-icon size="60" color="primary">mdi-plus-box-outline</v-icon>
+              <v-icon size="40" color="primary">mdi-plus-box-outline</v-icon>
               <div class="mt-2 font-weight-bold">{{ option.label }}</div>
             </v-card>
           </v-col>
@@ -127,10 +129,10 @@ const checkOption = (index) => {
   background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(10px);
 }
-.digital-clock {
-  font-family: 'Courier New', Courier, monospace;
-  border: 4px solid #333;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+.target-display {
+  background: linear-gradient(135deg, #C62828, #E53935) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 8px 24px rgba(198, 40, 40, 0.3);
 }
 .option-card {
   border-width: 2px;
