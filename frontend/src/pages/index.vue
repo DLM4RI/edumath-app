@@ -22,7 +22,7 @@
               class="d-none d-md-flex flex-column justify-center align-center branding-side pa-10"
             >
               <v-img
-                src="/logo-matecord.png"
+                src="logo-matecord.png"
                 width="180"
                 class="mb-6 animate-bounce-soft"
               ></v-img>
@@ -53,7 +53,7 @@
                   size="64"
                   class="mb-4 elevation-4 d-md-none"
                 >
-                  <v-img src="/logo-matecord.png"></v-img>
+                  <v-img src="logo-matecord.png"></v-img>
                 </v-avatar>
                 <h1 class="text-h4 font-weight-black tracking-tight mb-2">
                   ¡Bienvenidos!
@@ -204,7 +204,7 @@ const handleLogin = async () => {
   position: relative;
   overflow: hidden;
   background: #f1f5f9;
-  background-image: url("/field-bg.png");
+  background-image: url("@/assets/field-bg.png");
   background-size: cover;
   background-position: center;
 }
@@ -242,7 +242,7 @@ const handleLogin = async () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("/field-bg.png");
+  background-image: url("@/assets/field-bg.png");
   opacity: 0.15;
   background-size: cover;
   background-position: center;

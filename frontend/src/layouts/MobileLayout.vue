@@ -4,7 +4,7 @@
     <v-app-bar flat class="px-2 glass-navbar" height="64">
       <div class="d-flex align-center w-100">
         <v-avatar size="40" class="mr-3 elevation-2">
-          <v-img src="/logo-matecord.png"></v-img>
+          <v-img src="logo-matecord.png"></v-img>
         </v-avatar>
         <div>
           <h1 class="text-subtitle-1 font-weight-black mb-0">EduMath</h1>

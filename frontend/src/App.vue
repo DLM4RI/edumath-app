@@ -16,7 +16,7 @@
             size="small"
           ></v-btn>
           <v-img
-            src="/nexus.jpg"
+            src="nexus.jpg"
             cover
             class="w-100"
             style="min-height: 400px; animation: pulseGlow 2s infinite alternate;"
@@ -35,8 +35,6 @@
 
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
-
-let pingInterval;
 
 // Easter Egg Logic
 const showEasterEgg = ref(false);
@@ -58,24 +56,10 @@ const handleKeyDown = (e) => {
 onMounted(() => {
   // Easter egg listener
   window.addEventListener('keydown', handleKeyDown);
-
-  // Solo enviar latidos si no estamos en un entorno movil (Capacitor)
-  // Esto evita errores innecesarios cuando corres la app como APK
-  const isCapacitor = window.hasOwnProperty("Capacitor");
-
-  if (!isCapacitor) {
-    pingInterval = setInterval(() => {
-      fetch("/api/ping").catch(() => {});
-    }, 5000);
-  }
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown);
-  
-  if (pingInterval) {
-    clearInterval(pingInterval);
-  }
 });
 </script>
 

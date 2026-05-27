@@ -2,7 +2,9 @@
 node_modules/
 .DS_Store
 dist_final/
+dist_desktop/
 *.exe
+*.log
 
 # Frontend y Assets
 frontend/dist/

@@ -1,0 +1,63 @@
+{
+  "name": "edumath-ova",
+  "version": "1.0.0",
+  "description": "EduMath MateCord - OVA Matemáticas",
+  "author": "EduMath Team",
+  "main": "main.js",
+  "scripts": {
+    "frontend:install": "npm --prefix frontend install",
+    "frontend:build": "NODE_OPTIONS='--max-old-space-size=2048' npm --prefix frontend run build",
+    "dev": "electron .",
+    "dist:linux": "NODE_OPTIONS='--max-old-space-size=2048' electron-builder --linux",
+    "dist:win": "CSC_IDENTITY_AUTO_DISCOVERY=false NODE_OPTIONS='--max-old-space-size=2048' electron-builder --win --x64",
+    "build:win": "npm run frontend:build && echo '✅ Frontend listo. Esperando 5s...' && sleep 5 && npm run dist:win",
+    "build:linux": "npm run frontend:build && echo '✅ Frontend listo. Esperando 5s...' && sleep 5 && npm run dist:linux"
+  },
+  "build": {
+    "appId": "com.edumath.matecord.ova",
+    "productName": "EduMath MateCord",
+    "directories": {
+      "output": "dist_desktop"
+    },
+    "files": [
+      "package.json",
+      "main.js",
+      "icono_app.ico",
+      "frontend/dist/**/*"
+    ],
+    "compression": "normal",
+    "asar": true,
+    "asarUnpack": [
+      "frontend/dist/videos/**"
+    ],
+    "npmRebuild": false,
+    "win": {
+      "icon": "icono_app.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "EduMath MateCord"
+    },
+    "linux": {
+      "icon": "frontend/public/logo-matecord.png",
+      "target": "AppImage"
+    },
+    "electronDownload": {
+      "mirror": "https://npmmirror.com/mirrors/electron/"
+    }
+  },
+  "devDependencies": {
+    "electron": "^31.3.1",
+    "electron-builder": "^24.13.3"
+  }
+}

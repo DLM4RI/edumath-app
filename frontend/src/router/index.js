@@ -1,12 +1,14 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+// Solo la página de inicio se importa estáticamente (es la primera en mostrarse)
 import Home from '../pages/index.vue'
-import MasterLayout from '../layouts/MasterLayout.vue'
 
-// Importar estáticamente las páginas principales para evitar errores de carga en el ejecutable
-import GradoIndex from '../pages/grado[id]/index.vue'
-import GradoActividades from '../pages/grado[id]/actividades.vue'
-import GradoEvaluacion from '../pages/grado[id]/evaluacion.vue'
-import GradoRetroalimentacion from '../pages/grado[id]/retroalimentacion.vue'
+// Las rutas internas se cargan de forma diferida (lazy loading)
+// → Solo se descargan cuando el usuario navega a ellas, acelerando el inicio
+const MasterLayout = () => import('../layouts/MasterLayout.vue')
+const GradoIndex = () => import('../pages/grado[id]/index.vue')
+const GradoActividades = () => import('../pages/grado[id]/actividades.vue')
+const GradoEvaluacion = () => import('../pages/grado[id]/evaluacion.vue')
+const GradoRetroalimentacion = () => import('../pages/grado[id]/retroalimentacion.vue')
 
 const routes = [
   {

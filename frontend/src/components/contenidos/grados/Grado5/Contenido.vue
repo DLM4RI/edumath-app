@@ -338,7 +338,7 @@
 import { ref } from 'vue'
 
 function getVideoSrc(grado, numero) {
-  return `/videos/grado${grado}_video${numero}.mp4`
+  return `videos/grado${grado}_video${numero}.mp4`
 }
 
 const activeUnit = ref(0)

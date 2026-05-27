@@ -8,7 +8,7 @@
         <!-- Brand / Logo -->
         <div class="nav-brand">
           <div class="logo-container">
-            <v-img src="/logo-matecord.png" class="nav-logo"></v-img>
+            <v-img src="logo-matecord.png" class="nav-logo"></v-img>
             <div class="logo-glow"></div>
           </div>
           <div class="brand-text d-none d-sm-block">
@@ -115,7 +115,7 @@
           size="80"
           class="elevation-6 mb-4"
         >
-          <v-img src="/logo-matecord.png"></v-img>
+          <v-img src="logo-matecord.png"></v-img>
         </v-avatar>
         <h3 class="text-h5 font-weight-black">{{ userName }}</h3>
         <p class="text-subtitle-2 text-medium-emphasis mb-6">
@@ -192,7 +192,7 @@
           :style="{ backgroundColor: currentTheme.primary }"
         >
           <v-img
-            src="/logo-matecord.png"
+            src="logo-matecord.png"
             max-width="120"
             class="mx-auto mb-6"
           ></v-img>
@@ -505,7 +505,7 @@
   .matecord-main {
     padding-top: 100px !important;
     padding-bottom: 70px !important; /* Spacing for bottom nav */
-    background-image: url("/field-bg.png");
+    background-image: url("@/assets/field-bg.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
